@@ -1,6 +1,6 @@
-% Realistic 2020s Space Environment Scenario
+% Realistic Operations No Launch Scenario
 % Custom scenario for comparing Python vs MATLAB implementations
-% Enhanced launch activity, modern space operations, 5-year high-resolution simulation
+% Modern space operations parameters without future launches, 5-year high-resolution simulation
 
 clc; clear;
 
@@ -9,14 +9,14 @@ addpath(genpath('../../supporting_data/'));
 addpath(genpath('../../supporting_functions'));
 addpath('..');
 
-fprintf('=== Realistic 2020s Space Environment Scenario ===\n');
+fprintf('=== Realistic Operations No Launch Scenario ===\n');
 
 % Fixed parameters for reproducibility
 seed = 42;
 ICfile = '2020.mat';
 
 fprintf('Running with seed %d and IC file %s\n', seed, ICfile);
-fprintf('Configuring realistic 2020s parameters...\n');
+fprintf('Configuring realistic operations parameters (no launches)...\n');
 
 % Get base configuration
 cfgMC = setup_MCconfig(seed, ICfile);
@@ -26,10 +26,10 @@ cfgMC.launch_model = 'no_launch';
 
 % === CUSTOM SCENARIO MODIFICATIONS ===
 
-% Enhanced launch activity (recent high-activity period)
-fprintf('- Enhanced launch activity: 2018-2022 period\n');
-cfgMC.launchRepeatYrs = [2018, 2022];
-cfgMC.launchRepeatSmooth = 1;  % Smooth out yearly variations
+% Launch configuration (not used since launch_model='no_launch')
+fprintf('- No future launches (launch_model = no_launch)\n');
+cfgMC.launchRepeatYrs = [2018, 2022];  % Not used with no_launch model
+cfgMC.launchRepeatSmooth = 1;  % Not used with no_launch model
 
 % Modern space operations
 fprintf('- Modern space operations: 85%% PMD compliance, 6-year missions\n');
@@ -98,7 +98,7 @@ set(gcf, 'Color', 'white');
 subplot(2,2,1);
 bar([nS, nD, nN, nB]);
 set(gca, 'XTickLabel', {'Satellites', 'Derelicts', 'Debris', 'Rocket Bodies'});
-title('Final Population Distribution - Realistic 2020s Scenario');
+title('Final Population Distribution - Realistic Operations No Launch');
 ylabel('Number of Objects');
 grid on;
 
@@ -121,8 +121,8 @@ title('Inclination Distribution');
 grid on;
 
 % Save Figure 1
-print('matlab_realistic_2020s_figure_1_population_summary', '-dpng', '-r150');
-fprintf('Saved: matlab_realistic_2020s_figure_1_population_summary.png\n');
+print('matlab_realistic_ops_no_launch_figure_1_population_summary', '-dpng', '-r150');
+fprintf('Saved: matlab_realistic_ops_no_launch_figure_1_population_summary.png\n');
 
 % Figure 2: Orbital Elements Analysis
 figure(2);
@@ -150,8 +150,8 @@ title('Object Class Distribution');
 grid on;
 
 % Save Figure 2
-print('matlab_realistic_2020s_figure_2_orbital_elements', '-dpng', '-r150');
-fprintf('Saved: matlab_realistic_2020s_figure_2_orbital_elements.png\n');
+print('matlab_realistic_ops_no_launch_figure_2_orbital_elements', '-dpng', '-r150');
+fprintf('Saved: matlab_realistic_ops_no_launch_figure_2_orbital_elements.png\n');
 
 % Figure 3: 3D Position Plot
 figure(3);
@@ -163,13 +163,13 @@ colorbar;
 xlabel('X (km)');
 ylabel('Y (km)');
 zlabel('Z (km)');
-title('3D Object Positions (colored by altitude) - Realistic 2020s');
+title('3D Object Positions (colored by altitude) - Realistic Ops No Launch');
 grid on;
 axis equal;
 
 % Save Figure 3
-print('matlab_realistic_2020s_figure_3_3d_positions', '-dpng', '-r150');
-fprintf('Saved: matlab_realistic_2020s_figure_3_3d_positions.png\n');
+print('matlab_realistic_ops_no_launch_figure_3_3d_positions', '-dpng', '-r150');
+fprintf('Saved: matlab_realistic_ops_no_launch_figure_3_3d_positions.png\n');
 
 % Figure 4: Altitude vs Eccentricity with Object Types
 figure(4);
@@ -196,13 +196,13 @@ end
 
 xlabel('Eccentricity');
 ylabel('Altitude (km)');
-title('Altitude vs Eccentricity by Object Type - Realistic 2020s');
+title('Altitude vs Eccentricity by Object Type - Realistic Ops No Launch');
 legend('show');
 grid on;
 
 % Save Figure 4
-print('matlab_realistic_2020s_figure_4_altitude_eccentricity', '-dpng', '-r150');
-fprintf('Saved: matlab_realistic_2020s_figure_4_altitude_eccentricity.png\n');
+print('matlab_realistic_ops_no_launch_figure_4_altitude_eccentricity', '-dpng', '-r150');
+fprintf('Saved: matlab_realistic_ops_no_launch_figure_4_altitude_eccentricity.png\n');
 
 % Figure 5: Summary Statistics
 figure(5);
@@ -240,8 +240,8 @@ title('Radius Statistics (m)');
 grid on;
 
 % Save Figure 5
-print('matlab_realistic_2020s_figure_5_summary_statistics', '-dpng', '-r150');
-fprintf('Saved: matlab_realistic_2020s_figure_5_summary_statistics.png\n');
+print('matlab_realistic_ops_no_launch_figure_5_summary_statistics', '-dpng', '-r150');
+fprintf('Saved: matlab_realistic_ops_no_launch_figure_5_summary_statistics.png\n');
 
 % Print detailed statistics
 fprintf('\n=== DETAILED STATISTICS ===\n');
@@ -254,5 +254,5 @@ fprintf('Mean Radius: %.3f m\n', mean(mat_sats(:,idx_radius)));
 fprintf('\nAll MATLAB plots created and saved successfully!\n');
 
 % Save results for comparison
-save('matlab_realistic_2020s_results.mat', 'seed', 'initial_pop', 'nS', 'nD', 'nN', 'nB', ...
+save('matlab_realistic_ops_no_launch_results.mat', 'seed', 'initial_pop', 'nS', 'nD', 'nN', 'nB', ...
      'total_objects', 'ratio', 'mat_sats', 'cfgMC');

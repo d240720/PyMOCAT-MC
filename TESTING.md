@@ -25,6 +25,25 @@ pip install -r requirements.txt
 python3 tests/run_tests.py
 ```
 
+## Test Scenarios
+
+PyMOCAT-MC includes benchmark scenarios designed to validate specific physics modules:
+
+### Basic Propagation
+Tests orbital propagator without interference from collisions or launches. Validates pure orbital motion mechanics.
+
+### Collision Test  
+Tests collision detection algorithms, conjunction analysis, and fragmentation models. Focuses on collision physics validation.
+
+### Atmospheric Drag
+Validates atmospheric density models and drag effects at low altitudes where atmospheric drag dominates.
+
+### Full Default
+Comprehensive integration test using all default parameters. Serves as baseline for MATLAB comparison.
+
+### Realistic Operations No Launch
+Tests long-term space environment evolution using realistic operational parameters and failure rates.
+
 ## Test Runners
 
 ### Method 1: Python test runner (Cross-platform)
@@ -81,7 +100,7 @@ The test suite includes 4 essential tests that provide complete coverage:
 5. **Example Scripts** (run as integration tests)
    - Quick Start example (full year simulation)
    - Scenario No Launch example
-   - Realistic Scenario example
+   - Realistic Operations No Launch example
 
 ## Requirements
 

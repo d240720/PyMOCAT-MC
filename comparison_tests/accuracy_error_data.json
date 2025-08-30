@@ -56,7 +56,7 @@
     "execution_time_ratio": 0.4722222222222222
   },
   {
-    "scenario": "Realistic Launch",
+    "scenario": "Realistic Operations No Launch",
     "total_population_error": 31,
     "total_population_rel_error": 0.22794117647058823,
     "satellite_error": 1,

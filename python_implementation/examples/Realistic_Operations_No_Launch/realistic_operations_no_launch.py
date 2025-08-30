@@ -1,8 +1,8 @@
 """
-Realistic 2020s Space Environment Scenario
+Realistic Operations No Launch Scenario
 Custom scenario for comparing Python vs MATLAB implementations
 
-Enhanced launch activity, modern space operations, 5-year high-resolution simulation
+Modern space operations parameters without future launches, 5-year high-resolution simulation
 """
 
 import sys
@@ -19,11 +19,11 @@ sys.path.append(python_impl_dir)
 from mocat_mc import MOCATMC
 
 
-def realistic_scenario_2020s():
+def realistic_operations_no_launch():
     """
-    Realistic 2020s space environment scenario
+    Realistic operations scenario without future launches
     """
-    print("=== Realistic 2020s Space Environment Scenario ===")
+    print("=== Realistic Operations No Launch Scenario ===")
 
     # Initialize MOCAT-MC
     mocat = MOCATMC()
@@ -33,17 +33,17 @@ def realistic_scenario_2020s():
     ic_file = '2020.mat'
 
     print(f'Running with seed {seed} and IC file {ic_file}')
-    print('Configuring realistic 2020s parameters...')
+    print('Configuring realistic operations parameters (no launches)...')
 
     # Get base configuration
     cfg_mc = mocat.setup_mc_config(seed, ic_file)
 
     # === CUSTOM SCENARIO MODIFICATIONS ===
 
-    # Enhanced launch activity (recent high-activity period)
-    print('- Enhanced launch activity: 2018-2022 period')
-    cfg_mc['launchRepeatYrs'] = [2018, 2022]
-    cfg_mc['launchRepeatSmooth'] = 1  # Smooth out yearly variations
+    # Launch configuration (not used since launch_model='no_launch')
+    print('- No future launches (launch_model = no_launch)')
+    cfg_mc['launchRepeatYrs'] = [2018, 2022]  # Not used with no_launch model
+    cfg_mc['launchRepeatSmooth'] = 1  # Not used with no_launch model
 
     # Modern space operations
     print('- Modern space operations: 85% PMD compliance, 6-year missions')
@@ -94,7 +94,7 @@ def realistic_scenario_2020s():
     print(f'Satellite ratio: {ratio:.4f}')
 
     # Create comprehensive plots
-    create_comprehensive_plots(nS, nD, nN, nB, mat_sats, 'python_realistic_2020s')
+    create_comprehensive_plots(nS, nD, nN, nB, mat_sats, 'python_realistic_ops_no_launch')
 
     # Return results for comparison
     return {
@@ -138,7 +138,7 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
 
     # Subplot 1: Bar chart
     ax1.bar(['Satellites', 'Derelicts', 'Debris', 'Rocket Bodies'], [nS, nD, nN, nB])
-    ax1.set_title('Final Population Distribution - Realistic 2020s Scenario')
+    ax1.set_title('Final Population Distribution - Realistic Operations No Launch')
     ax1.set_ylabel('Number of Objects')
     ax1.grid(True, alpha=0.3)
 
@@ -206,7 +206,7 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
     ax3d.set_xlabel('X (km)')
     ax3d.set_ylabel('Y (km)')
     ax3d.set_zlabel('Z (km)')
-    ax3d.set_title('3D Object Positions (colored by altitude) - Realistic 2020s')
+    ax3d.set_title('3D Object Positions (colored by altitude) - Realistic Ops No Launch')
 
     # Set equal aspect ratio
     max_range = np.array([r[:,0].max()-r[:,0].min(),
@@ -246,7 +246,7 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
 
     ax.set_xlabel('Eccentricity')
     ax.set_ylabel('Altitude (km)')
-    ax.set_title('Altitude vs Eccentricity by Object Type - Realistic 2020s')
+    ax.set_title('Altitude vs Eccentricity by Object Type - Realistic Ops No Launch')
     ax.legend()
     ax.grid(True, alpha=0.3)
 
@@ -302,4 +302,4 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
 
 
 if __name__ == "__main__":
-    results = realistic_scenario_2020s()
+    results = realistic_operations_no_launch()

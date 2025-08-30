@@ -106,10 +106,10 @@ For a scenario without launches:
 python examples/Scenario_No_Launch/scenario_no_launch.py
 ```
 
-For a realistic 2020s scenario with megaconstellations:
+For a realistic operations scenario without future launches:
 
 ```bash
-python examples/Realistic_Scenario/realistic_scenario_2020s.py
+python examples/Realistic_Operations_No_Launch/realistic_operations_no_launch.py
 ```
 
 ### Custom Configuration
@@ -156,8 +156,8 @@ PyMOCAT-MC/
 │   │   ├── Quick_Start/
 │   │   │   ├── quick_start.py         # Basic simulation example
 │   │   │   └── quick_start_with_plots.py  # Example with visualizations
-│   │   ├── Realistic_Scenario/
-│   │   │   └── realistic_scenario_2020s.py  # 2020s megaconstellation scenario
+│   │   ├── Realistic_Operations_No_Launch/
+│   │   │   └── realistic_operations_no_launch.py  # Realistic operations without launches
 │   │   └── Scenario_No_Launch/
 │   │       └── scenario_no_launch.py  # Decay-only scenario
 │   ├── supporting_functions/

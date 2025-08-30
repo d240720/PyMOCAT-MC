@@ -1,24 +1,24 @@
-% Realistic 2020s Space Environment Scenario
-% MATLAB version equivalent to Python's realistic_scenario_2020s.py
+% Realistic Operations No Launch Scenario
+% MATLAB version equivalent to Python's realistic_operations_no_launch.py
 % 
-% Enhanced launch activity, modern space operations, 5-year high-resolution simulation
-% Di Wu, Updated for launch scenario benchmarking
+% Modern space operations parameters without future launches, 5-year high-resolution simulation
+% Di Wu, Updated for realistic operations scenario benchmarking
 
-function realistic_scenario_2020s()
+function realistic_operations_no_launch()
     % Add necessary paths
     addpath('Examples');
     addpath('supporting_functions');
     addpath('supporting_data');
     addpath('supporting_data/TLEhistoric');
     
-    fprintf('\n=== Realistic 2020s Space Environment Scenario ===\n');
+    fprintf('\n=== Realistic Operations No Launch Scenario ===\n');
     
     % Fixed parameters for reproducibility
     seed = 42;
     ICfile = '2020.mat';
     
     fprintf('Running with seed %d and IC file %s\n', seed, ICfile);
-    fprintf('Configuring realistic 2020s parameters...\n');
+    fprintf('Configuring realistic operations parameters (no launches)...\n');
     
     % Get base configuration
     cfgMC = setup_MCconfig_launch(seed, ICfile);
@@ -66,7 +66,7 @@ function realistic_scenario_2020s()
     
     % Return benchmark data for analysis
     benchmark_data = struct();
-    benchmark_data.scenario = 'Realistic_Launch_2020s';
+    benchmark_data.scenario = 'Realistic_Operations_No_Launch';
     benchmark_data.execution_time = elapsed_time;
     benchmark_data.initial_pop = initial_pop;
     benchmark_data.nS = nS;
@@ -77,21 +77,21 @@ function realistic_scenario_2020s()
     benchmark_data.satellite_ratio = ratio;
     
     % Save benchmark results
-    save('matlab_realistic_2020s_benchmark.mat', 'benchmark_data');
-    fprintf('\nBenchmark data saved to: matlab_realistic_2020s_benchmark.mat\n');
+    save('matlab_realistic_ops_no_launch_benchmark.mat', 'benchmark_data');
+    fprintf('\nBenchmark data saved to: matlab_realistic_ops_no_launch_benchmark.mat\n');
 end
 
 function cfgMC = setup_MCconfig_launch(rngseed, ICfile)
     % Modified setup_MCconfig with launch scenario parameters
-    % Based on Python realistic_scenario_2020s configuration
+    % Based on Python realistic_operations_no_launch configuration
     
     % Get base configuration
     cfgMC = setup_MCconfig(rngseed, ICfile);
     
     % === CUSTOM SCENARIO MODIFICATIONS ===
     
-    % Enhanced launch activity (recent high-activity period)
-    fprintf('- Enhanced launch activity: 2018-2022 period\n');
+    % Launch configuration (not used since launch_model='no_launch')
+    fprintf('- No future launches (launch_model = no_launch)\n');
     cfgMC.launchRepeatYrs = [2018, 2022];    % Min/max year of obj to repeatedly launch
     cfgMC.launchRepeatSmooth = 1;            % Smooth out yearly variations
     
@@ -116,8 +116,8 @@ function cfgMC = setup_MCconfig_launch(rngseed, ICfile)
     cfgMC.max_frag = 500;                    % Reasonable fragment limit
     
     % Re-initialize - use no_launch to avoid launch profile complications
-    % The key benchmark is the 5-year realistic scenario simulation
+    % The key benchmark is the 5-year realistic operations simulation
     Simulation = 'TLE';
-    launch_model = 'no_launch';  % Focus on realistic scenario without launch complexity
+    launch_model = 'no_launch';  % Focus on realistic operations without launch complexity
     cfgMC = initSim(cfgMC, Simulation, launch_model, ICfile);
 end

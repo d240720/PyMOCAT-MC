@@ -477,9 +477,9 @@
 				</class>
 			</classes>
 		</package>
-		<package name="examples.Realistic_Scenario" line-rate="0" branch-rate="0" complexity="0">
+		<package name="examples.Realistic_Operations_No_Launch" line-rate="0" branch-rate="0" complexity="0">
 			<classes>
-				<class name="realistic_scenario_2020s.py" filename="examples/Realistic_Scenario/realistic_scenario_2020s.py" complexity="0" line-rate="0" branch-rate="0">
+				<class name="realistic_operations_no_launch.py" filename="examples/Realistic_Operations_No_Launch/realistic_operations_no_launch.py" complexity="0" line-rate="0" branch-rate="0">
 					<methods/>
 					<lines>
 						<line number="8" hits="0"/>
