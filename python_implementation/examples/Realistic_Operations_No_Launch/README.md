@@ -12,10 +12,10 @@ This directory contains Python implementation of realistic space operations scen
 This scenario simulates realistic modern space operations parameters with:
 - No future launches (decay-only scenario from 2020 initial conditions)
 - Realistic 85% post-mission disposal compliance (vs 95% ideal)
-- 6-year typical satellite mission lifetime (vs 8-year default)
+- 6-unit typical satellite mission lifetime (vs 8-unit default)
 - 2% collision avoidance failure probability (realistic operations)
 - Limited explosion probability (5e-7)
-- 5-year high-resolution simulation with 5-day timesteps
+- High-resolution simulation with 5-day timesteps
 
 Note: While `launchRepeatYrs = [2018, 2022]` is defined in the configuration, it is NOT used since the scenario runs with `launch_model = 'no_launch'`.
 

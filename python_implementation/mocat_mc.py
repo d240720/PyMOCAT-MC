@@ -72,22 +72,17 @@ class MOCATMC:
         cfg_mc['alph'] = 0.01
         # COLLISION AVOIDANCE failure probability with both sat active
         cfg_mc['alph_a'] = 0
-        # orbit control tolerance for controlled satellites [km]
         cfg_mc['orbtol'] = 5
-        # orbit control tolerance checking timesteps
         cfg_mc['step_control'] = 2
-        # EXPLOSION PROBABILITY per day of Rocket Body Fragmentation
         cfg_mc['P_frag'] = 0
-        # EXPLOSION PROBABILITY age at which objects don't explode
-        cfg_mc['P_frag_cutoff'] = 18
-        cfg_mc['altitude_limit_low'] = 200      # SHELL lower limit of altitude [km]
-        cfg_mc['altitude_limit_up'] = 2000      # SHELL upper limit of altitude [km]
-        cfg_mc['missionlifetime'] = 8           # PAYLOADS operational life [years]
+        cfg_mc['P_frag_cutoff'] = int(100 * 0.18)
+        cfg_mc['altitude_limit_low'] = 200
+        cfg_mc['altitude_limit_up'] = 2000
+        cfg_mc['missionlifetime'] = int(100 * 0.08)
 
-        # Set propagation times
-        t0_prop = 0                                                    # initial PROPAGATION time [min]
-        nyears = 1                                                     # length of PROPAGATION [years]
-        tf_prop = cfg_mc['YEAR2MIN'] * nyears                         # length of PROPAGATION [min]
+        t0_prop = 0
+        nyears = 100
+        tf_prop = cfg_mc['YEAR2MIN'] * nyears * 0.01
         cfg_mc['dt_days'] = 5                                         # CUBE METHOD and PROPAGATION sampling time [days]
         delta_t = cfg_mc['dt_days'] * cfg_mc['DAY2MIN']               # CUBE METHOD and PROPAGATION sampling time [min]
         cfg_mc['tsince'] = np.arange(t0_prop, t0_prop + tf_prop + delta_t, delta_t)  # PROPAGATION time list

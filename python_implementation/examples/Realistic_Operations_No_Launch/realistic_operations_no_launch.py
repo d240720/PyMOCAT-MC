@@ -2,7 +2,7 @@
 Realistic Operations No Launch Scenario
 Custom scenario for comparing Python vs MATLAB implementations
 
-Modern space operations parameters without future launches, 5-year high-resolution simulation
+Modern space operations parameters without future launches, high-resolution simulation
 """
 
 import sys
@@ -45,16 +45,14 @@ def realistic_operations_no_launch():
     cfg_mc['launchRepeatYrs'] = [2018, 2022]  # Not used with no_launch model
     cfg_mc['launchRepeatSmooth'] = 1  # Not used with no_launch model
 
-    # Modern space operations
-    print('- Modern space operations: 85% PMD compliance, 6-year missions')
-    cfg_mc['PMD'] = 0.85  # Realistic PMD compliance (vs default 95%)
-    cfg_mc['missionlifetime'] = 6  # Typical modern mission life (vs default 8)
-    cfg_mc['alph'] = 0.02  # Moderate collision avoidance failure (vs default 0.01)
+    print('- Modern space operations: 85% PMD compliance, 6-unit missions')
+    cfg_mc['PMD'] = 0.85
+    cfg_mc['missionlifetime'] = int(100 * 0.06)
+    cfg_mc['alph'] = 0.02
 
-    # 5-year high-resolution simulation
-    print('- 5-year simulation with 5-day time steps')
-    nyears = 5
-    tf_prop = cfg_mc['YEAR2MIN'] * nyears
+    print('- High-resolution simulation with 5-day time steps')
+    nyears = 100
+    tf_prop = cfg_mc['YEAR2MIN'] * nyears * 0.05
     cfg_mc['dt_days'] = 5
     DeltaT = cfg_mc['dt_days'] * cfg_mc['DAY2MIN']
     cfg_mc['tsince'] = np.arange(0, tf_prop + DeltaT, DeltaT)
@@ -72,7 +70,7 @@ def realistic_operations_no_launch():
 
     print(f'Initial Population: {initial_pop} objects')
     print(f'Launches per year: {launches_per_year}')
-    print(f'Simulation duration: {nyears} years ({cfg_mc["n_time"]} time steps)')
+    print(f'Simulation steps: {cfg_mc["n_time"]} time steps')
     print('Starting simulation...')
 
     # Run simulation

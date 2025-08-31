@@ -301,7 +301,7 @@ def create_default_satellites(n_sats: int, radiusearthkm: float) -> np.ndarray:
     # Controlled flag (mix of controlled and uncontrolled)
     mat_sats[:, 10] = np.random.choice([0, 1], n_sats, p=[0.3, 0.7])
 
-    # Mission lifetime (years)
+    # Mission lifetime
     mat_sats[:, 12] = np.random.uniform(5, 15, n_sats)
 
     # Launch dates (last 20 years)

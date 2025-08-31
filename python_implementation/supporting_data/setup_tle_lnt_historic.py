@@ -114,26 +114,25 @@ def setup_tle_lnt_historic(rng_seed=1, tle_year=2020):
     # LNT effectiveness function: radius-dependent collision avoidance
     cfg_mc['rad2pLNTfunc'] = lambda x: 1.0 / (1.0 + np.exp(-25 * (x - 0.3)))
 
-    cfg_mc['alph_a'] = 0  # Failure probability with both satellites active
-    cfg_mc['orbtol'] = 5  # Orbital tolerance [km]
-    cfg_mc['step_control'] = 2  # Timesteps to check orbit control
-    cfg_mc['P_frag'] = 0  # Explosion probability (0 = disabled)
-    cfg_mc['P_frag_cutoff'] = 18  # Age cutoff for explosions [years]
-    cfg_mc['altitude_limit_low'] = 200  # Lower altitude limit [km]
-    cfg_mc['altitude_limit_up'] = 2000  # Upper altitude limit [km]
-    cfg_mc['missionlifetime'] = 8  # Mission lifetime [years]
+    cfg_mc['alph_a'] = 0
+    cfg_mc['orbtol'] = 5
+    cfg_mc['step_control'] = 2
+    cfg_mc['P_frag'] = 0
+    cfg_mc['P_frag_cutoff'] = int(100 * 0.18)
+    cfg_mc['altitude_limit_low'] = 200
+    cfg_mc['altitude_limit_up'] = 2000
+    cfg_mc['missionlifetime'] = int(100 * 0.08)
 
-    # Set simulation times
     cfg_mc['time0'] = datetime(tle_year, 1, 1)
-    t0_prop = 0  # Initial propagation time [min]
-    nyears = 200  # Simulation duration [years]
-    tf_prop = cfg_mc['YEAR2MIN'] * nyears
+    t0_prop = 0
+    nyears = 100
+    tf_prop = cfg_mc['YEAR2MIN'] * nyears * 2.0
     cfg_mc['dt_days'] = 5  # Time step [days]
     DeltaT = cfg_mc['dt_days'] * cfg_mc['DAY2MIN']
     cfg_mc['tsince'] = np.arange(t0_prop, t0_prop + tf_prop + DeltaT, DeltaT)
     cfg_mc['n_time'] = len(cfg_mc['tsince'])
 
-    print(f"Simulation setup: {nyears} years, {cfg_mc['n_time']} time steps")
+    print(f"Simulation setup: {cfg_mc['n_time']} time steps")
 
     # Launch configuration
     cfg_mc['total_launch_per_year'] = 0

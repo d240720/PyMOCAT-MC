@@ -29,7 +29,7 @@ I've created comprehensive test scenarios to validate the Python implementation 
 - **Config**:
   - P_frag = 1e-5
   - Max fragments = 100
-  - Age cutoff = 20 years
+  - Age cutoff = 20 time units
 - **Tests**: `frag_exp_sbm_vec`, `frag_col_sbm_vec`
 
 ### 4. **Orbit Control Test** (Seed: 777)
@@ -38,12 +38,12 @@ I've created comprehensive test scenarios to validate the Python implementation 
   - Orbit tolerance = 10 km
   - Control check every 5 steps
   - PMD = 90%
-  - Mission lifetime = 5 years
+  - Mission lifetime = 5 time units
 - **Tests**: `orbcontrol_vec`
 
 ### 5. **No Launch Baseline** (Seed: 100)
 - **Purpose**: Baseline scenario without launches
-- **Config**: 1 year simulation, no launches
+- **Config**: Standard simulation, no launches
 - **Tests**: Natural orbital evolution
 
 ### 6. **MatSat Launch Test** (Seed: 200)
@@ -51,7 +51,7 @@ I've created comprehensive test scenarios to validate the Python implementation 
 - **Config**:
   - Launch years: 2018-2022
   - No smoothing
-  - 2 year simulation
+  - 2-step simulation
 - **Tests**: `init_sim` launch functionality
 
 ### 7. **MatSat Smoothed** (Seed: 300)
@@ -59,7 +59,7 @@ I've created comprehensive test scenarios to validate the Python implementation 
 - **Config**:
   - Launch years: 2015-2020
   - Smoothing enabled
-  - 3 year simulation
+  - 3-step simulation
 - **Tests**: Launch rate averaging
 
 ### 8. **Atmospheric Drag Test** (Seed: 333)
@@ -76,7 +76,7 @@ I've created comprehensive test scenarios to validate the Python implementation 
   - Launch years: 2019-2022
   - Lower PMD (90%)
   - Higher collision risk (α = 0.02)
-  - 5 year simulation
+  - 5-step simulation
 - **Tests**: Full system stress test
 
 ### 10. **Extreme Altitudes** (Seed: 1100)
@@ -96,7 +96,7 @@ I've created comprehensive test scenarios to validate the Python implementation 
 
 ### 12. **Full Integration** (Seed: 1)
 - **Purpose**: All features with defaults
-- **Config**: Standard 1-year simulation
+- **Config**: Standard simulation
 - **Tests**: Complete system validation
 
 ## Expected Outputs for Comparison
@@ -128,7 +128,7 @@ For actual comparison with MATLAB results, you would need to:
 1. Run both implementations with identical seeds
 2. Save outputs to .mat files for direct comparison
 3. Use shorter simulations initially to verify correctness
-4. Scale up to longer durations once validated
+4. Scale up to longer simulations once validated
 
 ## Recommended Next Steps
 

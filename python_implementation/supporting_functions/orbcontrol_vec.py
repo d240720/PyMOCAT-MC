@@ -43,7 +43,7 @@ def orbcontrol_vec(mat_sat_in: np.ndarray, tsince: float, time0: datetime,
     a = mat_sat_in[:, 0]  # Semi-major axis
     controlled = mat_sat_in[:, 6].copy()  # Controlled flag
     a_desired = mat_sat_in[:, 7]  # Desired semi-major axis
-    missionlife = mat_sat_in[:, 8]  # Mission lifetime [years]
+    missionlife = mat_sat_in[:, 8]  # Mission lifetime
     launch_date = mat_sat_in[:, 9]  # Launch date
     r = mat_sat_in[:, 10:13]  # Position vector
     v = mat_sat_in[:, 13:16]  # Velocity vector

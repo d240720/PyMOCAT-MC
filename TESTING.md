@@ -98,7 +98,7 @@ The test suite includes 4 essential tests that provide complete coverage:
    - Quick smoke test (~3 seconds)
 
 5. **Example Scripts** (run as integration tests)
-   - Quick Start example (full year simulation)
+   - Quick Start example (full simulation)
    - Scenario No Launch example
    - Realistic Operations No Launch example
 

@@ -46,9 +46,8 @@ def scenario_no_launch():
         print('MC configuration starting...')
         cfg_mc = mocat.setup_mc_config(seed, ic_file)
 
-        # Override to 10-year simulation like MATLAB Scenario_No_Launch
-        nyears = 10
-        tf_prop = cfg_mc['YEAR2MIN'] * nyears
+        nyears = 100
+        tf_prop = cfg_mc['YEAR2MIN'] * nyears * 0.10
         cfg_mc['dt_days'] = 5
         DeltaT = cfg_mc['dt_days'] * cfg_mc['DAY2MIN']
         cfg_mc['tsince'] = np.arange(0, tf_prop + DeltaT, DeltaT)
@@ -90,7 +89,7 @@ def create_population_evolution_plot(deorbit_list):
     """
     print('Creating population evolution plot...')
 
-    # Time vector: 10 years (2020-2030), n_time steps
+    # Time vector: (2020-2030), n_time steps
     n_time = deorbit_list.shape[1]
     time_years = np.linspace(2020, 2030, n_time)
 
@@ -105,7 +104,7 @@ def create_population_evolution_plot(deorbit_list):
                 linewidth=2, color=colors[i], label=labels[i])
 
     plt.legend()
-    plt.xlabel('Time (Year)')
+    plt.xlabel('Time')
     plt.ylabel('Decayed Objects')
     plt.title('Population Evolution - Scenario No Launch')
     plt.xlim([2020, 2030])

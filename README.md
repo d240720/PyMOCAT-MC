@@ -124,7 +124,7 @@ mocat = MOCATMC()
 cfg_mc = mocat.setup_mc_config(rng_seed=1, ic_file='2020.mat')
 
 # Customize simulation parameters
-cfg_mc['tspan'] = 30  # Simulation duration in years
+cfg_mc['tspan'] = 30  # Simulation duration
 cfg_mc['N_ini_samples'] = 10  # Number of initial orbit samples
 cfg_mc['prop']['dt_TL'] = 90  # Time step in days
 
