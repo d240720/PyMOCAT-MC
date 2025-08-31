@@ -10,7 +10,7 @@ def plot_execution_time():
     """Create bar chart comparing execution times between Python and MATLAB"""
     
     # Data - Real benchmark results
-    scenarios = ['Basic\nPropagation', 'Collision\nTest', 'Atmospheric\nDrag', 'Full\nDefault', 'Realistic\nLaunch']
+    scenarios = ['Basic\nPropagation', 'Collision\nTest', 'Atmospheric\nDrag', 'Full\nDefault', 'Realistic Ops\nNo Launch']
     python_times = [1.67, 0.10, 0.09, 1.02, 29.95]  # Python results
     matlab_times = [1.09, 0.41, 0.25, 2.16, 75.0]   # MATLAB results from actual benchmarks + estimated
     
@@ -65,10 +65,10 @@ def plot_execution_time():
                    bbox=dict(boxstyle="round,pad=0.3", facecolor=facecolor, alpha=0.7))
     
     plt.tight_layout()
-    plt.savefig('execution_time_comparison.png', dpi=300, bbox_inches='tight')
+    plt.savefig('../paper/figures/execution_time_comparison.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    print("Execution Time Comparison plot created: execution_time_comparison.png")
+    print("Execution Time Comparison plot created: ../paper/figures/execution_time_comparison.png")
 
 if __name__ == "__main__":
     plot_execution_time()

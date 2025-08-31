@@ -157,7 +157,7 @@ def plot_error_evolution(errors, n_time, output_file='error_evolution_full_defau
     
     # Plot 3: Object type absolute errors
     colors = ['green', 'orange', 'purple', 'brown']
-    labels = ['Satellites (nS)', 'Derelicts (nD)', 'Debris (nN)', 'Rocket Bodies (nB)']
+    labels = ['Active Satellites', 'Derelicts', 'Debris', 'Rocket Bodies']
     for i, key in enumerate(['nS', 'nD', 'nN', 'nB']):
         ax3.plot(time_years, errors[key]['absolute'], color=colors[i], 
                 linewidth=2, label=labels[i])
@@ -228,7 +228,7 @@ def main():
         errors, n_time = calculate_errors(python_data, matlab_data)
         
         # Create plot
-        output_file = os.path.join(current_dir, 'error_evolution_full_default.png')
+        output_file = os.path.join(current_dir, '../paper/figures/error_evolution_full_default.png')
         plot_error_evolution(errors, n_time, output_file)
         
         # Save data for future reference

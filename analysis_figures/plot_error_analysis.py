@@ -28,7 +28,7 @@ def create_error_box_plots():
     
     # Box plot: Relative errors
     rel_data = [satellite_rel_errors, derelict_rel_errors, debris_rel_errors, rb_rel_errors]
-    rel_labels = ['Satellites', 'Derelicts', 'Debris', 'Rocket\nBodies']
+    rel_labels = ['Active Satellites', 'Derelicts', 'Debris', 'Rocket\nBodies']
     
     bp = ax.boxplot(rel_data, tick_labels=rel_labels, patch_artist=True,
                     boxprops=dict(facecolor='#0173B2', alpha=0.7),  # Colorblind-friendly blue
@@ -50,10 +50,10 @@ def create_error_box_plots():
                 fontsize=16, fontweight='bold')
     
     plt.tight_layout()
-    plt.savefig('error_box_plots.png', dpi=300, bbox_inches='tight')
+    plt.savefig('../paper/figures/error_box_plots.png', dpi=300, bbox_inches='tight')
     plt.show()
     
-    print("Error box plots created: error_box_plots.png")
+    print("Error box plots created: ../paper/figures/error_box_plots.png")
 
 
 if __name__ == "__main__":

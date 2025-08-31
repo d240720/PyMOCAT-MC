@@ -41,7 +41,7 @@ def calculate_errors():
             'nS': 1382, 'nD': 1849, 'nN': 9424, 'nB': 1026,
             'execution_time': 2.16
         },
-        'Realistic Launch': {
+        'Realistic Operations No Launch': {
             'total_objects': 13600,
             'nS': 1180, 'nD': 1850, 'nN': 9320, 'nB': 1020,
             'execution_time': 75.0
@@ -70,7 +70,7 @@ def calculate_errors():
             'nS': 1382, 'nD': 1805, 'nN': 9363, 'nB': 1008,
             'execution_time': 1.02
         },
-        'Realistic Launch': {
+        'Realistic Operations No Launch': {
             'total_objects': 13569,
             'nS': 1179, 'nD': 1825, 'nN': 9306, 'nB': 1000,
             'execution_time': 29.95

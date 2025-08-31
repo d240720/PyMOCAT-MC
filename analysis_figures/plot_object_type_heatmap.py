@@ -27,7 +27,7 @@ def plot_object_type_heatmap():
             'python': {'S': 1382, 'D': 1805, 'N': 9363, 'B': 1008},
             'matlab': {'S': 1382, 'D': 1849, 'N': 9424, 'B': 1026}  # Real MATLAB result
         },
-        'Realistic Launch': {
+        'Realistic Operations No Launch': {
             'python': {'S': 1179, 'D': 1825, 'N': 9306, 'B': 1000},
             'matlab': {'S': 1180, 'D': 1850, 'N': 9320, 'B': 1020}  # Estimated based on patterns
         }
@@ -37,11 +37,11 @@ def plot_object_type_heatmap():
     fig, ax = plt.subplots(figsize=(12, 8))
     
     scenario_names = list(scenarios_data.keys())
-    scenarios_short = ['Basic\nProp', 'Collision\nTest', 'Atm\nDrag', 'Full\nDefault', 'Realistic\nLaunch']
+    scenarios_short = ['Basic\nProp', 'Collision\nTest', 'Atm\nDrag', 'Full\nDefault', 'Realistic Ops\nNo Launch']
     
     # Calculate percentage differences
     object_types = ['S', 'D', 'N', 'B']
-    object_labels = ['Satellites', 'Derelicts', 'Debris', 'Rocket Bodies']
+    object_labels = ['Active Satellites', 'Derelicts', 'Debris', 'Rocket Bodies']
     pct_diff_matrix = []
     
     for obj_type in object_types:
@@ -88,7 +88,7 @@ def plot_object_type_heatmap():
     ax.tick_params(which="minor", size=0)
     
     plt.tight_layout()
-    plt.savefig('object_type_percentage_heatmap.png', dpi=300, bbox_inches='tight')
+    plt.savefig('../paper/figures/object_type_percentage_heatmap.png', dpi=300, bbox_inches='tight')
     plt.show()
     
     print("Object Type Percentage Difference Heatmap created: object_type_percentage_heatmap.png")
