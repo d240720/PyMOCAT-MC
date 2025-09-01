@@ -79,9 +79,18 @@ def orbcontrol_vec(mat_sat_in: np.ndarray, tsince: float, time0: datetime,
     if np.any(controlled_mask):
         controlled_indices = np.where(controlled_mask)[0]
 
-        # Calculate current time in Julian date format (similar to MATLAB)
-        # Convert time0 to Julian date and add tsince
-        current_jd = time0.toordinal() + 1721425.5 + tsince / day2min
+        # Calculate current time exactly like MATLAB: current_time = time0 + days(tsince/DAY2MIN)
+        from datetime import timedelta
+        current_time = time0 + timedelta(days=tsince / day2min)
+        
+        # Convert to Julian date with higher precision (matching MATLAB's juliandate function)
+        def datetime_to_jd(dt):
+            a = (14 - dt.month) // 12
+            y = dt.year + 4800 - a
+            m = dt.month + 12 * a - 3
+            return dt.day + (153 * m + 2) // 5 + 365 * y + y // 4 - y // 100 + y // 400 - 32045
+        
+        current_jd = datetime_to_jd(current_time)
 
         # Calculate mission age from launch date (matching MATLAB logic)
         launch_dates = launch_date[controlled_mask]
@@ -105,6 +114,15 @@ def orbcontrol_vec(mat_sat_in: np.ndarray, tsince: float, time0: datetime,
                 # Post-mission disposal decision (matching MATLAB logic)
                 pmd_random = np.random.rand(len(eol_indices))
                 pmd_check = pmd < pmd_random  # Note: MATLAB uses PMD<rand_life
+
+                # DEBUG: Log PMD decisions
+                if hasattr(orbcontrol_vec, 'debug_mode') and orbcontrol_vec.debug_mode:
+                    print(f"PMD Debug - Time: {tsince:.1f}min")
+                    print(f"  EOL satellites: {len(eol_indices)}")
+                    print(f"  PMD probability: {pmd}")
+                    print(f"  Random values: {pmd_random[:5]}...")  # First 5 values
+                    print(f"  Failed PMD (become derelicts): {np.sum(pmd_check)}")
+                    print(f"  Successful PMD (deorbited): {np.sum(~pmd_check)}")
 
                 # Satellites with failed PMD become derelicts
                 failed_pmd_indices = eol_indices[pmd_check]

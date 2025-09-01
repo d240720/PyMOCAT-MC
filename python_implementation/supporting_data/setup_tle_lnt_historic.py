@@ -304,17 +304,19 @@ def init_sim(cfg, simulation, tle_launch_repeat, tle_year):
     payload_inds = mat_sats[:, idx['objectclass']] == 1
     mat_sats[payload_inds, idx['controlled']] = 1  # Set controlled flag for payloads
 
-    # Turn off control for old payloads (beyond mission lifetime)
+    # Turn off control for old payloads (beyond mission lifetime) - matching MATLAB exactly
     launch_dates = mat_sats[:, idx['launch_date']]
-    current_year = cfg['time0'].year
-    mission_cutoff = current_year - cfg['missionlifetime']
+    # MATLAB: ind_matsat_old = jd2date(mat_sats(:, idx_launch_date)) < year(cfg.time0) - cfg.missionlifetime;
+    cutoff_year = cfg['time0'].year - cfg['missionlifetime']
+    cutoff_date = datetime(cutoff_year, 1, 1)  # January 1st of cutoff year
 
     old_payload_mask = np.zeros(len(mat_sats), dtype=bool)
     for i, jd in enumerate(launch_dates):
         if not np.isnan(jd):
             try:
                 launch_dt = jd2date(jd)
-                if hasattr(launch_dt, 'year') and launch_dt.year < mission_cutoff:
+                # Match MATLAB's exact date comparison (not just year)
+                if hasattr(launch_dt, 'year') and launch_dt < cutoff_date:
                     old_payload_mask[i] = True
             except:
                 continue

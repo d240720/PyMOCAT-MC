@@ -1,0 +1,57 @@
+[
+  {
+    "test": "Basic Propagation",
+    "success": true,
+    "initial": 85,
+    "final": 85,
+    "nS": 29,
+    "nD": 33,
+    "nN": 0,
+    "nB": 23,
+    "time": 0.001615285873413086
+  },
+  {
+    "test": "Collision Test",
+    "success": true,
+    "initial": 91,
+    "final": 91,
+    "nS": 23,
+    "nD": 49,
+    "nN": 0,
+    "nB": 19,
+    "time": 0.0028870105743408203
+  },
+  {
+    "test": "Launch Test",
+    "success": true,
+    "initial": 93,
+    "final": 91,
+    "nS": 30,
+    "nD": 44,
+    "nN": 0,
+    "nB": 17,
+    "time": 0.005124092102050781
+  },
+  {
+    "test": "Fragmentation Test",
+    "success": true,
+    "initial": 86,
+    "final": 86,
+    "nS": 29,
+    "nD": 43,
+    "nN": 0,
+    "nB": 14,
+    "time": 0.0024721622467041016
+  },
+  {
+    "test": "Full Integration",
+    "success": true,
+    "initial": 86,
+    "final": 82,
+    "nS": 27,
+    "nD": 37,
+    "nN": 0,
+    "nB": 18,
+    "time": 0.0041348934173583984
+  }
+]

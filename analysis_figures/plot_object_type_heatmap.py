@@ -5,52 +5,34 @@ Create Object Type Percentage Difference Heatmap
 
 import numpy as np
 import matplotlib.pyplot as plt
+import json
 
 def plot_object_type_heatmap():
     """Create heatmap showing percentage differences by object type"""
     
-    # Test data - Real benchmark results
-    scenarios_data = {
-        'Basic Propagation': {
-            'python': {'S': 1421, 'D': 1843, 'N': 9421, 'B': 1024},
-            'matlab': {'S': 1421, 'D': 1866, 'N': 9446, 'B': 1035}  # Real MATLAB result
-        },
-        'Collision Test': {
-            'python': {'S': 1421, 'D': 1825, 'N': 9407, 'B': 1019},
-            'matlab': {'S': 1421, 'D': 1866, 'N': 9443, 'B': 1034}  # Real MATLAB result
-        },
-        'Atmospheric Drag': {
-            'python': {'S': 1421, 'D': 1826, 'N': 9407, 'B': 1019},
-            'matlab': {'S': 1421, 'D': 1866, 'N': 9443, 'B': 1034}  # Real MATLAB result
-        },
-        'Full Default': {
-            'python': {'S': 1382, 'D': 1805, 'N': 9363, 'B': 1008},
-            'matlab': {'S': 1382, 'D': 1849, 'N': 9424, 'B': 1026}  # Real MATLAB result
-        },
-        'Realistic Operations No Launch': {
-            'python': {'S': 1179, 'D': 1825, 'N': 9306, 'B': 1000},
-            'matlab': {'S': 1180, 'D': 1850, 'N': 9320, 'B': 1020}  # Estimated based on patterns
-        }
-    }
+    # Read actual error data from the updated files
+    with open('../comparison_tests/accuracy_error_data.json', 'r') as f:
+        error_data = json.load(f)
+    
+    # Create percentage difference matrix from the actual error data
+    scenarios = [item['scenario'] for item in error_data]
+    scenario_names = scenarios
+    scenarios_short = ['Basic\nProp', 'Collision\nTest', 'Atm\nDrag', 'Full\nDefault', 'Realistic Ops\nNo Launch']
     
     # Create figure
     fig, ax = plt.subplots(figsize=(12, 8))
     
-    scenario_names = list(scenarios_data.keys())
-    scenarios_short = ['Basic\nProp', 'Collision\nTest', 'Atm\nDrag', 'Full\nDefault', 'Realistic Ops\nNo Launch']
-    
-    # Calculate percentage differences
-    object_types = ['S', 'D', 'N', 'B']
+    # Use actual error data from the JSON file
+    object_types = ['satellite', 'derelict', 'debris', 'rocket_body']
     object_labels = ['Active Satellites', 'Derelicts', 'Debris', 'Rocket Bodies']
     pct_diff_matrix = []
     
     for obj_type in object_types:
         row = []
-        for scenario in scenario_names:
-            py_count = scenarios_data[scenario]['python'][obj_type]
-            mat_count = scenarios_data[scenario]['matlab'][obj_type]
-            pct_diff = abs(100 * (py_count - mat_count) / mat_count) if mat_count > 0 else 0
-            row.append(pct_diff)
+        for item in error_data:
+            error_key = f'{obj_type}_rel_error'
+            pct_error = item[error_key]
+            row.append(pct_error)
         pct_diff_matrix.append(row)
     
     pct_diff_matrix = np.array(pct_diff_matrix)
@@ -68,11 +50,11 @@ def plot_object_type_heatmap():
     ax.set_title('Object Type Percentage Difference Heatmap', 
                 fontsize=24, fontweight='bold', pad=20)
     
-    # Add text annotations
+    # Add text annotations  
     for i in range(len(object_types)):
         for j in range(len(scenario_names)):
             text_color = 'white' if pct_diff_matrix[i, j] > 1.5 else 'black'
-            ax.text(j, i, f'{pct_diff_matrix[i, j]:.1f}%',
+            ax.text(j, i, f'{pct_diff_matrix[i, j]:.2f}%',
                    ha="center", va="center", color=text_color, 
                    fontweight='bold', fontsize=16)
     
