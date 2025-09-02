@@ -50,7 +50,8 @@ def getZeroGroups(inmatsat):
 
     # Process each object class
     for ii in range(1, 13):  # 1 to 12 inclusive
-        msinds = inmatsat[:, idx_objectclass] == ii  # boolean mask for this object class
+        # boolean mask for this object class
+        msinds = inmatsat[:, idx_objectclass] == ii
         class_indices = np.where(msinds)[0]  # convert to indices
 
         if ii == 1:  # Payloads

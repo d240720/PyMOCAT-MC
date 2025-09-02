@@ -32,7 +32,11 @@ def run_test(name, script_path):
         # Check Python and basic imports first
         if name == "Basic Functionality Tests":
             check_cmd = [sys.executable, "-c", "import numpy, scipy; print('Dependencies OK')"]
-            dep_result = subprocess.run(check_cmd, capture_output=True, text=True, timeout=10)
+            dep_result = subprocess.run(
+                check_cmd,
+                capture_output=True,
+                text=True,
+                timeout=10)
             if dep_result.returncode != 0:
                 print(f"{RED}X Missing dependencies: {dep_result.stderr.strip()}{RESET}")
                 print(f"{YELLOW}Run: pip install -r requirements.txt{RESET}")
@@ -57,7 +61,8 @@ def run_test(name, script_path):
                 lines = stdout.split('\n')
                 if len(lines) > 50:
                     # Show first 20 and last 20 lines
-                    truncated = '\n'.join(lines[:20]) + "\n\n... [output truncated] ...\n\n" + '\n'.join(lines[-20:])
+                    truncated = '\n'.join(lines[:20]) \
+                        + "\n\n... [output truncated] ...\n\n" + '\n'.join(lines[-20:])
                     print(truncated)
                 else:
                     print(stdout[:2000] + "... [truncated]")
@@ -68,8 +73,10 @@ def run_test(name, script_path):
         if result.returncode == 0:
             if "ERROR" in result.stdout or "X " in result.stdout:
                 # Count errors vs successes
-                error_count = result.stdout.count("X ") + result.stdout.count("ERROR")
-                success_count = result.stdout.count("OK") + result.stdout.count("SUCCESS")
+                error_count = result.stdout.count("X ") \
+                    + result.stdout.count("ERROR")
+                success_count = result.stdout.count("OK") \
+                    + result.stdout.count("SUCCESS")
                 
                 if success_count > error_count:
                     print(f"{YELLOW}! Test completed with warnings{RESET}")
@@ -123,11 +130,15 @@ def main():
     
     # Define tests to run
     tests = [
-        ("Basic Functionality Tests", test_dir / "test_basic_functionality_simple.py"),
+        (
+            "Basic Functionality Tests",
+            test_dir / "test_basic_functionality_simple.py"),
         ("Import Test", test_dir / "test_import.py"),
         ("Minimal Simulation Test", test_dir / "minimal_test.py"),
         ("Simple Run Test", test_dir / "test_simple_run.py"),
-        ("Quick Start Example", examples_dir / "Quick_Start" / "quick_start.py"),
+        (
+            "Quick Start Example",
+            examples_dir / "Quick_Start" / "quick_start.py"),
     ]
     
     # Run tests

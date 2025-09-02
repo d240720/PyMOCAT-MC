@@ -223,7 +223,8 @@ def init_jb2008(cfg_mc):
             a = (14 - dt.month) // 12
             y = dt.year + 4800 - a
             m = dt.month + 12 * a - 3
-            jd = dt.day + (153 * m + 2) // 5 + 365 * y + y // 4 - y // 100 + y // 400 - 32045
+            jd = dt.day \
+                + (153 * m + 2) // 5 + 365 * y + y // 4 - y // 100 + y // 400 - 32045
             dens_times[k] = jd
 
         # Create meshgrid for interpolation
@@ -302,11 +303,13 @@ def init_sim(cfg, simulation, tle_launch_repeat, tle_year):
 
     # Mark old payloads as derelict
     payload_inds = mat_sats[:, idx['objectclass']] == 1
-    mat_sats[payload_inds, idx['controlled']] = 1  # Set controlled flag for payloads
+    # Set controlled flag for payloads
+    mat_sats[payload_inds, idx['controlled']] = 1
 
     # Turn off control for old payloads (beyond mission lifetime) - matching MATLAB exactly
     launch_dates = mat_sats[:, idx['launch_date']]
-    # MATLAB: ind_matsat_old = jd2date(mat_sats(:, idx_launch_date)) < year(cfg.time0) - cfg.missionlifetime;
+    # MATLAB: ind_matsat_old = jd2date(mat_sats(:, idx_launch_date)) <
+    # year(cfg.time0) - cfg.missionlifetime;
     cutoff_year = cfg['time0'].year - cfg['missionlifetime']
     cutoff_date = datetime(cutoff_year, 1, 1)  # January 1st of cutoff year
 
@@ -360,7 +363,9 @@ def init_sim(cfg, simulation, tle_launch_repeat, tle_year):
 
         if cfg['constellationFile']:
             # Remove constellations from repeat launches (simplified check)
-            constellation_idx = ((cfg['repeatLaunches'][:, idx['mass']] == 260) |
+            constellation_idx = (
+                (cfg['repeatLaunches'][:,
+                idx['mass']] == 260) |
                                (cfg['repeatLaunches'][:, idx['mass']] == 148))
             cfg['repeatLaunches'] = cfg['repeatLaunches'][~constellation_idx]
             print(f"TLE launch repeat: {cfg['repeatLaunches'].shape[0]} objects, "
@@ -375,8 +380,12 @@ def init_sim(cfg, simulation, tle_launch_repeat, tle_year):
     mat_sats[constellation_idx, idx['constel']] = 1
 
     if 'repeatLaunches' in cfg and len(cfg['repeatLaunches']) > 0:
-        constellation_idx_repeat = ((cfg['repeatLaunches'][:, idx['mass']] == 260) |
-                                   (cfg['repeatLaunches'][:, idx['mass']] == 148))
+        constellation_idx_repeat = (
+            (cfg['repeatLaunches'][:,
+            idx['mass']] == 260) |
+                                   (
+                                       cfg['repeatLaunches'][:,
+                                       idx['mass']] == 148))
         cfg['repeatLaunches'][constellation_idx_repeat, idx['constel']] = 1
 
     # Add mission lifetime to controlled satellites
@@ -434,7 +443,8 @@ def get_zero_groups(mat_sats):
 
     # Initialize groups
     g1 = {'allclass': [], 'zr': [], 'zm': [], 'nz': [], 'nzno': []}  # Payloads
-    g2 = {'allclass': [], 'zr': [], 'zm': [], 'nz': [], 'nzno': []}  # Rocket bodies
+    # Rocket bodies
+    g2 = {'allclass': [], 'zr': [], 'zm': [], 'nz': [], 'nzno': []}
     g3 = {'allclass': [], 'zr': [], 'zm': [], 'nz': [], 'nzno': []}  # Debris
 
     for obj_class in range(1, 13):
@@ -444,7 +454,10 @@ def get_zero_groups(mat_sats):
             g1['allclass'] = obj_indices
             g1['zr'] = obj_indices[mat_sats[obj_indices, idx['radius']] == 0]
             g1['zm'] = obj_indices[mat_sats[obj_indices, idx['mass']] == 0]
-            g1['nz'] = np.setdiff1d(g1['allclass'], np.union1d(g1['zr'], g1['zm']))
+            g1['nz'] = np.setdiff1d(
+                g1['allclass'],
+                np.union1d(g1['zr'],
+                g1['zm']))
 
             # Remove outliers (simplified)
             if len(g1['nz']) > 0:
@@ -465,7 +478,10 @@ def get_zero_groups(mat_sats):
             g2['allclass'] = obj_indices
             g2['zr'] = obj_indices[mat_sats[obj_indices, idx['radius']] == 0]
             g2['zm'] = obj_indices[mat_sats[obj_indices, idx['mass']] == 0]
-            g2['nz'] = np.setdiff1d(g2['allclass'], np.union1d(g2['zr'], g2['zm']))
+            g2['nz'] = np.setdiff1d(
+                g2['allclass'],
+                np.union1d(g2['zr'],
+                g2['zm']))
 
             if len(g2['nz']) > 0:
                 radii = mat_sats[g2['nz'], idx['radius']]
@@ -553,9 +569,27 @@ def fill_mass_radius_esa(mat_sats):
     small_mass = (4/3) * np.pi * small_radius**3 * aluminum_density
 
     # Create simple Gaussian mixture models
-    g1['gm'] = multivariate_normal([large_radius, large_mass], [[0.1, 0], [0, 100]])
-    g2['gm'] = multivariate_normal([large_radius, large_mass], [[0.1, 0], [0, 100]])
-    g3['gm'] = multivariate_normal([small_radius, small_mass], [[0.01, 0], [0, 10]])
+    g1['gm'] = multivariate_normal(
+        [large_radius,
+        large_mass],
+        [[0.1,
+        0],
+        [0,
+        100]])
+    g2['gm'] = multivariate_normal(
+        [large_radius,
+        large_mass],
+        [[0.1,
+        0],
+        [0,
+        100]])
+    g3['gm'] = multivariate_normal(
+        [small_radius,
+        small_mass],
+        [[0.01,
+        0],
+        [0,
+        10]])
 
     return mat_sats_out, g1, g2, g3
 
@@ -602,10 +636,14 @@ def fill_mass_radius_resample(mat_sats, g1=None, g2=None, g3=None):
                     samples = samples.reshape(1, -1)
 
                 # Remove negative samples
-                valid_samples = samples[(samples[:, 0] > 0) & (samples[:, 1] > 0)]
+                valid_samples = samples[(
+                    samples[:,
+                    0] > 0) & (samples[:,
+                    1] > 0)]
 
                 if len(valid_samples) >= n_needed:
-                    mat_sats_out[missing_indices, [idx['radius'], idx['mass']]] = valid_samples[:n_needed]
+                    mat_sats_out[missing_indices, [idx['radius'], \
+                        idx['mass']]] = valid_samples[:n_needed]
                 else:
                     print(f"Warning: Not enough valid samples for group, using defaults")
 
@@ -645,17 +683,25 @@ def multiply_initial_pop(cfg, mat_sats, g1, g2, g3):
         extra_indices2 = np.random.choice(g2['allclass'], n2, replace=True)
         extra_indices3 = np.random.choice(g3['allclass'], n3, replace=True)
 
-        extra_sats = mat_sats[np.concatenate([extra_indices1, extra_indices2, extra_indices3])]
+        extra_sats = mat_sats[np.concatenate(
+            [extra_indices1,
+            extra_indices2,
+            extra_indices3])]
 
         # Zero out mass and radius for resampling
         idx = get_idx()
         extra_sats[:, [idx['mass'], idx['radius']]] = 0
 
         if cfg['fillMassRadius'] > 0:
-            extra_sats, _, _, _ = fill_mass_radius_resample(extra_sats, g1, g2, g3)
+            extra_sats, _, _, _ = fill_mass_radius_resample(
+                extra_sats,
+                g1,
+                g2,
+                g3)
 
         # Randomize orbital angles
-        extra_sats[:, [idx['argpo'], idx['mo']]] = 2 * np.pi * np.random.rand(len(extra_sats), 2)
+        extra_sats[:, [idx['argpo'], idx['mo']]] = 2 \
+            * np.pi * np.random.rand(len(extra_sats), 2)
 
         return np.vstack([mat_sats, extra_sats])
 

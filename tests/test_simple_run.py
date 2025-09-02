@@ -6,7 +6,10 @@ import sys
 import os
 import time
 
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'python_implementation'))
+sys.path.append(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)),
+    '..',
+    'python_implementation'))
 
 try:
     from mocat_mc import MOCATMC

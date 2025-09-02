@@ -7,7 +7,9 @@ import numpy as np
 from typing import Tuple, Dict
 
 
-def mean2osc_m_vec(mean_oe: np.ndarray, param: Dict) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def mean2osc_m_vec(
+    mean_oe: np.ndarray,
+    param: Dict) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Convert mean orbital elements to osculating orbital elements
 
@@ -77,7 +79,11 @@ def mean2osc_m_vec(mean_oe: np.ndarray, param: Dict) -> Tuple[np.ndarray, np.nda
     return osc_oe, nu, E_osc
 
 
-def solve_kepler_equation(M: np.ndarray, e: np.ndarray, tol: float = 1e-12, max_iter: int = 50) -> np.ndarray:
+def solve_kepler_equation(
+    M: np.ndarray,
+    e: np.ndarray,
+    tol: float = 1e-12,
+    max_iter: int = 50) -> np.ndarray:
     """
     Solve Kepler's equation M = E - e*sin(E) for E
 

@@ -33,13 +33,17 @@ class GMDistribution:
     """Simple wrapper to mimic MATLAB's gmdistribution behavior"""
 
     def __init__(self, means=None, covariances=None):
+        """Initialize the class."""
         if means is None or covariances is None:
             self.gm = None
             self.is_empty = True
         else:
             self.gm = GaussianMixture(n_components=1, random_state=42)
             # Fit with dummy data to set parameters
-            dummy_data = np.random.multivariate_normal(means.flatten(), covariances, size=10)
+            dummy_data = np.random.multivariate_normal(
+                means.flatten(),
+                covariances,
+                size=10)
             self.gm.fit(dummy_data)
             # Override with actual parameters
             self.gm.means_ = means.reshape(1, -1)
@@ -89,7 +93,9 @@ def fillMassRadiusResample(inmatsat, *args):
         # Fit new GM models
 
         # Group 1 (Payloads)
-        X = inmatsat[g1['nzno'], [idx_radius, idx_mass]] if len(g1['nzno']) > 0 else np.empty((0, 2))
+        X = inmatsat[g1['nzno'], [idx_radius, idx_mass]] if len(
+            g1['nzno']) > 0 else np.empty((0,
+            2))
         if X.shape[0] > 0:
             gm1 = GaussianMixture(n_components=1, random_state=42)
             gm1.fit(X)
@@ -98,7 +104,9 @@ def fillMassRadiusResample(inmatsat, *args):
             g1['gm'] = GMDistribution()
 
         # Group 2 (Rocket Bodies)
-        X = inmatsat[g2['nzno'], [idx_radius, idx_mass]] if len(g2['nzno']) > 0 else np.empty((0, 2))
+        X = inmatsat[g2['nzno'], [idx_radius, idx_mass]] if len(
+            g2['nzno']) > 0 else np.empty((0,
+            2))
         if X.shape[0] > 0:
             gm2 = GaussianMixture(n_components=1, random_state=42)
             gm2.fit(X)
@@ -107,7 +115,9 @@ def fillMassRadiusResample(inmatsat, *args):
             g2['gm'] = GMDistribution()
 
         # Group 3 (Debris)
-        X = inmatsat[g3['nzno'], [idx_radius, idx_mass]] if len(g3['nzno']) > 0 else np.empty((0, 2))
+        X = inmatsat[g3['nzno'], [idx_radius, idx_mass]] if len(
+            g3['nzno']) > 0 else np.empty((0,
+            2))
         if X.shape[0] > 0:
             gm3 = GaussianMixture(n_components=1, random_state=42)
             gm3.fit(X)
@@ -135,7 +145,8 @@ def fillMassRadiusResample(inmatsat, *args):
                 outmatsat[missing_indices, [idx_radius, idx_mass]] = cursamp[:n_needed]
                 resampled_counts[0] = n_needed
             else:
-                warnings.warn(f"Not enough valid samples for group 1: {len(cursamp)} < {n_needed}")
+                warnings.warn(f"Not enough valid samples for group 1: \
+                    {len(cursamp)} < {n_needed}")
         except Exception as e:
             warnings.warn(f"Error sampling for group 1: {e}")
 
@@ -153,7 +164,8 @@ def fillMassRadiusResample(inmatsat, *args):
                 outmatsat[missing_indices, [idx_radius, idx_mass]] = cursamp[:n_needed]
                 resampled_counts[1] = n_needed
             else:
-                warnings.warn(f"Not enough valid samples for group 2: {len(cursamp)} < {n_needed}")
+                warnings.warn(f"Not enough valid samples for group 2: \
+                    {len(cursamp)} < {n_needed}")
         except Exception as e:
             warnings.warn(f"Error sampling for group 2: {e}")
 
@@ -171,7 +183,8 @@ def fillMassRadiusResample(inmatsat, *args):
                 outmatsat[missing_indices, [idx_radius, idx_mass]] = cursamp[:n_needed]
                 resampled_counts[2] = n_needed
             else:
-                warnings.warn(f"Not enough valid samples for group 3: {len(cursamp)} < {n_needed}")
+                warnings.warn(f"Not enough valid samples for group 3: \
+                    {len(cursamp)} < {n_needed}")
         except Exception as e:
             warnings.warn(f"Error sampling for group 3: {e}")
 

@@ -7,7 +7,10 @@ import numpy as np
 from typing import Tuple, Dict
 
 
-def oe2rv_vec(osc_oe: np.ndarray, E_osc: np.ndarray, param: Dict) -> Tuple[np.ndarray, np.ndarray]:
+def oe2rv_vec(
+    osc_oe: np.ndarray,
+    E_osc: np.ndarray,
+    param: Dict) -> Tuple[np.ndarray, np.ndarray]:
     """
     Convert osculating orbital elements to position and velocity vectors
 

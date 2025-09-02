@@ -8,7 +8,9 @@ import numpy as np
 from typing import Tuple
 
 
-def categorize_obj(objint_st: np.ndarray, cont_st: np.ndarray) -> Tuple[int, int, int, int]:
+def categorize_obj(
+    objint_st: np.ndarray,
+    cont_st: np.ndarray) -> Tuple[int, int, int, int]:
     """
     Separate satellites into satellite, derelict, nonusable/debris, rocket body.
 
@@ -25,7 +27,12 @@ def categorize_obj(objint_st: np.ndarray, cont_st: np.ndarray) -> Tuple[int, int
 
     Object classes:
         P(payload), PMRO(debris), Pfrag(debris), Pdeb(debris), RB(rocket body),
-        RBMRO(debris), RBfrag(debris), RBdeb(debris), Deb(debris), OtherDeb(debris),
+        RBMRO(
+            debris),
+            RBfrag(debris),
+            RBdeb(debris),
+            Deb(debris),
+            OtherDeb(debris),
         Unkwn(debris), untracked(debris)
 
     Categories:

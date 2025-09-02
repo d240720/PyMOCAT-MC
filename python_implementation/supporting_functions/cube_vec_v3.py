@@ -9,7 +9,10 @@ from typing import List
 from itertools import combinations
 
 
-def cube_vec_v3(X: np.ndarray, cube_res: float, collision_alt_limit: float) -> List[np.ndarray]:
+def cube_vec_v3(
+    X: np.ndarray,
+    cube_res: float,
+    collision_alt_limit: float) -> List[np.ndarray]:
     """
     Execute cube method for collision detection.
 

@@ -108,7 +108,10 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, idx):
     plt.grid(True)
 
     plt.tight_layout()
-    plt.savefig('python_quick_start_figure_1_population_summary.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        'python_quick_start_figure_1_population_summary.png',
+        dpi=150,
+        bbox_inches='tight')
     plt.show()
 
     # Figure 2: Orbital Elements Analysis
@@ -130,7 +133,9 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, idx):
 
     plt.subplot(1, 3, 3)
     unique_classes = np.unique(mat_sats[:, idx['objectclass']])
-    class_counts = [np.sum(mat_sats[:, idx['objectclass']] == cls) for cls in unique_classes]
+    class_counts = [np.sum(
+        mat_sats[:,
+        idx['objectclass']] == cls) for cls in unique_classes]
     plt.bar(unique_classes, class_counts, alpha=0.7, edgecolor='black')
     plt.xlabel('Object Class')
     plt.ylabel('Number of Objects')
@@ -138,20 +143,36 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, idx):
     plt.grid(True)
 
     plt.tight_layout()
-    plt.savefig('python_quick_start_figure_2_orbital_elements.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        'python_quick_start_figure_2_orbital_elements.png',
+        dpi=150,
+        bbox_inches='tight')
     plt.show()
 
     # Figure 3: 3D Position Plot
     fig = plt.figure(figsize=(12, 10))
     ax = fig.add_subplot(111, projection='3d')
     r = mat_sats[:, idx['r']]
-    scatter = ax.scatter(r[:, 0], r[:, 1], r[:, 2], c=altitudes, s=20, alpha=0.6, cmap='viridis')
+    scatter = ax.scatter(
+        r[:,
+        0],
+        r[:,
+        1],
+        r[:,
+        2],
+        c=altitudes,
+        s=20,
+        alpha=0.6,
+        cmap='viridis')
     plt.colorbar(scatter, label='Altitude (km)')
     ax.set_xlabel('X (km)')
     ax.set_ylabel('Y (km)')
     ax.set_zlabel('Z (km)')
     ax.set_title('3D Object Positions (colored by altitude)')
-    plt.savefig('python_quick_start_figure_3_3d_positions.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        'python_quick_start_figure_3_3d_positions.png',
+        dpi=150,
+        bbox_inches='tight')
     plt.show()
 
     # Figure 4: Altitude vs Eccentricity with Object Types
@@ -162,13 +183,21 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, idx):
 
     # Find indices for each object type
     sat_idx = mat_sats[:, idx['controlled']] == 1
-    derelict_idx = (mat_sats[:, idx['controlled']] == 0) & (mat_sats[:, idx['objectclass']] == 1)
+    derelict_idx = (
+        mat_sats[:,
+        idx['controlled']] == 0) & (mat_sats[:,
+        idx['objectclass']] == 1)
     debris_idx = mat_sats[:, idx['objectclass']] == 3
     rb_idx = mat_sats[:, idx['objectclass']] == 2
 
     indices = [sat_idx, derelict_idx, debris_idx, rb_idx]
 
-    for i, (mask, color, label) in enumerate(zip(indices, colors_obj, labels_obj)):
+    for i, (
+        mask,
+        color,
+        label) in enumerate(zip(indices,
+        colors_obj,
+        labels_obj)):
         if np.any(mask):
             plt.scatter(mat_sats[mask, idx['ecco']], altitudes[mask],
                        c=color, label=label, alpha=0.6, s=20)
@@ -178,42 +207,76 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, idx):
     plt.title('Altitude vs Eccentricity by Object Type')
     plt.legend()
     plt.grid(True)
-    plt.savefig('python_quick_start_figure_4_altitude_eccentricity.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        'python_quick_start_figure_4_altitude_eccentricity.png',
+        dpi=150,
+        bbox_inches='tight')
     plt.show()
 
     # Figure 5: Summary Statistics
     plt.figure(figsize=(15, 10))
 
     plt.subplot(2, 2, 1)
-    stats_data = [np.mean(altitudes), np.std(altitudes), np.min(altitudes), np.max(altitudes)]
+    stats_data = [np.mean(
+        altitudes),
+        np.std(altitudes),
+        np.min(altitudes),
+        np.max(altitudes)]
     stats_labels = ['Mean', 'Std', 'Min', 'Max']
     plt.bar(stats_labels, stats_data)
     plt.title('Altitude Statistics (km)')
     plt.grid(True)
 
     plt.subplot(2, 2, 2)
-    stats_ecc = [np.mean(mat_sats[:, idx['ecco']]), np.std(mat_sats[:, idx['ecco']]),
-                 np.min(mat_sats[:, idx['ecco']]), np.max(mat_sats[:, idx['ecco']])]
+    stats_ecc = [np.mean(
+        mat_sats[:,
+        idx['ecco']]),
+        np.std(mat_sats[:,
+        idx['ecco']]),
+                 np.min(
+                     mat_sats[:,
+                     idx['ecco']]),
+                     np.max(mat_sats[:,
+                     idx['ecco']])]
     plt.bar(stats_labels, stats_ecc)
     plt.title('Eccentricity Statistics')
     plt.grid(True)
 
     plt.subplot(2, 2, 3)
-    stats_mass = [np.mean(mat_sats[:, idx['mass']]), np.std(mat_sats[:, idx['mass']]),
-                  np.min(mat_sats[:, idx['mass']]), np.max(mat_sats[:, idx['mass']])]
+    stats_mass = [np.mean(
+        mat_sats[:,
+        idx['mass']]),
+        np.std(mat_sats[:,
+        idx['mass']]),
+                  np.min(
+                      mat_sats[:,
+                      idx['mass']]),
+                      np.max(mat_sats[:,
+                      idx['mass']])]
     plt.bar(stats_labels, stats_mass)
     plt.title('Mass Statistics (kg)')
     plt.grid(True)
 
     plt.subplot(2, 2, 4)
-    stats_radius = [np.mean(mat_sats[:, idx['radius']]), np.std(mat_sats[:, idx['radius']]),
-                    np.min(mat_sats[:, idx['radius']]), np.max(mat_sats[:, idx['radius']])]
+    stats_radius = [np.mean(
+        mat_sats[:,
+        idx['radius']]),
+        np.std(mat_sats[:,
+        idx['radius']]),
+                    np.min(
+                        mat_sats[:,
+                        idx['radius']]),
+                        np.max(mat_sats[:,
+                        idx['radius']])]
     plt.bar(stats_labels, stats_radius)
     plt.title('Radius Statistics (m)')
     plt.grid(True)
 
     plt.tight_layout()
-    plt.savefig('python_quick_start_figure_5_summary_statistics.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        'python_quick_start_figure_5_summary_statistics.png',
+        dpi=150,
+        bbox_inches='tight')
     plt.show()
 
     # Print summary statistics

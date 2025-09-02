@@ -17,7 +17,8 @@ def plot_object_type_heatmap():
     # Create percentage difference matrix from the actual error data
     scenarios = [item['scenario'] for item in error_data]
     scenario_names = scenarios
-    scenarios_short = ['Basic\nProp', 'Collision\nTest', 'Atm\nDrag', 'Full\nDefault', 'Realistic Ops\nNo Launch']
+    scenarios_short = ['Basic\nProp', 'Collision\nTest', 'Atm\nDrag', \
+        'Full\nDefault', 'Realistic Ops\nNo Launch']
     
     # Create figure
     fig, ax = plt.subplots(figsize=(12, 8))
@@ -70,7 +71,10 @@ def plot_object_type_heatmap():
     ax.tick_params(which="minor", size=0)
     
     plt.tight_layout()
-    plt.savefig('../paper/figures/object_type_percentage_heatmap.png', dpi=300, bbox_inches='tight')
+    plt.savefig(
+        '../paper/figures/object_type_percentage_heatmap.png',
+        dpi=300,
+        bbox_inches='tight')
     plt.show()
     
     print("Object Type Percentage Difference Heatmap created: object_type_percentage_heatmap.png")

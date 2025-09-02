@@ -12,7 +12,9 @@ Args:
         x[3] = right ascension of ascending node (radians, 0 <= raan <= 2*pi)
         x[4] = argument of perigee (radians, 0 <= argp <= 2*pi)
         x[5] = mean anomaly (radians, 0 <= M <= 2*pi)
-    option: transformation direction (>0: mean to osculating, <0: osculating to mean)
+    option: transformation direction (
+        >0: mean to osculating,
+        <0: osculating to mean)
     param: parameter structure containing mu, req, j2
 
 Returns:
@@ -32,7 +34,9 @@ def mean_osculating_map(x, option, param):
 
     Args:
         x: orbital elements [6x1]
-        option: transformation direction (>0: mean to osculating, <0: osculating to mean)
+        option: transformation direction (
+            >0: mean to osculating,
+            <0: osculating to mean)
         param: parameter structure
 
     Returns:
@@ -81,7 +85,8 @@ def mean_osculating_map(x, option, param):
     ratio = (1 + e * np.cos(theta)) / (eta**2)
 
     # Calculate perturbations
-    a_p = (a + a * gam2 * ((3 * np.cos(inc)**2 - 1) * (ratio**3 - (1 / eta**3)) +
+    a_p = (a \
+        + a * gam2 * ((3 * np.cos(inc)**2 - 1) * (ratio**3 - (1 / eta**3)) +
                           3 * (1 - np.cos(inc)**2) * ratio**3 * np.cos(2 * omega + 2 * theta)))
 
     Delta_e1 = ((gam2_p / 8) * e * eta**2 *
@@ -96,7 +101,8 @@ def mean_osculating_map(x, option, param):
         e + 3 * np.cos(theta) + 3 * e * np.cos(theta)**2 +
         e**2 * np.cos(theta)**3
     ) * np.cos(2 * omega + 2 * theta)
-    term3 = gam2_p * (1 - np.cos(theta)**2) * (3 * np.cos(2 * omega + theta) + np.cos(2 * omega + 3 * theta))
+    term3 = gam2_p * (1 - np.cos(theta)**2) * (3 * np.cos(2 * omega \
+        + theta) + np.cos(2 * omega + 3 * theta))
 
     Delta_e = Delta_e1 + (eta**2 / 2) * (gam2 * (term1 + term2) - term3)
 
@@ -118,12 +124,16 @@ def mean_osculating_map(x, option, param):
             40 * (2 + 5 * e**2) * (np.cos(inc)**4 / (1 - 5 * np.cos(inc)**2)) -
             400 * e**2 * (np.cos(inc)**6 / (1 - 5 * np.cos(inc)**2)**2)
         ) +
-                    (gam2_p / 4) * (-6 * (1 - 5 * np.cos(inc)**2) * (theta - Mo - e * np.sin(theta)) +
+                    (gam2_p / 4) * (-6 * (1 - 5 * np.cos(inc)**2) * \
+                        (theta - Mo - e * np.sin(theta)) +
                                    (3 - 5 * np.cos(inc)**2) * (3 * np.sin(2 * omega + 2 * theta) +
                                                               3 * e * np.sin(2 * omega + theta) +
-                                                              e * np.sin(2 * omega + 3 * theta))) +
-                    -(gam2_p / 8) * e**2 * np.cos(inc) * (11 + 80 * (np.cos(inc)**2 / (1 - 5 * np.cos(inc)**2)) +
-                                                         200 * (np.cos(inc)**4 / (1 - 5 * np.cos(inc)**2)**2)) +
+                                                              e * \
+                                                                  np.sin(2 * omega + 3 * theta))) +
+                    -(gam2_p / 8) * e**2 * np.cos(inc) * (11 + 80 * \
+                        (np.cos(inc)**2 / (1 - 5 * np.cos(inc)**2)) +
+                                                         200 * \
+                                                             (np.cos(inc)**4 / (1 - 5 * np.cos(inc)**2)**2)) +
                     -(gam2_p / 2) * np.cos(inc) * (6 * (theta - Mo + e * np.sin(theta)) -
                                                   3 * np.sin(2 * omega + 2 * theta) -
                                                   3 * e * np.sin(2 * omega + theta) -
@@ -133,12 +143,17 @@ def mean_osculating_map(x, option, param):
         (gam2_p / 8) * e * eta**3 * (
             1 - 11 * np.cos(inc)**2 - 40 * (np.cos(inc)**4 / (1 - 5 * np.cos(inc)**2))
         ) +
-                -(gam2_p / 4) * eta**3 * (2 * (3 * np.cos(inc)**2 - 1) * (ratio**2 * eta**2 + ratio + 1) * np.sin(theta) +
-                                         3 * (1 - np.cos(inc)**2) * ((-ratio**2 * eta**2 - ratio + 1) * np.sin(2 * omega + theta) +
-                                                                    (ratio**2 * eta**2 + ratio + 1/3) * np.sin(2 * omega + 3 * theta))))
+                -(gam2_p / 4) * eta**3 * (2 * (3 * np.cos(inc)**2 - \
+                    1) * (ratio**2 * eta**2 + ratio + 1) * np.sin(theta) +
+                                         3 * (1 - np.cos(inc)**2) * \
+                                             ((-ratio**2 * eta**2 - ratio + 1) * np.sin(2 * omega + theta) +
+                                                                    \
+                                                                        (ratio**2 * eta**2 + ratio + 1/3) * np.sin(2 * omega + 3 * theta))))
 
-    Delta_bigO = (-(gam2_p / 8) * e**2 * np.cos(inc) * (11 + 80 * (np.cos(inc)**2) / (1 - 5 * np.cos(inc)**2) +
-                                                        200 * (np.cos(inc)**4) / (1 - 5 * np.cos(inc)**2)**2) +
+    Delta_bigO = (-(gam2_p / 8) * e**2 * np.cos(inc) * (11 \
+        + 80 * (np.cos(inc)**2) / (1 - 5 * np.cos(inc)**2) +
+                                                        200 * \
+                                                            (np.cos(inc)**4) / (1 - 5 * np.cos(inc)**2)**2) +
                   -(gam2_p / 2) * np.cos(inc) * (6 * (theta - Mo + e * np.sin(theta)) -
                                                  3 * np.sin(2 * omega + 2 * theta) -
                                                  3 * e * np.sin(2 * omega + theta) -
@@ -151,9 +166,11 @@ def mean_osculating_map(x, option, param):
 
     e_p = np.sqrt(d1**2 + d2**2)
 
-    d3 = ((np.sin(inc / 2) + np.cos(inc / 2) * (Delta_inc / 2)) * np.sin(bigO) +
+    d3 = ((np.sin(inc / 2) \
+        + np.cos(inc / 2) * (Delta_inc / 2)) * np.sin(bigO) +
           np.sin(inc / 2) * Delta_bigO * np.cos(bigO))
-    d4 = ((np.sin(inc / 2) + np.cos(inc / 2) * (Delta_inc / 2)) * np.cos(bigO) -
+    d4 = ((np.sin(inc / 2) \
+        + np.cos(inc / 2) * (Delta_inc / 2)) * np.cos(bigO) -
           np.sin(inc / 2) * Delta_bigO * np.sin(bigO))
 
     bigO_p = np.arctan2(d3, d4)

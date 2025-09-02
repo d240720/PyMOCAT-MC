@@ -55,9 +55,12 @@ def lininterp2_vec_v2(X, Y, V, x, y):
 
     # Handle out-of-bounds for x
     if np.any((pindexx < 0) | (pindexx >= len(X) - 1)):
-        raise ValueError(f'Input altitude (x=[{np.min(x):.6f},{np.max(x):.6f}]) is outside '
-                        f'the range described by X(1)={X[0]:.6f} and X(end)={X[-1]:.6f}. '
-                        'This should not have happened since analytical_propagator already checks for limits.')
+        raise ValueError(
+            f'Input altitude (x=[{np.min(x):.6f}, {np.max(x):.6f}]) '
+            f'is outside the range described by X(1)={X[0]:.6f} '
+            f'and X(end)={X[-1]:.6f}. '
+            'This should not have happened since '
+            'analytical_propagator already checks for limits.')
 
     # Calculate x slopes
     Xp = X[pindexx]
@@ -70,9 +73,11 @@ def lininterp2_vec_v2(X, Y, V, x, y):
     # Handle out-of-bounds for y with warnings and clamping
     out_of_bounds = (pindexy < 0) | (pindexy >= len(Y) - 1)
     if np.any(out_of_bounds):
-        warnings.warn(f'Input time (y=[{np.min(y):.6f},{np.max(y):.6f}]) is outside '
-                     f'the range described by Y(1)={Y[0]:.6f} and Y(end)={Y[-1]:.6f}. '
-                     'Assign Y(1) value if y<Y(1) and Y(end) value if y>Y(end).')
+        warnings.warn(
+            f'Input time (y=[{np.min(y):.6f}, {np.max(y):.6f}]) '
+            f'is outside the range described by Y(1)={Y[0]:.6f} '
+            f'and Y(end)={Y[-1]:.6f}. '
+            'Assign Y(1) value if y<Y(1) and Y(end) value if y>Y(end).')
 
         # Find indices outside range
         find_nan = np.where(out_of_bounds)[0]
@@ -82,7 +87,8 @@ def lininterp2_vec_v2(X, Y, V, x, y):
 
         # Clamp values above range to last bin
         if len(idx_above) > 0:
-            pindexy[idx_above] = len(Y) - 2  # -2 because 0-indexed and need valid upper bound
+            # -2 because 0-indexed and need valid upper bound
+            pindexy[idx_above] = len(Y) - 2
             indexy[idx_above] = len(Y) - 1
             y = y.copy()  # Make a copy to avoid modifying input
             y[idx_above] = Y[-1]

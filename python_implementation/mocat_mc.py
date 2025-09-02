@@ -1,5 +1,6 @@
 """
-MIT Orbital Capacity Assessment Toolbox - Monte Carlo (MOCAT-MC) Python Implementation.
+MIT Orbital Capacity Assessment Toolbox - Monte Carlo (MOCAT-MC)
+Python Implementation.
 
 Authors: Richard Linares, Daniel Jang, Davide Gusmini, Andrea D'Ambrosio,
          Pablo Machuca, Peng Mun Siew
@@ -17,8 +18,10 @@ import sys
 import os
 
 # Add supporting functions to path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'supporting_functions'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'supporting_data'))
+sys.path.append(
+    os.path.join(os.path.dirname(__file__), 'supporting_functions'))
+sys.path.append(
+    os.path.join(os.path.dirname(__file__), 'supporting_data'))
 
 from supporting_functions.cfg_mc_constants import CfgMCConstants
 from supporting_functions.get_idx import get_idx
@@ -31,7 +34,8 @@ from supporting_functions.collision_prob_vec import collision_prob_vec
 from supporting_functions.frag_col_sbm_vec import frag_col_sbm_vec
 from supporting_functions.frag_exp_sbm_vec import frag_exp_sbm_vec
 from supporting_functions.fillin_atmosphere import fillin_atmosphere
-from supporting_functions.fillin_physical_parameters import fillin_physical_parameters
+from supporting_functions.fillin_physical_parameters import (
+    fillin_physical_parameters)
 from supporting_functions.jd2date import jd2date
 
 
@@ -41,6 +45,7 @@ class MOCATMC:
     """
 
     def __init__(self):
+        """Initialize the class."""
         self.constants = CfgMCConstants()
         self.idx = get_idx()
 
@@ -83,17 +88,25 @@ class MOCATMC:
         t0_prop = 0
         nyears = 100
         tf_prop = cfg_mc['YEAR2MIN'] * nyears * 0.01
-        cfg_mc['dt_days'] = 5                                         # CUBE METHOD and PROPAGATION sampling time [days]
-        delta_t = cfg_mc['dt_days'] * cfg_mc['DAY2MIN']               # CUBE METHOD and PROPAGATION sampling time [min]
-        cfg_mc['tsince'] = np.arange(t0_prop, t0_prop + tf_prop + delta_t, delta_t)  # PROPAGATION time list
-        cfg_mc['n_time'] = len(cfg_mc['tsince'])                      # length of PROPAGATION time list
+        # CUBE METHOD and PROPAGATION sampling time [days]
+        cfg_mc['dt_days'] = 5
+        # CUBE METHOD and PROPAGATION sampling time [min]
+        delta_t = cfg_mc['dt_days'] * cfg_mc['DAY2MIN']
+        # PROPAGATION time list
+        cfg_mc['tsince'] = np.arange(
+            t0_prop, t0_prop + tf_prop + delta_t, delta_t)
+        # length of PROPAGATION time list
+        cfg_mc['n_time'] = len(cfg_mc['tsince'])
 
         # Launches
         simulation = 'TLE'                      # 'TLE'
-        launch_model = 'no_launch'              # random, matsat, no_launch, data, Somma
+        # random, matsat, no_launch, data, Somma
+        launch_model = 'no_launch'
 
-        cfg_mc['launchRepeatYrs'] = [2018, 2022]    # Min/max year of obj to repeatedly launch
-        cfg_mc['launchRepeatSmooth'] = 0            # [0/1] average out the above so yearly launch rate remains the same
+        # Min/max year of obj to repeatedly launch
+        cfg_mc['launchRepeatYrs'] = [2018, 2022]
+        # [0/1] average out the above so yearly launch rate remains same
+        cfg_mc['launchRepeatSmooth'] = 0
 
         # Prepare initial condition population
         fillin_physical_parameters()
@@ -108,33 +121,42 @@ class MOCATMC:
             'h_max': cfg_mc['altitude_limit_up'],
             're': cfg_mc['radiusearthkm']
         }
-        param_ssem['R02'] = np.linspace(param_ssem['h_min'], param_ssem['h_max'], param_ssem['N_shell'] + 1)
+        param_ssem['R02'] = np.linspace(
+            param_ssem['h_min'], param_ssem['h_max'],
+            param_ssem['N_shell'] + 1)
         cfg_mc['paramSSEM'] = param_ssem
 
         # Propagator
-        cfg_mc['use_sgp4'] = False              # only 'false' is currently supported
+        # only 'false' is currently supported
+        cfg_mc['use_sgp4'] = False
 
         # Collision
-        cfg_mc['skipCollisions'] = 0           # if 1, collision step is skipped in main_mc
+        # if 1, collision step is skipped in main_mc
+        cfg_mc['skipCollisions'] = 0
         cfg_mc['max_frag'] = np.inf
 
         # Cube method
-        cfg_mc['CUBE_RES'] = 50                     # CUBE METHOD resolution for the size of cube
-        cfg_mc['collision_alt_limit'] = 45000       # Ignoring satellites above 45000km for collision evaluation
+        # CUBE METHOD resolution for the size of cube
+        cfg_mc['CUBE_RES'] = 50
+        # Ignoring satellites above 45000km for collision evaluation
+        cfg_mc['collision_alt_limit'] = 45000
 
         # Atmosphere
         fillin_atmosphere()
 
         # Animation
-        cfg_mc['animation'] = 'no'              # yes to live plot of the simulation, no otherwise
+        # yes to live plot of the simulation, no otherwise
+        cfg_mc['animation'] = 'no'
 
         # Save output file
-        cfg_mc['save_diaryName'] = ''           # save commandline output text to this output
+        # save commandline output text to this output
+        cfg_mc['save_diaryName'] = ''
         cfg_mc['save_output_file'] = 0
         cfg_mc['saveMSnTimesteps'] = 146        # every ~2 yrs
 
         # Filename save
-        filename_save = f'TLEIC_year{cfg_mc["time0"].year}_rand{rng_seed}.mat'
+        filename_save = (
+            f'TLEIC_year{cfg_mc["time0"].year}_rand{rng_seed}.mat')
         cfg_mc['filename_save'] = filename_save
         cfg_mc['n_save_checkpoint'] = np.inf
 
@@ -227,10 +249,16 @@ class MOCATMC:
         idx_control_in = [self.idx['a'], self.idx['ecco'], self.idx['inclo'],
                          self.idx['nodeo'], self.idx['argpo'], self.idx['mo'],
                          self.idx['controlled'], self.idx['a_desired'],
-                         self.idx['missionlife'], self.idx['launch_date']] + self.idx['r'] + self.idx['v']
-        idx_control_out = [self.idx['a'], self.idx['controlled']] + self.idx['r'] + self.idx['v']
-        idx_exp_in = [self.idx['mass'], self.idx['radius']] + self.idx['r'] + self.idx['v'] + [self.idx['objectclass']]
-        idx_col_in = [self.idx['mass'], self.idx['radius']] + self.idx['r'] + self.idx['v'] + [self.idx['objectclass']]
+                         self.idx['missionlife'], self.idx['launch_date']] + \
+                         self.idx['r'] + self.idx['v']
+        idx_control_out = ([self.idx['a'], self.idx['controlled']] +
+                          self.idx['r'] + self.idx['v'])
+        idx_exp_in = ([self.idx['mass'], self.idx['radius']] +
+                     self.idx['r'] + self.idx['v'] +
+                     [self.idx['objectclass']])
+        idx_col_in = ([self.idx['mass'], self.idx['radius']] +
+                     self.idx['r'] + self.idx['v'] +
+                     [self.idx['objectclass']])
 
         # Store initial state
         objclassint_store = mat_sats[:, self.idx['objectclass']].astype(int)
@@ -239,14 +267,18 @@ class MOCATMC:
         # Extract species numbers
         nS, nD, nN, nB = categorize_obj(objclassint_store, controlled_store)
 
-        print(f'Year {cfg["time0"].year} - Day {cfg["time0"].timetuple().tm_yday:03d}, '
-              f'PMD {num_pmd:04d}, Deorbit {num_deorbited:03d}, Launches {len(out_future) * launch:03d}, '
-              f'nFrag {count_expl[0]:03d}, nCol {count_coll[0]:03d}, '
-              f'nObjects {int(num_objects[0])} ({nS},{nD},{nN},{nB})')
+        print(
+            f'Year {cfg["time0"].year} - '
+            f'Day {cfg["time0"].timetuple().tm_yday:03d}, '
+            f'PMD {num_pmd:04d}, Deorbit {num_deorbited:03d}, '
+            f'Launches {len(out_future) * launch:03d}, '
+            f'nFrag {count_expl[0]:03d}, nCol {count_coll[0]:03d}, '
+            f'nObjects {int(num_objects[0])} ({nS},{nD},{nN},{nB})')
 
         # Start propagation loop
         for n in range(2, n_time + 1):
-            current_time = cfg['time0'] + timedelta(days=tsince[n-1] / cfg['DAY2MIN'])
+            current_time = cfg['time0'] \
+                + timedelta(days=tsince[n-1] / cfg['DAY2MIN'])
             jd = self._datetime_to_julian(current_time)
 
             # Launches (simplified for no_launch case)
@@ -270,11 +302,16 @@ class MOCATMC:
                 dt_sec = 60 * tsince[n-1]
 
             # Use MIT propagator
-            mat_sats[:, idx_prop_out] = prop_mit_vec(mat_sats[:, idx_prop_in], dt_sec, param)
+            mat_sats[:, idx_prop_out] = prop_mit_vec(
+                mat_sats[:,
+                idx_prop_in],
+                dt_sec,
+                param)
 
             # Find deorbited objects
             r_mag = np.sqrt(np.sum(mat_sats[:, self.idx['r']]**2, axis=1))
-            perigee = mat_sats[:, self.idx['a']] * cfg['radiusearthkm'] * (1 - mat_sats[:, self.idx['ecco']])
+            perigee = mat_sats[:, self.idx['a']] * cfg['radiusearthkm'] * (1 \
+                - mat_sats[:, self.idx['ecco']])
 
             deorbit = np.where(
                 (mat_sats[:, self.idx['r'][0]] == 0) |
@@ -308,20 +345,24 @@ class MOCATMC:
             n_sats = mat_sats.shape[0]
             out_frag = []
 
-            find_rocket = np.where(mat_sats[:, self.idx['objectclass']] == 5)[0]
+            find_rocket = np.where(
+                mat_sats[:,
+                self.idx['objectclass']] == 5)[0]
             rand_p_exp = np.random.rand(len(find_rocket))
 
             if 'P_frag_cutoff' in cfg:
                 launch_dates = mat_sats[find_rocket, self.idx['launch_date']]
                 # Handle NaN values in launch dates
-                ages = np.full(len(launch_dates), cfg['P_frag_cutoff'])  # Default to cutoff age
+                # Default to cutoff age
+                ages = np.full(len(launch_dates), cfg['P_frag_cutoff'])
                 for i, jd in enumerate(launch_dates):
                     if not np.isnan(jd):
                         try:
                             launch_year = jd2date(jd).year
                             ages[i] = current_time.year - launch_year
                         except:
-                            ages[i] = cfg['P_frag_cutoff']  # Default to cutoff if conversion fails
+                            # Default to cutoff if conversion fails
+                            ages[i] = cfg['P_frag_cutoff']
 
                 find_p_exp = np.where(
                     (rand_p_exp < cfg['P_frag']) &
@@ -351,7 +392,11 @@ class MOCATMC:
             if cfg.get('skipCollisions', 0) == 1 or mat_sats.shape[0] == 0:
                 collision_array = []
             else:
-                collision_cell = cube_vec_v3(mat_sats[:, self.idx['r']], cfg['CUBE_RES'], cfg['collision_alt_limit'])
+                collision_cell = cube_vec_v3(
+                    mat_sats[:,
+                    self.idx['r']],
+                    cfg['CUBE_RES'],
+                    cfg['collision_alt_limit'])
                 collision_array = np.vstack(collision_cell) if collision_cell else []
 
             remove_collision = []
@@ -380,8 +425,10 @@ class MOCATMC:
                 mask_1 = (sum_controlled >= 0.5) & (sum_controlled < 1.5)
                 mask_2 = sum_controlled >= 1.5
 
-                P[mask_1] = pij[mask_1] * (cfg['alph'] * cfg['dt_days'] * cfg['DAY2SEC'])
-                P[mask_2] = pij[mask_2] * (cfg['alph_a'] * cfg['dt_days'] * cfg['DAY2SEC'])
+                P[mask_1] = pij[mask_1] \
+                    * (cfg['alph'] * cfg['dt_days'] * cfg['DAY2SEC'])
+                P[mask_2] = pij[mask_2] \
+                    * (cfg['alph_a'] * cfg['dt_days'] * cfg['DAY2SEC'])
                 P[mask_0] = pij[mask_0] * (cfg['dt_days'] * cfg['DAY2SEC'])
 
                 rand_p = np.random.rand(len(p1_controlled))
@@ -391,7 +438,11 @@ class MOCATMC:
                     p1_in = p1_all[idx_p, idx_col_in]
                     p2_in = p2_all[idx_p, idx_col_in]
 
-                    debris1, debris2 = frag_col_sbm_vec(tsince[n-1], p1_in, p2_in, param)
+                    debris1, debris2 = frag_col_sbm_vec(
+                        tsince[n-1],
+                        p1_in,
+                        p2_in,
+                        param)
                     param['maxID'] += len(debris1) + len(debris2)
 
                     out_collision.extend(debris1)
@@ -423,14 +474,21 @@ class MOCATMC:
             count_debris_coll[n-1] = len(out_collision)
             count_debris_expl[n-1] = len(out_frag)
 
-            nS, nD, nN, nB = categorize_obj(objclassint_store, controlled_store)
+            nS, nD, nN, nB = categorize_obj(
+                objclassint_store,
+                controlled_store)
 
-            print(f'Year {current_time.year} - Day {current_time.timetuple().tm_yday:03d}, '
-                  f'PMD {num_pmd:04d}, Deorbit {num_deorbited:03d}, Launches {len(out_future):03d}, '
-                  f'nFrag {count_expl[n-1]:03d}, nCol {count_coll[n-1]:03d}, '
-                  f'nObjects {int(num_objects[n-1])} ({nS},{nD},{nN},{nB})')
+            print(
+                f'Year {current_time.year} - '
+                f'Day {current_time.timetuple().tm_yday:03d}, '
+                f'PMD {num_pmd:04d}, Deorbit {num_deorbited:03d}, '
+                f'Launches {len(out_future):03d}, '
+                f'nFrag {count_expl[n-1]:03d}, nCol {count_coll[n-1]:03d}, '
+                f'nObjects {int(num_objects[n-1])} ({nS},{nD},{nN},{nB})')
 
-        print(f'\n === FINISHED MC RUN (main_mc.py) WITH SEED: {rng_seed} === \n')
+        print(
+            f'\n === FINISHED MC RUN (main_mc.py) '
+            f'WITH SEED: {rng_seed} === \n')
 
         return nS, nD, nN, nB, mat_sats
 
@@ -438,11 +496,13 @@ class MOCATMC:
         self, mc_config: Union[Dict, str], rng_seed: Optional[int] = None
     ) -> Tuple[int, int, int, int, np.ndarray, np.ndarray]:
         """
-        Execute enhanced version of main_mc that tracks cumulative deorbit count.
+        Execute enhanced version of main_mc that tracks cumulative
+        deorbit count.
 
         Returns:
             Tuple of (nS, nD, nN, nB, mat_sats, deorbit_list)
-            where deorbit_list is cumulative count of deorbited objects over time
+            where deorbit_list is cumulative count of deorbited
+            objects over time
         """
         # Initialize the same way as main_mc
         if isinstance(mc_config, str):
@@ -463,18 +523,22 @@ class MOCATMC:
 
         # Simulate realistic decay pattern - exponential decay with some randomness
         # Based on observed space debris decay rates
-        base_decay_rate = 0.005  # ~0.5% of remaining population decays per time step
+        # ~0.5% of remaining population decays per time step
+        base_decay_rate = 0.005
 
         cumulative_deorbited = np.zeros(n_time)
         remaining_pop = initial_pop
 
         for i in range(1, n_time):
             # Exponential decay with some randomness to simulate real atmospheric drag variations
-            decay_this_step = int(remaining_pop * base_decay_rate * np.random.uniform(0.8, 1.2))
-            decay_this_step = min(decay_this_step, remaining_pop)  # Can't decay more than remaining
+            decay_this_step = int(remaining_pop \
+                * base_decay_rate * np.random.uniform(0.8, 1.2))
+            # Can't decay more than remaining
+            decay_this_step = min(decay_this_step, remaining_pop)
             decay_this_step = max(decay_this_step, 0)  # Can't be negative
 
-            cumulative_deorbited[i] = cumulative_deorbited[i-1] + decay_this_step
+            cumulative_deorbited[i] = cumulative_deorbited[i-1] \
+                + decay_this_step
             remaining_pop -= decay_this_step
 
             if remaining_pop <= 0:
@@ -495,7 +559,8 @@ class MOCATMC:
         y = dt.year + 4800 - a
         m = dt.month + 12 * a - 3
         return dt.day + (153 * m + 2) // 5 + 365 * y + y // 4 - y // 100 + y // 400 - 32045 + \
-               (dt.hour - 12) / 24 + dt.minute / 1440 + dt.second / 86400 + dt.microsecond / 86400000000
+               (dt.hour - 12) / 24 + dt.minute / 1440 + dt.second / \
+                   86400 + dt.microsecond / 86400000000
 
 
 def quick_start():

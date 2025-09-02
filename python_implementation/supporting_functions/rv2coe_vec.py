@@ -135,7 +135,8 @@ def rv2coe_vec(r, v, mu):
         idx_notecc = np.where(check_notecc)[0]
 
         if len(idx_ecc) > 0:
-            check_in = (incli[idx_ecc] < small) | (np.abs(incli[idx_ecc] - np.pi) < small)
+            check_in = (incli[idx_ecc] < small) | (np.abs(incli[idx_ecc] \
+                - np.pi) < small)
             # Circular equatorial
             typeorbit[idx_ecc[check_in]] = 2
             # Circular inclined
@@ -143,7 +144,8 @@ def rv2coe_vec(r, v, mu):
 
         # Elliptical, parabolic, hyperbolic equatorial
         if len(idx_notecc) > 0:
-            check_eq = (incli[idx_notecc] < small) | (np.abs(incli[idx_notecc] - np.pi) < small)
+            check_eq = (incli[idx_notecc] < small) | (np.abs(incli[idx_notecc] \
+                - np.pi) < small)
             typeorbit[idx_notecc[check_eq]] = 1
 
         # Find longitude of ascending node

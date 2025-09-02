@@ -31,7 +31,10 @@ from frag_exp_sbm_vec import frag_exp_sbm_vec
 from jd2date import jd2date
 
 
-def main_mc(mc_config: Union[Dict, str], rng_seed: Optional[int] = None) -> Tuple[int, int, int, int, np.ndarray]:
+def main_mc(
+    mc_config: Union[Dict,
+    str],
+    rng_seed: Optional[int] = None) -> Tuple[int, int, int, int, np.ndarray]:
     """
     Main Monte Carlo simulation function
 
@@ -159,7 +162,8 @@ def main_mc(mc_config: Union[Dict, str], rng_seed: Optional[int] = None) -> Tupl
     # Print initial status
     initial_date = time0
     print(f'Year {initial_date.year} - Day {initial_date.timetuple().tm_yday:03d}, '
-          f'PMD {num_pmd:04d}, Deorbit {num_deorbited:03d}, Launches {len(out_future) * launch:03d}, '
+          f'PMD {num_pmd:04d}, Deorbit {num_deorbited:03d}, Launches \
+              {len(out_future) * launch:03d}, '
           f'nFrag {count_expl[0]:03d}, nCol {count_coll[0]:03d}, '
           f'nObjects {int(num_objects[0])} ({nS},{nD},{nN},{nB})')
 
@@ -213,11 +217,16 @@ def main_mc(mc_config: Union[Dict, str], rng_seed: Optional[int] = None) -> Tupl
                 dt_sec = 60 * tsince[n]
 
             # Propagate all satellites
-            mat_sats[:, idx_prop_out] = prop_mit_vec(mat_sats[:, idx_prop_in], dt_sec, param)
+            mat_sats[:, idx_prop_out] = prop_mit_vec(
+                mat_sats[:,
+                idx_prop_in],
+                dt_sec,
+                param)
 
             # Find objects to deorbit
             r_mag = np.sqrt(np.sum(mat_sats[:, idx['r']]**2, axis=1))
-            altitude = (mat_sats[:, idx['a']] * radiusearthkm) * (1 - mat_sats[:, idx['ecco']]) - radiusearthkm
+            altitude = (mat_sats[:, idx['a']] * radiusearthkm) * (1 \
+                - mat_sats[:, idx['ecco']]) - radiusearthkm
 
             deorbit_mask = ((mat_sats[:, idx['r'][0]] == 0) |
                            (altitude < 150) |
@@ -289,8 +298,13 @@ def main_mc(mc_config: Union[Dict, str], rng_seed: Optional[int] = None) -> Tupl
         if cfg.get('skipCollisions', 0) == 1 or mat_sats.shape[0] == 0:
             collision_array = []
         else:
-            collision_cell = cube_vec_v3(mat_sats[:, idx['r']], CUBE_RES, collision_alt_limit)
-            collision_array = [item for sublist in collision_cell for item in sublist] if collision_cell else []
+            collision_cell = cube_vec_v3(
+                mat_sats[:,
+                idx['r']],
+                CUBE_RES,
+                collision_alt_limit)
+            collision_array = [item
+                for sublist in collision_cell for item in sublist] if collision_cell else []
 
         remove_collision = []
         out_collision = []
@@ -311,7 +325,12 @@ def main_mc(mc_config: Union[Dict, str], rng_seed: Optional[int] = None) -> Tupl
             p2_v = p2_all[:, idx['v']]
 
             # Collision probability
-            Pij = collision_prob_vec(p1_radius, p1_v, p2_radius, p2_v, CUBE_RES)
+            Pij = collision_prob_vec(
+                p1_radius,
+                p1_v,
+                p2_radius,
+                p2_v,
+                CUBE_RES)
 
             # Collision probability over dt
             P = np.zeros(len(p1_controlled))
@@ -334,7 +353,11 @@ def main_mc(mc_config: Union[Dict, str], rng_seed: Optional[int] = None) -> Tupl
                 p1_in = p1_all[idx_P, idx_col_in]
                 p2_in = p2_all[idx_P, idx_col_in]
 
-                debris1, debris2 = frag_col_sbm_vec(tsince[n], p1_in, p2_in, param)
+                debris1, debris2 = frag_col_sbm_vec(
+                    tsince[n],
+                    p1_in,
+                    p2_in,
+                    param)
                 param['maxID'] += len(debris1) + len(debris2)
 
                 out_collision.extend(debris1)
@@ -398,13 +421,27 @@ def julian_date(dt: datetime) -> float:
            (dt.hour + dt.minute / 60.0 + dt.second / 3600.0) / 24.0
 
 
-def handle_matsat_launches(cfg, current_time, time0, n, dt_days, constants, idx):
+def handle_matsat_launches(
+    cfg,
+    current_time,
+    time0,
+    n,
+    dt_days,
+    constants,
+    idx):
     """Handle matsat launch model"""
     # Implementation for matsat launches
     return np.array([]).reshape(0, cfg['mat_sats'].shape[1])
 
 
-def handle_random_launches(cfg, current_time, time0, tsince, n, param, dt_days):
+def handle_random_launches(
+    cfg,
+    current_time,
+    time0,
+    tsince,
+    n,
+    param,
+    dt_days):
     """Handle random launch model"""
     # Implementation for random launches
     return np.array([]).reshape(0, cfg['mat_sats'].shape[1]), 0

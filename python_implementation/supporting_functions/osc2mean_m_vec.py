@@ -9,7 +9,9 @@ Args:
         x[:,0] = osculating semimajor axis (kilometers)
         x[:,1] = osculating orbital eccentricity (0 <= e < 1)
         x[:,2] = osculating orbital inclination (radians, 0 <= i <= pi)
-        x[:,3] = osculating right ascension of ascending node (radians, 0 <= raan <= 2*pi)
+        x[:,3] = osculating right ascension of ascending node (
+            radians,
+            0 <= raan <= 2*pi)
         x[:,4] = osculating argument of perigee (radians, 0 <= argp <= 2*pi)
         x[:,5] = osculating mean anomaly (radians, 0 <= M <= 2*pi)
     param: parameter structure containing req, j2
@@ -75,7 +77,8 @@ def osc2mean_m_vec(x, param):
     e_mean = oemean[:, 1]      # Mean eccentricity
 
     # Convert mean true anomaly back to mean anomaly
-    E_mean = 2 * np.arctan(np.sqrt((1 - e_mean) / (1 + e_mean)) * np.tan(theta_mean / 2))
+    E_mean = 2 * np.arctan(np.sqrt((1 - e_mean) / (1 \
+        + e_mean)) * np.tan(theta_mean / 2))
     M_mean = E_mean - e_mean * np.sin(E_mean)
 
     # Assemble output with mean anomaly instead of true anomaly

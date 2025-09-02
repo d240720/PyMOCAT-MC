@@ -310,7 +310,8 @@ def create_default_satellites(n_sats: int, radiusearthkm: float) -> np.ndarray:
     mat_sats[:, 15] = base_jd + np.random.uniform(0, days_range, n_sats)
 
     # Object class (mostly payloads and some rocket bodies)
-    mat_sats[:, 22] = np.random.choice([1, 5], n_sats, p=[0.8, 0.2])  # 1=payload, 5=rocket body
+    # 1=payload, 5=rocket body
+    mat_sats[:, 22] = np.random.choice([1, 5], n_sats, p=[0.8, 0.2])
 
     # Object IDs
     mat_sats[:, 23] = np.arange(1, n_sats + 1)
@@ -318,7 +319,9 @@ def create_default_satellites(n_sats: int, radiusearthkm: float) -> np.ndarray:
     return mat_sats
 
 
-def fill_missing_physical_params(mat_sats: np.ndarray, idx: Dict) -> np.ndarray:
+def fill_missing_physical_params(
+    mat_sats: np.ndarray,
+    idx: Dict) -> np.ndarray:
     """
     Fill in missing physical parameters (mass, radius)
 

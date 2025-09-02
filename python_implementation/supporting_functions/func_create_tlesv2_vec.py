@@ -80,7 +80,10 @@ def func_create_tlesv2_vec(ep, r_parent, v_parent, class_parent, fragments,
     r = np.tile(r_parent, (n_frag, 1))
 
     # Convert position and velocity to orbital elements
-    p, a, ecc, incl, omega, argp, nu, m, arglat, truelon, lonper = rv2coe_vec(r, v, mu)
+    p, a, ecc, incl, omega, argp, nu, m, arglat, truelon, lonper = rv2coe_vec(
+        r,
+        v,
+        mu)
 
     # Keep only elliptical orbits (reject hyperbolic fragments)
     idx_a = np.where(a > 0)[0]
@@ -118,7 +121,9 @@ def func_create_tlesv2_vec(ep, r_parent, v_parent, class_parent, fragments,
     launch_date = np.full(num_a, np.nan)
 
     # Assign object class to fragments according to parent particle
-    frag_objectclass = np.full(num_a, filter_objclass_fragments_int(class_parent))
+    frag_objectclass = np.full(
+        num_a,
+        filter_objclass_fragments_int(class_parent))
 
     # Generate IDs for new fragments
     ID_frag = np.linspace(maxID + 1, maxID + num_a, num_a)

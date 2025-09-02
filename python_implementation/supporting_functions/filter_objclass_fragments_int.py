@@ -49,9 +49,12 @@ def filter_objclass_fragments_int(objclass_org):
     elif objclass_org == 11:
         satellite_type = 11  # 'Unknown' or []
     else:
-        raise ValueError(f'objclass {objclass_org} did not match any of the pre-determined options. '
-                        'Please review this function to assign object class to one of these satellite types: '
-                        '[\'Payload Fragmentation Debris\', \'Rocket Fragmentation Debris\', \'Debris\', '
+        raise ValueError(f'objclass {objclass_org} did not match any \
+            of the pre-determined options. '
+                        'Please review this function to assign object \
+                            class to one of these satellite types: '
+                        '[\'Payload Fragmentation Debris\', \'Rocket \
+                            Fragmentation Debris\', \'Debris\', '
                         '\'Other Debris\' or \'Unknown\']')
 
     return satellite_type

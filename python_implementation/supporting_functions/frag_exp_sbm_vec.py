@@ -7,7 +7,10 @@ import numpy as np
 from typing import Dict
 
 
-def frag_exp_sbm_vec(tsince: float, p1_in: np.ndarray, param: Dict) -> np.ndarray:
+def frag_exp_sbm_vec(
+    tsince: float,
+    p1_in: np.ndarray,
+    param: Dict) -> np.ndarray:
     """
     Standard Breakup Model (SBM) for explosion fragmentation
 
@@ -83,7 +86,8 @@ def generate_explosion_debris(n_debris: int, parent_mass: float, parent_radius: 
     debris = np.zeros((n_debris, 24))
 
     # Generate debris properties using SBM for explosions
-    # Size distribution (power law, similar to collisions but different parameters)
+    # Size distribution (power law, similar to collisions but different
+    # parameters)
     sizes = generate_explosion_size_distribution(n_debris, parent_mass)
 
     # Mass calculation (assuming spherical debris with density)
@@ -94,11 +98,15 @@ def generate_explosion_debris(n_debris: int, parent_mass: float, parent_radius: 
     debris_radii = sizes / 2
 
     # Velocity distribution for explosions (more isotropic than collisions)
-    delta_v_mag = generate_explosion_velocity_distribution(n_debris, parent_mass, parent_objectclass)
+    delta_v_mag = generate_explosion_velocity_distribution(
+        n_debris,
+        parent_mass,
+        parent_objectclass)
 
     # Random velocity directions (isotropic distribution)
     theta = np.random.uniform(0, 2*np.pi, n_debris)
-    phi = np.arccos(np.random.uniform(-1, 1, n_debris))  # Uniform distribution on sphere
+    # Uniform distribution on sphere
+    phi = np.arccos(np.random.uniform(-1, 1, n_debris))
 
     delta_v = np.column_stack([
         delta_v_mag * np.sin(phi) * np.cos(theta),
@@ -107,7 +115,8 @@ def generate_explosion_debris(n_debris: int, parent_mass: float, parent_radius: 
     ])
 
     # Position (slight random displacement from parent)
-    position_noise = np.random.normal(0, 0.001, (n_debris, 3))  # 1 m standard deviation
+    # 1 m standard deviation
+    position_noise = np.random.normal(0, 0.001, (n_debris, 3))
     debris_positions = parent_r + position_noise
 
     # Velocity (parent velocity + delta-V from explosion)
@@ -141,7 +150,8 @@ def generate_explosion_debris(n_debris: int, parent_mass: float, parent_radius: 
             e = np.sqrt(1 + 2 * energy * h_mag**2 / (mu * 1e9)**2)
 
         # Clamp values to reasonable ranges
-        a = max(req + 150, min(a, req + 2000)) / req  # Normalize to Earth radii
+        # Normalize to Earth radii
+        a = max(req + 150, min(a, req + 2000)) / req
         e = max(0, min(e, 0.99))
 
         # Fill debris matrix
@@ -169,7 +179,9 @@ def generate_explosion_debris(n_debris: int, parent_mass: float, parent_radius: 
     return debris
 
 
-def generate_explosion_size_distribution(n_debris: int, parent_mass: float) -> np.ndarray:
+def generate_explosion_size_distribution(
+    n_debris: int,
+    parent_mass: float) -> np.ndarray:
     """
     Generate debris size distribution for explosions
 
@@ -195,7 +207,8 @@ def generate_explosion_size_distribution(n_debris: int, parent_mass: float) -> n
     if max_size <= min_size:
         sizes = np.full(n_debris, min_size)
     else:
-        sizes = min_size * (1 - u * (1 - (min_size/max_size)**(alpha+1)))**(1/(alpha+1))
+        sizes = min_size * (1 \
+            - u * (1 - (min_size/max_size)**(alpha+1)))**(1/(alpha+1))
 
     return sizes
 

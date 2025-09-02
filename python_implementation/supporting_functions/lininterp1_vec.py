@@ -47,7 +47,10 @@ def lininterp2_vec_v2(x_data, y_data, z_data, x_query, y_query):
 
     # Create query points
     if np.isscalar(y_query):
-        query_points = np.column_stack([x_query, np.full_like(x_query, y_query)])
+        query_points = np.column_stack(
+            [x_query,
+            np.full_like(x_query,
+            y_query)])
     else:
         query_points = np.column_stack([x_query, y_query])
 

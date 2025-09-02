@@ -14,7 +14,9 @@ from densityexp_vec import densityexp_vec
 from lininterp1_vec import lininterp1_vec, lininterp2_vec_v2
 
 
-def analytic_propagation_vec(input_oe: np.ndarray, param: Dict) -> Tuple[np.ndarray, np.ndarray]:
+def analytic_propagation_vec(
+    input_oe: np.ndarray,
+    param: Dict) -> Tuple[np.ndarray, np.ndarray]:
     """
     Analytic orbital propagation with atmospheric drag
 
@@ -91,7 +93,8 @@ def analytic_propagation_vec(input_oe: np.ndarray, param: Dict) -> Tuple[np.ndar
     if np.isscalar(Bstar):
         Bstar = np.full(n_sats, Bstar)
 
-    C_0 = np.maximum((Bstar / (1e6 * 0.157)) * rho_0, 1e-20)  # Lower limit to avoid singularity
+    # Lower limit to avoid singularity
+    C_0 = np.maximum((Bstar / (1e6 * 0.157)) * rho_0, 1e-20)
 
     # Calculate J2 parameter
     k2_over_mu = J2 * re**2 / 2  # k2 = mu*J2*re^2/2
@@ -120,7 +123,8 @@ def analytic_propagation_vec(input_oe: np.ndarray, param: Dict) -> Tuple[np.ndar
     check_beta = beta_0 == 0
     if np.any(check_beta):
         a0_beta = a_0[check_beta]
-        a[check_beta] = a0_beta * (1 - C_0[check_beta] * n_0[check_beta] * a0_beta * (t - t_0))
+        a[check_beta] = a0_beta * (1 \
+            - C_0[check_beta] * n_0[check_beta] * a0_beta * (t - t_0))
         e[check_beta] = 0  # Remain circular
 
     # Compute intermediate variables to avoid repetition
@@ -136,17 +140,21 @@ def analytic_propagation_vec(input_oe: np.ndarray, param: Dict) -> Tuple[np.ndar
     a_ratio = np.maximum(a / a_0, 1e-10)
     Mo = (0.5 / a - 0.5 / a_0 + 3/8 * alpha0_sq * np.log(a_ratio)) / C_0 + \
          3 * k2_over_mu / 16 * (3 * c_sq - 1) * \
-         (1.5 * (alpha0sq_over_asq - alpha0sq_over_a0sq) + four_thirds_over_a_cb - four_thirds_over_a0_cb) / C_0 + Mo_0
+         (1.5 * (alpha0sq_over_asq - alpha0sq_over_a0sq) + \
+             four_thirds_over_a_cb - four_thirds_over_a0_cb) / C_0 + Mo_0
 
     # Calculate intermediate term for omega and RAAN
     five_a0sq_over2_tau2_plus_4thirds_over_tau3_over_C0 = \
-        (2.5 * (alpha0sq_over_asq - alpha0sq_over_a0sq) + four_thirds_over_a_cb - four_thirds_over_a0_cb) / C_0
+        (2.5 * (alpha0sq_over_asq - alpha0sq_over_a0sq) + \
+            four_thirds_over_a_cb - four_thirds_over_a0_cb) / C_0
 
     # Calculate argument of perigee
-    omega = 3 * k2_over_mu / 16 * (5 * c_sq - 1) * five_a0sq_over2_tau2_plus_4thirds_over_tau3_over_C0 + omega_0
+    omega = 3 * k2_over_mu / 16 * (5 * c_sq - 1) * five_a0sq_over2_tau2_plus_4thirds_over_tau3_over_C0 \
+        + omega_0
 
     # Calculate RAAN
-    bigO = -3 * k2_over_mu / 8 * c * five_a0sq_over2_tau2_plus_4thirds_over_tau3_over_C0 + bigO_0
+    bigO = -3 * k2_over_mu / 8 * c * five_a0sq_over2_tau2_plus_4thirds_over_tau3_over_C0 \
+        + bigO_0
 
     # Assemble output orbital elements
     out_oe = np.column_stack([

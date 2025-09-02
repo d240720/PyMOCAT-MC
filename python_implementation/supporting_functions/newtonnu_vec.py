@@ -58,7 +58,8 @@ def newtonnu_vec(ecc, nu):
         # For parabolic orbits, use different formulation
         tan_half_nu = np.tan(nu[parabolic] / 2)
         mean_anomaly[parabolic] = tan_half_nu + (tan_half_nu**3) / 3
-        eccentric_anomaly[parabolic] = nu[parabolic]  # No eccentric anomaly for parabolic
+        # No eccentric anomaly for parabolic
+        eccentric_anomaly[parabolic] = nu[parabolic]
 
     # Handle hyperbolic orbits (ecc > 1)
     hyperbolic = (ecc > 1)

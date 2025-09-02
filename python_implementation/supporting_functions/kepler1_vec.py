@@ -45,7 +45,8 @@ def kepler1_vec(manom, ecc):
     check_ecc_0 = (ecc == 0)  # circular orbit
     check_ecc_above_1 = (ecc >= 1.0)  # hyperbolic orbit
     check_ecc_hyp = np.where(check_ecc_above_1)[0]
-    check_ecc_ellip = np.where(~check_ecc_above_1 & ~check_ecc_0)[0]  # elliptical, not circular
+    # elliptical, not circular
+    check_ecc_ellip = np.where(~check_ecc_above_1 & ~check_ecc_0)[0]
 
     # Circular orbit
     eanom[check_ecc_0] = xma[check_ecc_0]
@@ -58,7 +59,8 @@ def kepler1_vec(manom, ecc):
 
     # Hyperbolic orbit
     if len(check_ecc_hyp) > 0:
-        eanom[check_ecc_hyp] = np.log(2.0 * xma[check_ecc_hyp] / ecc[check_ecc_hyp] + 1.8)
+        eanom[check_ecc_hyp] = np.log(2.0 * xma[check_ecc_hyp] / ecc[check_ecc_hyp] \
+            + 1.8)
 
     # Perform iterations
     niter = 0
@@ -82,8 +84,10 @@ def kepler1_vec(manom, ecc):
 
         # Elliptic orbit calculations
         if len(check_ecc_ellip_temp) > 0:
-            se = ecc[check_ecc_ellip_temp] * np.sin(eanom[check_ecc_ellip_temp])
-            ce = ecc[check_ecc_ellip_temp] * np.cos(eanom[check_ecc_ellip_temp])
+            se = ecc[check_ecc_ellip_temp] \
+                * np.sin(eanom[check_ecc_ellip_temp])
+            ce = ecc[check_ecc_ellip_temp] \
+                * np.cos(eanom[check_ecc_ellip_temp])
 
             fe = eanom[check_ecc_ellip_temp] - se - xma[check_ecc_ellip_temp]
             fpe = 1 - ce

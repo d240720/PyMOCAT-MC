@@ -49,7 +49,8 @@ def prop_mit_vec(mat_sat_in: np.ndarray, t: float, param: Dict) -> np.ndarray:
     # Check if a de-orbit has already happened or if controlled
     idx_notdecay = (in_mean_oe[:, 0] * (1 - in_mean_oe[:, 1])) > (req + 150)
     idx_controlled = mat_sat_in[:, 7] == 1
-    idx_propagate = idx_notdecay & ~idx_controlled  # objects that haven't decayed and are not controlled
+    # objects that haven't decayed and are not controlled
+    idx_propagate = idx_notdecay & ~idx_controlled
 
     if np.any(idx_propagate):
         param_copy['Bstar'] = bstar[idx_propagate]
@@ -62,11 +63,13 @@ def prop_mit_vec(mat_sat_in: np.ndarray, t: float, param: Dict) -> np.ndarray:
 
     # Update mean anomaly of controlled objects, all other orbital elements remain the same
     if np.any(idx_controlled):
-        mean_motion = np.sqrt(param_copy['mu'] / out_mean_oe[idx_controlled, 0]**3)
+        mean_motion = np.sqrt(param_copy['mu'] \
+            / out_mean_oe[idx_controlled, 0]**3)
         out_mean_oe[idx_controlled, 5] += mean_motion * t
 
     # Check if decayed or hyperbolic
-    check_alt_ecc = ((out_mean_oe[:, 0] * (1 - out_mean_oe[:, 1])) > (req + 150)) & (out_mean_oe[:, 1] < 1)
+    check_alt_ecc = ((out_mean_oe[:, 0] * (1 - out_mean_oe[:, 1])) > (req \
+        + 150)) & (out_mean_oe[:, 1] < 1)
     errors[~check_alt_ecc] = 1
 
     # Mean to osculating orbital elements
@@ -74,7 +77,10 @@ def prop_mit_vec(mat_sat_in: np.ndarray, t: float, param: Dict) -> np.ndarray:
     e_osc = np.zeros(np.sum(check_alt_ecc))
 
     if np.any(check_alt_ecc):
-        osc_oe[check_alt_ecc, :], _, e_osc = mean2osc_m_vec(out_mean_oe[check_alt_ecc, :], param_copy)
+        osc_oe[check_alt_ecc, :], _, e_osc = mean2osc_m_vec(
+            out_mean_oe[check_alt_ecc,
+            :],
+            param_copy)
 
     # Scale semi-major axis back
     out_mean_oe[:, 0] = out_mean_oe[:, 0] / req

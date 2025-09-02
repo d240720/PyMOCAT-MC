@@ -11,13 +11,18 @@ import time
 from datetime import datetime
 
 # Add python_implementation directory to path to import mocat_mc
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'python_implementation'))
+sys.path.append(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)),
+    '..',
+    'python_implementation'))
 
 from mocat_mc import MOCATMC
 
 
 class MOCATTestSuite:
+    """MOCATTestSuite class."""
     def __init__(self):
+        """Initialize the class."""
         self.mocat = MOCATMC()
         self.results = {}
         
@@ -66,7 +71,8 @@ class MOCATTestSuite:
                 'elapsed_time': elapsed_time,
                 'satellite_ratio': nS / total_objects if total_objects > 0 else 0,
                 'population_change': total_objects - initial_pop,
-                'config': {k: v for k, v in cfg_mc.items() if k not in ['mat_sats', 'tsince']},
+                'config': {k: v
+                    for k, v in cfg_mc.items() if k not in ['mat_sats', 'tsince']},
                 'error': None
             }
             
@@ -219,7 +225,9 @@ class MOCATTestSuite:
         print("TEST RESULTS SUMMARY")
         print("="*80)
         
-        successful = sum(1 for r in self.results.values() if r.get('success', False))
+        successful = sum(
+            1 for r in self.results.values() if r.get('success',
+            False))
         total = len(self.results)
         
         print(f"\nTotal Tests: {total}")

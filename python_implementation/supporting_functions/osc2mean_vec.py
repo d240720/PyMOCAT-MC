@@ -9,8 +9,12 @@ Args:
         oeosc[:,0] = osculating semimajor axis (kilometers)
         oeosc[:,1] = osculating orbital eccentricity (0 <= e < 1)
         oeosc[:,2] = osculating orbital inclination (radians, 0 <= i <= pi)
-        oeosc[:,3] = osculating right ascension of ascending node (radians, 0 <= raan <= 2*pi)
-        oeosc[:,4] = osculating argument of perigee (radians, 0 <= argp <= 2*pi)
+        oeosc[:,3] = osculating right ascension of ascending node (
+            radians,
+            0 <= raan <= 2*pi)
+        oeosc[:,4] = osculating argument of perigee (
+            radians,
+            0 <= argp <= 2*pi)
         oeosc[:,5] = osculating true anomaly (radians, 0 <= ta <= 2*pi)
     param: parameter structure containing:
         req: Earth radius (km)
@@ -21,7 +25,9 @@ Returns:
         oemean[:,0] = mean semimajor axis (kilometers)
         oemean[:,1] = mean orbital eccentricity (0 <= e < 1)
         oemean[:,2] = mean orbital inclination (radians, 0 <= i <= pi)
-        oemean[:,3] = mean right ascension of ascending node (radians, 0 <= raan <= 2*pi)
+        oemean[:,3] = mean right ascension of ascending node (
+            radians,
+            0 <= raan <= 2*pi)
         oemean[:,4] = mean argument of perigee (radians, 0 <= argp <= 2*pi)
         oemean[:,5] = mean true anomaly (radians, 0 <= ta <= 2*pi)
 
@@ -109,10 +115,12 @@ def osc2mean_vec(oeosc, param):
             asp = 3 * j2 * req**2 / aos[idx] * bb[idx] * np.cos(2 * lamos)
             am[idx] = aos[idx] - asp
 
-            isp = 3 * j2 / 8 * req**2 / aos[idx]**2 * np.sin(2 * ios[idx]) * np.cos(2 * lamos)
+            isp = 3 \
+                * j2 / 8 * req**2 / aos[idx]**2 * np.sin(2 * ios[idx]) * np.cos(2 * lamos)
             im[idx] = ios[idx] - isp
 
-            ransp = 1.5 * j2 * req**2 / aos[idx]**2 * np.cos(ios[idx]) * 0.5 * np.sin(2 * lamos)
+            ransp = 1.5 \
+                * j2 * req**2 / aos[idx]**2 * np.cos(ios[idx]) * 0.5 * np.sin(2 * lamos)
             ranm[idx] = ranos[idx] - ransp
 
             em[idx] = np.sqrt(etaos**2 + zos**2)
@@ -139,25 +147,32 @@ def osc2mean_vec(oeosc, param):
             hm = pm / (1 + em[idx] * np.cos(tam))
 
             # First order J2 corrections
-            asp = 3 * j2 * req**2 / aos[idx] * ((aos[idx]/hm)**3 * (aa[idx] + bb[idx] * np.cos(2*um)) -
+            asp = 3 * j2 * req**2 / aos[idx] * ((aos[idx]/hm)**3 * (aa[idx] \
+                + bb[idx] * np.cos(2*um)) -
                                               aa[idx] * (1 - em[idx]**2)**(-1.5))
             am[idx] = aos[idx] - asp
 
-            isp = 3/8 * j2 * req**2 / pm**2 * np.sin(2*im[idx]) * (np.cos(2*um) +
-                                                                  em[idx] * np.cos(tam + 2*apm[idx]))
+            isp = 3/8 \
+                * j2 * req**2 / pm**2 * np.sin(2*im[idx]) * (np.cos(2*um) +
+                                                                  \
+                                                                      em[idx] * np.cos(tam + 2*apm[idx]))
             im[idx] = ios[idx] - isp
 
             # Simplified eccentricity correction
-            esp = 1.5 * j2 * req**2 / aos[idx]**2 * (1 - em[idx]**2) / em[idx] * aa[idx] * 0.1
+            esp = 1.5 * j2 * req**2 / aos[idx]**2 * (1 \
+                - em[idx]**2) / em[idx] * aa[idx] * 0.1
             em[idx] = eos[idx] - esp
 
             # RAAN correction
-            eqoc = tam - mam[idx] if abs(tam - np.pi) > 1.0e-06 and abs(mam[idx] - np.pi) > 1.0e-06 else 0
-            ransp = -1.5 * j2 * (req/pm)**2 * np.cos(im[idx]) * (eqoc + em[idx] * np.sin(tam))
+            eqoc = tam \
+                - mam[idx] if abs(tam - np.pi) > 1.0e-06 and abs(mam[idx] - np.pi) > 1.0e-06 else 0
+            ransp = -1.5 * j2 * (req/pm)**2 * np.cos(im[idx]) * (eqoc \
+                + em[idx] * np.sin(tam))
             ranm[idx] = ranos[idx] - ransp
 
             # Argument of perigee correction
-            apsp = 1.5 * j2 * (req/pm)**2 * (2 - 5*bb[idx]) * (eqoc + em[idx] * np.sin(tam))
+            apsp = 1.5 * j2 * (req/pm)**2 * (2 - 5*bb[idx]) * (eqoc \
+                + em[idx] * np.sin(tam))
             apm[idx] = apos[idx] - apsp
 
     # Assemble output

@@ -9,7 +9,9 @@ Args:
         x[0] = mean semimajor axis (kilometers)
         x[1] = mean orbital eccentricity (0 <= e < 1)
         x[2] = mean orbital inclination (radians, 0 <= i <= pi)
-        x[3] = mean right ascension of ascending node (radians, 0 <= raan <= 2*pi)
+        x[3] = mean right ascension of ascending node (
+            radians,
+            0 <= raan <= 2*pi)
         x[4] = mean argument of perigee (radians, 0 <= argp <= 2*pi)
         x[5] = mean mean anomaly (radians, 0 <= M <= 2*pi)
     param: parameter structure containing mu, req, j2
@@ -77,7 +79,8 @@ def mean2osc_m(x, param):
     e_osc = oeosc[1]      # Osculating eccentricity
 
     # Convert osculating true anomaly back to mean anomaly
-    E_osc = 2 * np.arctan(np.sqrt((1 - e_osc) / (1 + e_osc)) * np.tan(theta_osc / 2))
+    E_osc = 2 * np.arctan(np.sqrt((1 - e_osc) / (1 \
+        + e_osc)) * np.tan(theta_osc / 2))
     M_osc = E_osc - e_osc * np.sin(E_osc)
 
     # Assemble output with mean anomaly instead of true anomaly

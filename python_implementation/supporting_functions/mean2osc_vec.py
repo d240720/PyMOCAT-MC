@@ -9,7 +9,9 @@ Args:
         oemean[:,0] = mean semimajor axis (kilometers)
         oemean[:,1] = mean orbital eccentricity (0 <= e < 1)
         oemean[:,2] = mean orbital inclination (radians, 0 <= i <= pi)
-        oemean[:,3] = mean right ascension of ascending node (radians, 0 <= raan <= 2*pi)
+        oemean[:,3] = mean right ascension of ascending node (
+            radians,
+            0 <= raan <= 2*pi)
         oemean[:,4] = mean argument of perigee (radians, 0 <= argp <= 2*pi)
         oemean[:,5] = mean true anomaly (radians, 0 <= ta <= 2*pi)
     param: parameter structure containing:
@@ -22,8 +24,12 @@ Returns:
         oeosc[:,0] = osculating semimajor axis (kilometers)
         oeosc[:,1] = osculating orbital eccentricity (0 <= e < 1)
         oeosc[:,2] = osculating orbital inclination (radians, 0 <= i <= pi)
-        oeosc[:,3] = osculating right ascension of ascending node (radians, 0 <= raan <= 2*pi)
-        oeosc[:,4] = osculating argument of perigee (radians, 0 <= argp <= 2*pi)
+        oeosc[:,3] = osculating right ascension of ascending node (
+            radians,
+            0 <= raan <= 2*pi)
+        oeosc[:,4] = osculating argument of perigee (
+            radians,
+            0 <= argp <= 2*pi)
         oeosc[:,5] = osculating true anomaly (radians, 0 <= ta <= 2*pi)
 
 Reference: Orbital Mechanics with MATLAB

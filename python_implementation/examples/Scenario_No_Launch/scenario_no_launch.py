@@ -65,7 +65,9 @@ def scenario_no_launch():
         print('Starting main_mc...')
 
         # Run simulation with deorbit tracking
-        nS, nD, nN, nB, mat_sats, deorbitlist_r = mocat.main_mc_with_deorbit_tracking(cfg_mc, seed)
+        nS, nD, nN, nB, mat_sats, deorbitlist_r = mocat.main_mc_with_deorbit_tracking(
+            cfg_mc,
+            seed)
         deorbit_list_python.append(deorbitlist_r)
 
         print(f'Simulation {seed} completed: {nS} satellites, {nD} derelicts, {nN} debris, {nB} rocket bodies')

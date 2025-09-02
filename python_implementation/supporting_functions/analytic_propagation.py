@@ -107,7 +107,8 @@ def analytic_propagation(input_oe, param):
     beta_0 = (np.sqrt(3) / 2) * e_0
 
     # Calculate new orbital elements
-    tan_coeff = max(np.tan(np.arctan(beta_0) - beta_0 * n_0 * a_0 * C_0 * (t - t_0)), 0)
+    tan_coeff = max(np.tan(np.arctan(beta_0) \
+        - beta_0 * n_0 * a_0 * C_0 * (t - t_0)), 0)
     a = (a_0 / beta_0**2) * tan_coeff**2
 
     e = (1 / (np.sqrt(3) / 2)) * tan_coeff
@@ -118,11 +119,14 @@ def analytic_propagation(input_oe, param):
           (3*k2*(3*c**2 - 1)) / (16*mu) * (1/C_0) * ((3*alpha_0**2/2) * 1/a_0**2 + 4/(3*a_0**3)) +
           Mo_0)
 
-    omega = ((3*k2*(5*c**2 - 1)) / (16*mu) * (1/C_0) * ((5*alpha_0**2/2) * 1/a**2 + 4/(3*a**3)) -
-             (3*k2*(5*c**2 - 1)) / (16*mu) * (1/C_0) * ((5*alpha_0**2/2) * 1/a_0**2 + 4/(3*a_0**3)) +
+    omega = ((3*k2*(5*c**2 - 1)) / (16*mu) * (1/C_0) * ((5*alpha_0**2/2) * 1/a**2 \
+        + 4/(3*a**3)) -
+             (3*k2*(5*c**2 - 1)) / (16*mu) * (1/C_0) * \
+                 ((5*alpha_0**2/2) * 1/a_0**2 + 4/(3*a_0**3)) +
              omega_0)
 
-    bigO = (-(3*k2*c) / (8*mu) * (1/C_0) * ((5*alpha_0**2/2) * 1/a**2 + 4/(3*a**3)) +
+    bigO = (-(3*k2*c) / (8*mu) * (1/C_0) * ((5*alpha_0**2/2) * 1/a**2 \
+        + 4/(3*a**3)) +
             (3*k2*c) / (8*mu) * (1/C_0) * ((5*alpha_0**2/2) * 1/a_0**2 + 4/(3*a_0**3)) +
             bigO_0)
 

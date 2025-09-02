@@ -144,8 +144,10 @@ def frag_col_sbm_vec(ep, p1_in, p2_in, param):
                 # Randomly assign remnants to parent objects
                 rem_assignment = np.random.randint(0, 2, len(m_rem))
 
-                d_rem[rem_assignment == 0] = ((m_rem[rem_assignment == 0] / p1_mass * p1_radius**3)**(1/3)) * 2
-                d_rem[rem_assignment == 1] = ((m_rem[rem_assignment == 1] / p2_mass * p2_radius**3)**(1/3)) * 2
+                d_rem[rem_assignment == 0] = ((m_rem[rem_assignment == 0] / p1_mass \
+                    * p1_radius**3)**(1/3)) * 2
+                d_rem[rem_assignment == 1] = ((m_rem[rem_assignment == 1] / p2_mass \
+                    * p2_radius**3)**(1/3)) * 2
 
                 # Calculate remnant properties
                 Am_rem = func_Am(d_rem, p1_objclass)
@@ -166,7 +168,8 @@ def frag_col_sbm_vec(ep, p1_in, p2_in, param):
             if m_remSum > 0:
                 # Assign remnant to larger object by default
                 m_rem = np.array([m_remSum])
-                d_rem = np.array([(m_remSum / p1_mass * p1_radius**3)**(1/3) * 2])
+                d_rem = np.array([(m_remSum / p1_mass \
+                    * p1_radius**3)**(1/3) * 2])
                 Am_rem = func_Am(d_rem, p1_objclass)
                 A_rem = m_rem * Am_rem
 
@@ -255,8 +258,12 @@ def frag_col_sbm_vec(ep, p1_in, p2_in, param):
     fragments1_idx = np.where(largeidx)[0]
     fragments2_idx = np.where(smallidx)[0]
 
-    fragments1 = fragments[fragments1_idx] if len(fragments1_idx) > 0 else np.array([]).reshape(0, 8)
-    fragments2 = fragments[fragments2_idx] if len(fragments2_idx) > 0 else np.array([]).reshape(0, 8)
+    fragments1 = fragments[fragments1_idx] if len(
+        fragments1_idx) > 0 else np.array([]).reshape(0,
+        8)
+    fragments2 = fragments[fragments2_idx] if len(
+        fragments2_idx) > 0 else np.array([]).reshape(0,
+        8)
 
     # Remove fragments smaller than LB
     if len(fragments1) > 0:

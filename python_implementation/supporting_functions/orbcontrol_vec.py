@@ -16,7 +16,8 @@ def orbcontrol_vec(mat_sat_in: np.ndarray, tsince: float, time0: datetime,
     Execute orbit control for active satellites.
 
     Args:
-        mat_sat_in: Input satellite matrix [a,ecco,inclo,nodeo,argpo,mo,controlled,a_desired,missionlife,launched,r,v]
+        mat_sat_in: Input satellite matrix [a,ecco,inclo,nodeo,argpo \
+            ,mo,controlled,a_desired,missionlife,launched,r,v]
         tsince: Time since start [minutes]
         time0: Initial time
         orbtol: Orbit control tolerance [km]
@@ -66,7 +67,8 @@ def orbcontrol_vec(mat_sat_in: np.ndarray, tsince: float, time0: datetime,
         needs_control_mask = deviation > orbtol_norm
 
         if np.any(needs_control_mask):
-            control_indices = controlled_indices[needs_control_mask]  # find_control
+            # find_control
+            control_indices = controlled_indices[needs_control_mask]
             a[control_indices] = desired_a_controlled[needs_control_mask]
 
             # Update position and velocity for controlled satellites
@@ -79,12 +81,14 @@ def orbcontrol_vec(mat_sat_in: np.ndarray, tsince: float, time0: datetime,
     if np.any(controlled_mask):
         controlled_indices = np.where(controlled_mask)[0]
 
-        # Calculate current time exactly like MATLAB: current_time = time0 + days(tsince/DAY2MIN)
+        # Calculate current time exactly like MATLAB: current_time = time0 +
+        # days(tsince/DAY2MIN)
         from datetime import timedelta
         current_time = time0 + timedelta(days=tsince / day2min)
         
         # Convert to Julian date with higher precision (matching MATLAB's juliandate function)
         def datetime_to_jd(dt):
+            """Datetime To Jd."""
             a = (14 - dt.month) // 12
             y = dt.year + 4800 - a
             m = dt.month + 12 * a - 3
@@ -116,11 +120,14 @@ def orbcontrol_vec(mat_sat_in: np.ndarray, tsince: float, time0: datetime,
                 pmd_check = pmd < pmd_random  # Note: MATLAB uses PMD<rand_life
 
                 # DEBUG: Log PMD decisions
-                if hasattr(orbcontrol_vec, 'debug_mode') and orbcontrol_vec.debug_mode:
+                if hasattr(
+                    orbcontrol_vec,
+                    'debug_mode') and orbcontrol_vec.debug_mode:
                     print(f"PMD Debug - Time: {tsince:.1f}min")
                     print(f"  EOL satellites: {len(eol_indices)}")
                     print(f"  PMD probability: {pmd}")
-                    print(f"  Random values: {pmd_random[:5]}...")  # First 5 values
+                    # First 5 values
+                    print(f"  Random values: {pmd_random[:5]}...")
                     print(f"  Failed PMD (become derelicts): {np.sum(pmd_check)}")
                     print(f"  Successful PMD (deorbited): {np.sum(~pmd_check)}")
 

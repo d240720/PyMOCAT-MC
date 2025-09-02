@@ -92,7 +92,13 @@ def realistic_operations_no_launch():
     print(f'Satellite ratio: {ratio:.4f}')
 
     # Create comprehensive plots
-    create_comprehensive_plots(nS, nD, nN, nB, mat_sats, 'python_realistic_ops_no_launch')
+    create_comprehensive_plots(
+        nS,
+        nD,
+        nN,
+        nB,
+        mat_sats,
+        'python_realistic_ops_no_launch')
 
     # Return results for comparison
     return {
@@ -135,7 +141,15 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
     fig1, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 10))
 
     # Subplot 1: Bar chart
-    ax1.bar(['Satellites', 'Derelicts', 'Debris', 'Rocket Bodies'], [nS, nD, nN, nB])
+    ax1.bar(
+        ['Satellites',
+        'Derelicts',
+        'Debris',
+        'Rocket Bodies'],
+        [nS,
+        nD,
+        nN,
+        nB])
     ax1.set_title('Final Population Distribution - Realistic Operations No Launch')
     ax1.set_ylabel('Number of Objects')
     ax1.grid(True, alpha=0.3)
@@ -161,7 +175,10 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
     ax4.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig(f'{prefix}_figure_1_population_summary.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        f'{prefix}_figure_1_population_summary.png',
+        dpi=150,
+        bbox_inches='tight')
     print(f'Saved: {prefix}_figure_1_population_summary.png')
     plt.close()
 
@@ -183,14 +200,23 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
     axes[1].grid(True, alpha=0.3)
 
     # Object Class Distribution
-    axes[2].hist(mat_sats[:, idx_objectclass], bins=range(1, 12), alpha=0.7, edgecolor='black')
+    axes[2].hist(
+        mat_sats[:,
+        idx_objectclass],
+        bins=range(1,
+        12),
+        alpha=0.7,
+        edgecolor='black')
     axes[2].set_xlabel('Object Class')
     axes[2].set_ylabel('Number of Objects')
     axes[2].set_title('Object Class Distribution')
     axes[2].grid(True, alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig(f'{prefix}_figure_2_orbital_elements.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        f'{prefix}_figure_2_orbital_elements.png',
+        dpi=150,
+        bbox_inches='tight')
     print(f'Saved: {prefix}_figure_2_orbital_elements.png')
     plt.close()
 
@@ -199,7 +225,16 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
     ax3d = fig3.add_subplot(111, projection='3d')
 
     r = mat_sats[:, idx_r]
-    scatter = ax3d.scatter(r[:, 0], r[:, 1], r[:, 2], c=altitudes, s=20, cmap='viridis')
+    scatter = ax3d.scatter(
+        r[:,
+        0],
+        r[:,
+        1],
+        r[:,
+        2],
+        c=altitudes,
+        s=20,
+        cmap='viridis')
 
     ax3d.set_xlabel('X (km)')
     ax3d.set_ylabel('Y (km)')
@@ -219,7 +254,10 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
 
     plt.colorbar(scatter, ax=ax3d, label='Altitude (km)')
     plt.tight_layout()
-    plt.savefig(f'{prefix}_figure_3_3d_positions.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        f'{prefix}_figure_3_3d_positions.png',
+        dpi=150,
+        bbox_inches='tight')
     print(f'Saved: {prefix}_figure_3_3d_positions.png')
     plt.close()
 
@@ -231,7 +269,10 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
 
     # Find indices for each object type
     sat_idx = mat_sats[:, idx_controlled] == 1
-    derelict_idx = (mat_sats[:, idx_controlled] == 0) & (mat_sats[:, idx_objectclass] == 1)
+    derelict_idx = (
+        mat_sats[:,
+        idx_controlled] == 0) & (mat_sats[:,
+        idx_objectclass] == 1)
     debris_idx = mat_sats[:, idx_objectclass] == 3
     rb_idx = mat_sats[:, idx_objectclass] == 2
 
@@ -249,7 +290,10 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
     ax.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig(f'{prefix}_figure_4_altitude_eccentricity.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        f'{prefix}_figure_4_altitude_eccentricity.png',
+        dpi=150,
+        bbox_inches='tight')
     print(f'Saved: {prefix}_figure_4_altitude_eccentricity.png')
     plt.close()
 
@@ -257,7 +301,11 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
     fig5, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 10))
 
     # Altitude Statistics
-    stats_data = [np.mean(altitudes), np.std(altitudes), np.min(altitudes), np.max(altitudes)]
+    stats_data = [np.mean(
+        altitudes),
+        np.std(altitudes),
+        np.min(altitudes),
+        np.max(altitudes)]
     ax1.bar(['Mean', 'Std', 'Min', 'Max'], stats_data)
     ax1.set_title('Altitude Statistics (km)')
     ax1.grid(True, alpha=0.3)
@@ -270,21 +318,36 @@ def create_comprehensive_plots(nS, nD, nN, nB, mat_sats, prefix):
     ax2.grid(True, alpha=0.3)
 
     # Mass Statistics
-    stats_mass = [np.mean(mat_sats[:, idx_mass]), np.std(mat_sats[:, idx_mass]),
+    stats_mass = [np.mean(
+        mat_sats[:,
+        idx_mass]),
+        np.std(mat_sats[:,
+        idx_mass]),
                   np.min(mat_sats[:, idx_mass]), np.max(mat_sats[:, idx_mass])]
     ax3.bar(['Mean', 'Std', 'Min', 'Max'], stats_mass)
     ax3.set_title('Mass Statistics (kg)')
     ax3.grid(True, alpha=0.3)
 
     # Radius Statistics
-    stats_radius = [np.mean(mat_sats[:, idx_radius]), np.std(mat_sats[:, idx_radius]),
-                    np.min(mat_sats[:, idx_radius]), np.max(mat_sats[:, idx_radius])]
+    stats_radius = [np.mean(
+        mat_sats[:,
+        idx_radius]),
+        np.std(mat_sats[:,
+        idx_radius]),
+                    np.min(
+                        mat_sats[:,
+                        idx_radius]),
+                        np.max(mat_sats[:,
+                        idx_radius])]
     ax4.bar(['Mean', 'Std', 'Min', 'Max'], stats_radius)
     ax4.set_title('Radius Statistics (m)')
     ax4.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig(f'{prefix}_figure_5_summary_statistics.png', dpi=150, bbox_inches='tight')
+    plt.savefig(
+        f'{prefix}_figure_5_summary_statistics.png',
+        dpi=150,
+        bbox_inches='tight')
     print(f'Saved: {prefix}_figure_5_summary_statistics.png')
     plt.close()
 

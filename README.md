@@ -155,11 +155,15 @@ PyMOCAT-MC/
 │   ├── examples/
 │   │   ├── Quick_Start/
 │   │   │   ├── quick_start.py         # Basic simulation example
-│   │   │   └── quick_start_with_plots.py  # Example with visualizations
+│   │   │   ├── quick_start_with_plots.py  # Example with visualizations
+│   │   │   └── README.md              # Quick start documentation
 │   │   ├── Realistic_Operations_No_Launch/
-│   │   │   └── realistic_operations_no_launch.py  # Realistic operations without launches
+│   │   │   ├── realistic_operations_no_launch.py  # Realistic operations without launches
+│   │   │   ├── README.md              # Realistic operations documentation
+│   │   │   └── *.png                  # Generated visualization outputs
 │   │   └── Scenario_No_Launch/
-│   │       └── scenario_no_launch.py  # Decay-only scenario
+│   │       ├── scenario_no_launch.py  # Decay-only scenario
+│   │       └── README.md              # Scenario documentation
 │   ├── supporting_functions/
 │   │   ├── cfg_mc_constants.py        # Physical constants
 │   │   ├── get_idx.py                 # Matrix index definitions
@@ -167,17 +171,58 @@ PyMOCAT-MC/
 │   │   ├── init_sim.py                # Simulation initialization
 │   │   ├── main_mc.py                 # Main Monte Carlo engine
 │   │   ├── prop_mit_vec.py            # MIT orbital propagator
+│   │   ├── analytic_propagation.py    # Analytic orbital propagator
+│   │   ├── analytic_propagation_vec.py # Vectorized analytic propagation
 │   │   ├── collision_prob_vec.py      # Collision probability
 │   │   ├── cube_vec_v3.py             # Cube method for conjunctions
 │   │   ├── frag_col_sbm_vec.py        # Collision fragmentation model
+│   │   ├── frag_exp_sbm_vec.py        # Explosion fragmentation model
 │   │   ├── orbcontrol_vec.py          # Orbit control/station-keeping
 │   │   ├── fillin_atmosphere.py       # Atmospheric model interface
 │   │   ├── fillin_physical_parameters.py  # Object physical properties
-│   │   └── [additional utilities...]
+│   │   ├── densityexp_vec.py          # Atmospheric density calculations
+│   │   ├── fill_mass_radius_resample.py # Mass/radius parameter resampling
+│   │   ├── filter_objclass_fragments_int.py # Fragment filtering
+│   │   ├── func_Am.py                 # Area-to-mass ratio calculations
+│   │   ├── func_create_tlesv2_vec.py  # TLE creation utilities
+│   │   ├── func_dv.py                 # Delta-V calculations
+│   │   ├── get_zero_groups.py         # Zero group identification
+│   │   ├── getgravc.py                # Gravitational constants
+│   │   ├── jd2date.py                 # Julian date conversions
+│   │   ├── kepler1.py                 # Kepler equation solver
+│   │   ├── kepler1_vec.py             # Vectorized Kepler solver
+│   │   ├── lininterp1.py              # 1D linear interpolation
+│   │   ├── lininterp1_vec.py          # Vectorized 1D interpolation
+│   │   ├── lininterp2.py              # 2D linear interpolation
+│   │   ├── lininterp2_vec.py          # Vectorized 2D interpolation
+│   │   ├── lininterp2_vec_v2.py       # Optimized 2D interpolation
+│   │   ├── mean2osc.py                # Mean to osculating elements
+│   │   ├── mean2osc_m.py              # Mean to osculating (modified)
+│   │   ├── mean2osc_m_vec.py          # Vectorized mean to osculating
+│   │   ├── mean2osc_vec.py            # Vectorized mean to osculating
+│   │   ├── mean_osculating_map.py     # Mean-osculating mapping
+│   │   ├── newtonnu_vec.py            # Newton-Raphson solver
+│   │   ├── oe2rv_vec.py               # Orbital elements to position/velocity
+│   │   ├── osc2mean.py                # Osculating to mean elements
+│   │   ├── osc2mean_m_vec.py          # Vectorized osculating to mean
+│   │   ├── osc2mean_vec.py            # Vectorized osculating to mean
+│   │   ├── rv2coe_vec.py              # Position/velocity to orbital elements
+│   │   ├── cross_vec.py               # Vector cross product
+│   │   ├── angl_vec.py                # Angle calculations
+│   │   └── densityexp.py              # Exponential density model
 │   ├── supporting_data/
 │   │   ├── TLEhistoric/               # Historical TLE data (2000-2023)
 │   │   ├── dens_jb2008_032020_022224.mat  # Atmospheric density data
 │   │   └── megaconstellationLaunches.xlsx  # Launch schedules
+├── paper/                             # JOSS paper submission
+│   ├── paper.md                       # Main paper manuscript
+│   ├── paper.bib                      # Bibliography
+│   ├── paper.pdf                      # Compiled PDF version
+│   └── figures/                       # Paper figures
+│       ├── error_box_plots.png        # Error distribution analysis
+│       ├── execution_time_comparison.png # Performance benchmarks
+│       ├── matlab_python_orbital_comparison.png # Orbital element validation
+│       └── object_type_percentage_heatmap.png # Object type error analysis
 ├── tests/                             # Main test suite
 │   ├── run_tests.py                   # Python test runner (cross-platform)
 │   ├── run_tests.sh                   # Bash test runner (Unix/macOS)
@@ -185,25 +230,33 @@ PyMOCAT-MC/
 │   ├── test_import.py                 # Import and data loading tests
 │   ├── minimal_test.py                # Minimal 2-step simulation test
 │   ├── test_simple_run.py             # Single time-step test
-│   └── README.md                      # Test suite documentation
+│   ├── README.md                      # Test suite documentation
+│   └── test_scenarios_summary.md      # Detailed test scenario documentation
 ├── comparison_tests/                  # Python vs MATLAB comparison tests
 │   ├── test_all_scenarios.py          # Comprehensive comparison across all scenarios
 │   ├── test_quick_scenarios.py        # Quick validation tests for basic scenarios
 │   ├── accuracy_error_data.csv        # Accuracy error measurements data
 │   └── accuracy_error_data.json       # Accuracy error data in JSON format
 ├── analysis_figures/                  # Analysis and visualization scripts
-│   ├── plot_total_object_counts.py    # Generate total object count comparison plots
-│   ├── plot_execution_time.py         # Visualize execution time performance
-│   ├── plot_object_type_heatmap.py    # Create heatmap of object type percentages
-│   ├── plot_computational_efficiency.py # Analyze computational efficiency metrics
 │   ├── measure_accuracy_errors.py     # Calculate accuracy errors between implementations
 │   ├── plot_error_analysis.py         # Generate error distribution plots
-│   ├── total_object_counts.png        # Output: Object count comparison visualization
-│   ├── execution_time_comparison.png  # Output: Performance comparison chart
-│   ├── object_type_percentage_heatmap.png # Output: Object type distribution heatmap
-│   ├── computational_efficiency_analysis.png # Output: Efficiency analysis chart
-│   └── error_box_plots.png            # Output: Error distribution visualization
+│   ├── plot_error_evolution.py        # Plot error evolution over time
+│   ├── plot_error_evolution_simple.py # Simplified error evolution visualization
+│   ├── plot_execution_time.py         # Visualize execution time performance
+│   ├── plot_object_type_heatmap.py    # Create heatmap of object type percentages
+│   ├── plot_real_matlab_vs_python_comparison.py # Real-world MATLAB vs Python comparison
+│   ├── error_evolution_full_default_data.json # Error evolution data
+│   ├── matlab_full_default_orbital_data.json # MATLAB reference data
+│   └── python_full_default_orbital_data.json # Python comparison data
 ├── MATLAB_implementation/             # Original MATLAB implementation
+│   ├── main_mc.m                      # Main MATLAB MOCAT-MC engine
+│   ├── initSim.m                      # MATLAB simulation initialization
+│   ├── setup_MCconfig.m               # MATLAB configuration setup
+│   ├── realistic_operations_no_launch.m # MATLAB realistic operations example
+│   ├── Examples/                      # MATLAB example scripts
+│   ├── supporting_functions/          # MATLAB supporting functions (~120 files)
+│   ├── supporting_data/               # MATLAB data files
+│   └── tests/                         # MATLAB test suite
 ├── paper/                             # JOSS paper and figures
 ├── setup_environment.py               # Automated environment setup
 ├── requirements.txt                   # Python dependencies

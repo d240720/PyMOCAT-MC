@@ -64,7 +64,8 @@ def julian_date_from_string(date_str):
         a = (14 - dt.month) // 12
         y = dt.year + 4800 - a
         m = dt.month + 12 * a - 3
-        jd = dt.day + (153 * m + 2) // 5 + 365 * y + y // 4 - y // 100 + y // 400 - 32045
+        jd = dt.day \
+            + (153 * m + 2) // 5 + 365 * y + y // 4 - y // 100 + y // 400 - 32045
         return float(jd)
     except:
         return np.nan
@@ -127,7 +128,9 @@ def process_discos_plus_tle_historic():
 
             # Remove duplicates, keeping last entry per NORAD ID
             if 'NORAD_CAT_ID' in tle_data.columns:
-                tle_data = tle_data.drop_duplicates(subset='NORAD_CAT_ID', keep='last')
+                tle_data = tle_data.drop_duplicates(
+                    subset='NORAD_CAT_ID',
+                    keep='last')
 
             print(f'TLE data number of unique objects: {len(tle_data)}')
 
@@ -143,10 +146,18 @@ def process_discos_plus_tle_historic():
             sat_ids = tle_data['NORAD_CAT_ID'].values
 
             # Process DISCOS data for these satellites
-            dmass, dradius, dobj = process_satellite_data(sat_ids, dd, ddsatnos)
+            dmass, dradius, dobj = process_satellite_data(
+                sat_ids,
+                dd,
+                ddsatnos)
 
             # Create combined mat_sats matrix
-            mat_sats = create_combined_matsats(tle_data, dmass, dradius, dobj, RADIUS_EARTH_KM)
+            mat_sats = create_combined_matsats(
+                tle_data,
+                dmass,
+                dradius,
+                dobj,
+                RADIUS_EARTH_KM)
 
             # Save the results
             output_file = csv_file.replace('.csv', '.mat')
@@ -176,9 +187,14 @@ def process_discos_data(d):
     # the exact structure of the DISCOS .mat file
     try:
         for i, entry in enumerate(d):
-            if hasattr(entry, 'attributes') or (hasattr(entry, 'dtype') and 'attributes' in entry.dtype.names):
+            if hasattr(
+                entry,
+                'attributes') or (hasattr(entry,
+                'dtype') and 'attributes' in entry.dtype.names):
                 # Extract satellite number if available
-                attrs = entry['attributes'] if hasattr(entry, 'attributes') else entry[entry.dtype.names.index('attributes')]
+                attrs = entry['attributes'] if hasattr(
+                    entry,
+                    'attributes') else entry[entry.dtype.names.index('attributes')]
                 if 'satno' in attrs and attrs['satno'] is not None and attrs['satno'] != '':
                     dd.append(attrs)
                     ddsatnos.append(int(attrs['satno']))
@@ -285,6 +301,7 @@ def create_combined_matsats(tle_data, dmass, dradius, dobj, radius_earth_km):
 
     # Required TLE columns (handle missing columns gracefully)
     def get_column_safe(df, col_name, default=0.0):
+        """Get column safe."""
         if col_name in df.columns:
             return df[col_name].values
         else:
@@ -292,11 +309,15 @@ def create_combined_matsats(tle_data, dmass, dradius, dobj, radius_earth_km):
             return np.full(len(df), default)
 
     # Extract TLE data
-    semimajor_axis = get_column_safe(tle_data, 'SEMIMAJOR_AXIS') / radius_earth_km
+    semimajor_axis = get_column_safe(
+        tle_data,
+        'SEMIMAJOR_AXIS') / radius_earth_km
     eccentricity = get_column_safe(tle_data, 'ECCENTRICITY')
     inclination = np.deg2rad(get_column_safe(tle_data, 'INCLINATION'))
     ra_of_asc_node = np.deg2rad(get_column_safe(tle_data, 'RA_OF_ASC_NODE'))
-    arg_of_pericenter = np.deg2rad(get_column_safe(tle_data, 'ARG_OF_PERICENTER'))
+    arg_of_pericenter = np.deg2rad(
+        get_column_safe(tle_data,
+        'ARG_OF_PERICENTER'))
     mean_anomaly = np.deg2rad(get_column_safe(tle_data, 'MEAN_ANOMALY'))
     bstar = get_column_safe(tle_data, 'BSTAR')
     norad_cat_id = get_column_safe(tle_data, 'NORAD_CAT_ID')
@@ -387,7 +408,9 @@ def create_diagnostic_plots(mat_sats, idx, radius_earth_km, filename):
         axes[0,4].grid(True, alpha=0.3)
 
         # Plot 6: B* histogram
-        valid_bstar = mat_sats[:, idx['bstar']][~np.isnan(mat_sats[:, idx['bstar']])]
+        valid_bstar = mat_sats[:, idx['bstar']][~np.isnan(
+            mat_sats[:,
+            idx['bstar']])]
         if len(valid_bstar) > 0:
             axes[1,0].hist(valid_bstar, bins=50, alpha=0.7, edgecolor='black')
             axes[1,0].set_xlabel('B*')
@@ -416,23 +439,39 @@ def create_diagnostic_plots(mat_sats, idx, radius_earth_km, filename):
             axes[1,2].grid(True, alpha=0.3)
 
         # Plot 9: Launch date histogram
-        valid_launch_dates = mat_sats[:, idx['launch_date']][~np.isnan(mat_sats[:, idx['launch_date']])]
+        valid_launch_dates = mat_sats[:, idx['launch_date']][~np.isnan(
+            mat_sats[:,
+            idx['launch_date']])]
         if len(valid_launch_dates) > 0:
-            axes[1,3].hist(valid_launch_dates, bins=30, alpha=0.7, edgecolor='black')
+            axes[1,3].hist(
+                valid_launch_dates,
+                bins=30,
+                alpha=0.7,
+                edgecolor='black')
             axes[1,3].set_xlabel('Launch Date (Julian)')
             axes[1,3].set_ylabel('Count')
             axes[1,3].grid(True, alpha=0.3)
 
         # Plot 10: Object class histogram
-        valid_objclass = mat_sats[:, idx['objectclass']][~np.isnan(mat_sats[:, idx['objectclass']])]
+        valid_objclass = mat_sats[:, idx['objectclass']][~np.isnan(
+            mat_sats[:,
+            idx['objectclass']])]
         if len(valid_objclass) > 0:
-            axes[1,4].hist(valid_objclass, bins=range(1, 12), alpha=0.7, edgecolor='black')
+            axes[1,4].hist(
+                valid_objclass,
+                bins=range(1,
+                12),
+                alpha=0.7,
+                edgecolor='black')
             axes[1,4].set_xlabel('Object Class')
             axes[1,4].set_ylabel('Count')
             axes[1,4].grid(True, alpha=0.3)
 
         # Plot 11: Mass vs Radius
-        mass_radius_valid = (mat_sats[:, idx['mass']] > 0) & (mat_sats[:, idx['radius']] > 0)
+        mass_radius_valid = (
+            mat_sats[:,
+            idx['mass']] > 0) & (mat_sats[:,
+            idx['radius']] > 0)
         if np.any(mass_radius_valid):
             axes[2,0].scatter(mat_sats[mass_radius_valid, idx['radius']],
                             mat_sats[mass_radius_valid, idx['mass']],

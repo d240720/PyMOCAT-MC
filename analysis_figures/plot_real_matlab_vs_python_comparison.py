@@ -91,8 +91,13 @@ def plot_real_matlab_vs_python_comparison():
     ax2.grid(True, alpha=0.3)
     
     mean_diff_ecc = np.mean(matlab_eccentricity) - np.mean(python_eccentricity)
-    ks_stat_ecc, ks_p_ecc = stats.ks_2samp(matlab_eccentricity, python_eccentricity)
-    ax2.text(0.98, 0.02, f'Mean ecc:\nMATLAB: {np.mean(matlab_eccentricity):.4f}\nPython: {np.mean(python_eccentricity):.4f}\nDiff: {mean_diff_ecc:.5f}\nKS: p={ks_p_ecc:.4f}', 
+    ks_stat_ecc, ks_p_ecc = stats.ks_2samp(
+        matlab_eccentricity,
+        python_eccentricity)
+    ax2.text(
+        0.98,
+        0.02,
+        f'Mean ecc:\nMATLAB: {np.mean(matlab_eccentricity):.4f}\nPython: {np.mean(python_eccentricity):.4f}\nDiff: {mean_diff_ecc:.5f}\nKS: p={ks_p_ecc:.4f}', 
              transform=ax2.transAxes, va='bottom', ha='right', fontsize=14,
              bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
@@ -118,10 +123,18 @@ def plot_real_matlab_vs_python_comparison():
     # Add orbital regime references
     for inc, label in [(28.5, 'Cape'), (51.6, 'ISS'), (98, 'SSO')]:
         ax3.axvline(inc, color='red', linestyle='--', alpha=0.5, linewidth=1)
-        ax3.text(inc, ax3.get_ylim()[1]*0.85, label, ha='center', fontsize=12, color='red')
+        ax3.text(
+            inc,
+            ax3.get_ylim()[1]*0.85,
+            label,
+            ha='center',
+            fontsize=12,
+            color='red')
     
     mean_diff_inc = np.mean(matlab_inclination) - np.mean(python_inclination)
-    ks_stat_inc, ks_p_inc = stats.ks_2samp(matlab_inclination, python_inclination)
+    ks_stat_inc, ks_p_inc = stats.ks_2samp(
+        matlab_inclination,
+        python_inclination)
     ax3.text(0.98, 0.02, f'Mean inc diff: {mean_diff_inc:.2f}°\nKS test: p={ks_p_inc:.4f}', 
              transform=ax3.transAxes, va='bottom', ha='right', fontsize=14,
              bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
@@ -141,26 +154,51 @@ def plot_real_matlab_vs_python_comparison():
     
     ax4.set_xlabel('Orbital Period (minutes)', fontsize=18, fontweight='bold')
     ax4.set_ylabel('Number of Objects', fontsize=18, fontweight='bold')
-    ax4.set_title('Orbital Period Distribution', fontsize=20, fontweight='bold')
+    ax4.set_title(
+        'Orbital Period Distribution',
+        fontsize=20,
+        fontweight='bold')
     ax4.tick_params(axis='both', which='major', labelsize=16)
     ax4.grid(True, alpha=0.3)
     
     # Add period references  
     for period, label in [(90, 'LEO'), (93, 'ISS'), (103, 'SSO')]:
-        ax4.axvline(period, color='red', linestyle='--', alpha=0.5, linewidth=1)
-        ax4.text(period, ax4.get_ylim()[1]*0.8, label, ha='center', fontsize=12, color='red', rotation=90)
+        ax4.axvline(
+            period,
+            color='red',
+            linestyle='--',
+            alpha=0.5,
+            linewidth=1)
+        ax4.text(
+            period,
+            ax4.get_ylim()[1]*0.8,
+            label,
+            ha='center',
+            fontsize=12,
+            color='red',
+            rotation=90)
     
     # Period statistics - most critical for Kepler's law validation
-    period_ks_stat, period_ks_p = stats.ks_2samp(matlab_periods, python_periods)
+    period_ks_stat, period_ks_p = stats.ks_2samp(
+        matlab_periods,
+        python_periods)
     mean_diff_period = np.mean(matlab_periods) - np.mean(python_periods)
     std_diff_period = np.std(matlab_periods) - np.std(python_periods)
-    ax4.text(0.98, 0.02, f'Mean periods:\nMATLAB: {np.mean(matlab_periods):.2f} ± {np.std(matlab_periods):.2f}\nPython: {np.mean(python_periods):.2f} ± {np.std(python_periods):.2f}\nDiff: {mean_diff_period:.3f} min\nKS test: p={period_ks_p:.4f}', 
+    ax4.text(
+        0.98,
+        0.02,
+        f'Mean periods:\nMATLAB: {np.mean(matlab_periods):.2f} ± {np.std(matlab_periods):.2f}\nPython: {np.mean(python_periods):.2f} ± {np.std(python_periods):.2f}\nDiff: {mean_diff_period:.3f} min\nKS test: p={period_ks_p:.4f}', 
              transform=ax4.transAxes, va='bottom', ha='right', fontsize=14,
              bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
     # Create single legend at bottom
     handles, labels = ax1.get_legend_handles_labels()
-    fig.legend(handles, labels, loc='lower center', bbox_to_anchor=(0.5, -0.02), 
+    fig.legend(
+        handles,
+        labels,
+        loc='lower center',
+        bbox_to_anchor=(0.5,
+        -0.02), 
                ncol=2, fontsize=18, frameon=True, fancybox=True, shadow=True)
     
     # Overall formatting
@@ -172,7 +210,8 @@ def plot_real_matlab_vs_python_comparison():
     plt.subplots_adjust(top=0.88, bottom=0.08, hspace=0.25)
     
     # Save figure
-    plt.savefig('../paper/figures/matlab_python_orbital_comparison.png', dpi=300, bbox_inches='tight',
+    \
+        plt.savefig('../paper/figures/matlab_python_orbital_comparison.png', dpi=300, bbox_inches='tight',
                 facecolor='white', edgecolor='none')
     
     plt.show()

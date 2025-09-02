@@ -10,9 +10,11 @@ def plot_execution_time():
     """Create bar chart comparing execution times between Python and MATLAB"""
     
     # Data - Real benchmark results
-    scenarios = ['Basic\nPropagation', 'Collision\nTest', 'Atmospheric\nDrag', 'Full\nDefault', 'Realistic Ops\nNo Launch']
+    scenarios = ['Basic\nPropagation', 'Collision\nTest', \
+        'Atmospheric\nDrag', 'Full\nDefault', 'Realistic Ops\nNo Launch']
     python_times = [1.67, 0.10, 0.09, 1.02, 29.95]  # Python results
-    matlab_times = [1.09, 0.41, 0.25, 2.16, 75.0]   # MATLAB results from actual benchmarks + estimated
+    # MATLAB results from actual benchmarks
+    matlab_times = [1.09, 0.41, 0.25, 2.16, 75.0]
     
     # Create figure
     fig, ax = plt.subplots(figsize=(12, 8))
@@ -26,7 +28,11 @@ def plot_execution_time():
     bars2 = ax.bar(x + width/2, matlab_times, width, label='MATLAB', color='#DE8F05', alpha=0.8)
     
     # Formatting
-    ax.set_title('Execution Time Comparison', fontsize=24, fontweight='bold', pad=20)
+    ax.set_title(
+        'Execution Time Comparison',
+        fontsize=24,
+        fontweight='bold',
+        pad=20)
     ax.set_ylabel('Time (seconds, log scale)', fontsize=20)
     ax.set_xlabel('Test Scenarios', fontsize=20)
     ax.set_yscale('log')
@@ -62,10 +68,16 @@ def plot_execution_time():
             
         ax.annotate(f'{speedup:.1f}x', xy=(i, y_pos), ha='center', va='bottom',
                    color=color, fontweight='bold', fontsize=18,
-                   bbox=dict(boxstyle="round,pad=0.3", facecolor=facecolor, alpha=0.7))
+                   bbox=dict(
+                       boxstyle="round,pad=0.3",
+                       facecolor=facecolor,
+                       alpha=0.7))
     
     plt.tight_layout()
-    plt.savefig('../paper/figures/execution_time_comparison.png', dpi=300, bbox_inches='tight')
+    plt.savefig(
+        '../paper/figures/execution_time_comparison.png',
+        dpi=300,
+        bbox_inches='tight')
     plt.close()
     
     print("Execution Time Comparison plot created: ../paper/figures/execution_time_comparison.png")

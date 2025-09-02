@@ -14,6 +14,7 @@ class CfgMCConstants:
     """
 
     def __init__(self):
+        """Initialize the class."""
         # Set conversion units
         self.DAY2MIN = 60 * 24
         self.DAY2SEC = self.DAY2MIN * 60

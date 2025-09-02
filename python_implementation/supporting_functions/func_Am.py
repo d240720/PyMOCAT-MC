@@ -47,7 +47,9 @@ def func_Am(d, obj_class):
         if np.isscalar(obj_class):
             rocket_body = is_rocket
         else:
-            rocket_body = is_rocket[ind] if hasattr(is_rocket, '__len__') else is_rocket
+            rocket_body = is_rocket[ind] if hasattr(
+                is_rocket,
+                '__len__') else is_rocket
 
         if rocket_body:  # Rocket-body related
             # alpha
