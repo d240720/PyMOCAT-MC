@@ -58,17 +58,17 @@ def plot_real_matlab_vs_python_comparison():
            label='Python', 
            color='#A23B72', alpha=0.7, edgecolor='black', linewidth=0.5)
     
-    ax1.set_xlabel('Altitude (km)', fontsize=18, fontweight='bold')
-    ax1.set_ylabel('Number of Objects', fontsize=18, fontweight='bold')
-    ax1.set_title('Altitude Distribution', fontsize=20, fontweight='bold')
-    ax1.tick_params(axis='both', which='major', labelsize=16)
+    ax1.set_xlabel('Altitude (km)', fontsize=20, fontweight='bold')
+    ax1.set_ylabel('Number of Objects', fontsize=20, fontweight='bold')
+    ax1.set_title('Altitude Distribution', fontsize=24, fontweight='bold')
+    ax1.tick_params(axis='both', which='major', labelsize=18)
     ax1.grid(True, alpha=0.3)
     
     # Statistics
     ks_stat_alt, ks_p_alt = stats.ks_2samp(matlab_altitudes, python_altitudes)
     mean_diff_alt = np.mean(matlab_altitudes) - np.mean(python_altitudes)
     ax1.text(0.98, 0.02, f'KS test: p={ks_p_alt:.4f}\nMean diff: {mean_diff_alt:.1f} km\nΔ objects: +{len(matlab_altitudes) - len(python_altitudes)}', 
-             transform=ax1.transAxes, va='bottom', ha='right', fontsize=14,
+             transform=ax1.transAxes, va='bottom', ha='right', fontsize=16,
              bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
     # === Panel 2: Eccentricity Distribution ===
@@ -84,10 +84,10 @@ def plot_real_matlab_vs_python_comparison():
     ax2.bar(bin_centers_ecc + width_ecc/2, n_python_ecc, width=width_ecc,
            label='Python', color='#A23B72', alpha=0.7, edgecolor='black', linewidth=0.5)
     
-    ax2.set_xlabel('Eccentricity', fontsize=18, fontweight='bold')
-    ax2.set_ylabel('Number of Objects', fontsize=18, fontweight='bold')
-    ax2.set_title('Eccentricity Distribution', fontsize=20, fontweight='bold')
-    ax2.tick_params(axis='both', which='major', labelsize=16)
+    ax2.set_xlabel('Eccentricity', fontsize=20, fontweight='bold')
+    ax2.set_ylabel('Number of Objects', fontsize=20, fontweight='bold')
+    ax2.set_title('Eccentricity Distribution', fontsize=24, fontweight='bold')
+    ax2.tick_params(axis='both', which='major', labelsize=18)
     ax2.grid(True, alpha=0.3)
     
     mean_diff_ecc = np.mean(matlab_eccentricity) - np.mean(python_eccentricity)
@@ -98,7 +98,7 @@ def plot_real_matlab_vs_python_comparison():
         0.98,
         0.02,
         f'Mean ecc:\nMATLAB: {np.mean(matlab_eccentricity):.4f}\nPython: {np.mean(python_eccentricity):.4f}\nDiff: {mean_diff_ecc:.5f}\nKS: p={ks_p_ecc:.4f}', 
-             transform=ax2.transAxes, va='bottom', ha='right', fontsize=14,
+             transform=ax2.transAxes, va='bottom', ha='right', fontsize=16,
              bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
     # === Panel 3: Inclination Distribution ===
@@ -114,10 +114,10 @@ def plot_real_matlab_vs_python_comparison():
     ax3.bar(bin_centers_inc + width_inc/2, n_python_inc, width=width_inc,
            label='Python', color='#A23B72', alpha=0.7, edgecolor='black', linewidth=0.5)
     
-    ax3.set_xlabel('Inclination (degrees)', fontsize=18, fontweight='bold')
-    ax3.set_ylabel('Number of Objects', fontsize=18, fontweight='bold')
-    ax3.set_title('Inclination Distribution', fontsize=20, fontweight='bold')
-    ax3.tick_params(axis='both', which='major', labelsize=16)
+    ax3.set_xlabel('Inclination (degrees)', fontsize=20, fontweight='bold')
+    ax3.set_ylabel('Number of Objects', fontsize=20, fontweight='bold')
+    ax3.set_title('Inclination Distribution', fontsize=24, fontweight='bold')
+    ax3.tick_params(axis='both', which='major', labelsize=18)
     ax3.grid(True, alpha=0.3)
     
     # Add orbital regime references
@@ -128,7 +128,7 @@ def plot_real_matlab_vs_python_comparison():
             ax3.get_ylim()[1]*0.85,
             label,
             ha='center',
-            fontsize=12,
+            fontsize=14,
             color='red')
     
     mean_diff_inc = np.mean(matlab_inclination) - np.mean(python_inclination)
@@ -136,7 +136,7 @@ def plot_real_matlab_vs_python_comparison():
         matlab_inclination,
         python_inclination)
     ax3.text(0.98, 0.02, f'Mean inc diff: {mean_diff_inc:.2f}°\nKS test: p={ks_p_inc:.4f}', 
-             transform=ax3.transAxes, va='bottom', ha='right', fontsize=14,
+             transform=ax3.transAxes, va='bottom', ha='right', fontsize=16,
              bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
     # === Panel 4: Orbital Period Distribution ===
@@ -152,13 +152,13 @@ def plot_real_matlab_vs_python_comparison():
     ax4.bar(bin_centers_period + width_period/2, n_python_period, width=width_period,
            label='Python', color='#A23B72', alpha=0.7, edgecolor='black', linewidth=0.5)
     
-    ax4.set_xlabel('Orbital Period (minutes)', fontsize=18, fontweight='bold')
-    ax4.set_ylabel('Number of Objects', fontsize=18, fontweight='bold')
+    ax4.set_xlabel('Orbital Period (minutes)', fontsize=20, fontweight='bold')
+    ax4.set_ylabel('Number of Objects', fontsize=20, fontweight='bold')
     ax4.set_title(
         'Orbital Period Distribution',
-        fontsize=20,
+        fontsize=24,
         fontweight='bold')
-    ax4.tick_params(axis='both', which='major', labelsize=16)
+    ax4.tick_params(axis='both', which='major', labelsize=18)
     ax4.grid(True, alpha=0.3)
     
     # Add period references  
@@ -174,7 +174,7 @@ def plot_real_matlab_vs_python_comparison():
             ax4.get_ylim()[1]*0.8,
             label,
             ha='center',
-            fontsize=12,
+            fontsize=14,
             color='red',
             rotation=90)
     
@@ -188,7 +188,7 @@ def plot_real_matlab_vs_python_comparison():
         0.98,
         0.02,
         f'Mean periods:\nMATLAB: {np.mean(matlab_periods):.2f} ± {np.std(matlab_periods):.2f}\nPython: {np.mean(python_periods):.2f} ± {np.std(python_periods):.2f}\nDiff: {mean_diff_period:.3f} min\nKS test: p={period_ks_p:.4f}', 
-             transform=ax4.transAxes, va='bottom', ha='right', fontsize=14,
+             transform=ax4.transAxes, va='bottom', ha='right', fontsize=16,
              bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
     # Create single legend at bottom
@@ -199,14 +199,14 @@ def plot_real_matlab_vs_python_comparison():
         loc='lower center',
         bbox_to_anchor=(0.5,
         -0.02), 
-               ncol=2, fontsize=18, frameon=True, fancybox=True, shadow=True)
+               ncol=2, fontsize=20, frameon=True, fancybox=True, shadow=True)
     
     # Overall formatting
     plt.tight_layout()
     
     # Add main title with more space
     fig.suptitle('Orbital Distribution Validation: Full Default Scenario', 
-                 fontsize=24, fontweight='bold', y=0.95)
+                 fontsize=28, fontweight='bold', y=0.95)
     plt.subplots_adjust(top=0.88, bottom=0.08, hspace=0.25)
     
     # Save figure

@@ -214,7 +214,7 @@ PyMOCAT-MC/
 │   │   ├── TLEhistoric/               # Historical TLE data (2000-2023)
 │   │   ├── dens_jb2008_032020_022224.mat  # Atmospheric density data
 │   │   └── megaconstellationLaunches.xlsx  # Launch schedules
-├── paper/                             # JOSS paper submission
+├── paper/                             # Paper submission
 │   ├── paper.md                       # Main paper manuscript
 │   ├── paper.bib                      # Bibliography
 │   ├── paper.pdf                      # Compiled PDF version
@@ -257,7 +257,6 @@ PyMOCAT-MC/
 │   ├── supporting_functions/          # MATLAB supporting functions (~120 files)
 │   ├── supporting_data/               # MATLAB data files
 │   └── tests/                         # MATLAB test suite
-├── paper/                             # JOSS paper and figures
 ├── setup_environment.py               # Automated environment setup
 ├── requirements.txt                   # Python dependencies
 ├── pyproject.toml                     # Modern Python packaging configuration
