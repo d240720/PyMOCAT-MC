@@ -78,7 +78,7 @@ In addition to matching the accuracy of MATLAB, the Python version delivers subs
 
 ![Runtime comparison between MATLAB and Python implementations for multiple scenarios, showing up to a 4× improvement in computational speed for PyMOCAT-MC.](figures/execution_time_comparison.png){width=80%}
 
-Error analysis confirms that the differences between MATLAB and Python remain minimal across test scenarios and object types. Figure 2 shows that end-of-simulation relative errors are uniformly low across all object types and test scenarios, with a mean relative error of 0.63% and a maximum error of 1.96%. Figure 3 provides additional detail through box plots, demonstrating that errors for active satellites and debris are consistently lower than 0.61%. These sub-1% differences are negligible compared to the variance typically observed between different orbital evolution models [@jang2025newmontecarlo].
+Error analysis confirms that the differences between MATLAB and Python remain minimal across test scenarios and object types. Figure 2 shows that end-of-simulation relative errors are uniformly low across all object types and test scenarios, with a mean relative error of 0.63% and a maximum error of 1.96%. Figure 3 provides additional detail through box plots, demonstrating that errors for active satellites and debris are consistently lower than 0.65%. These sub-1% differences are negligible compared to the variance typically observed between different orbital evolution models [@jang2025newmontecarlo].
 
 ![Heatmap of relative error (%) across test scenarios and object types, showing end-of-simulation accuracy of the Python implementation compared to MATLAB.](figures/object_type_percentage_heatmap.png){width=80%}
 
@@ -86,7 +86,7 @@ Error analysis confirms that the differences between MATLAB and Python remain mi
 
 Figure 4 compares orbital element distributions between MATLAB and Python implementations. Statistical validation using Kolmogorov-Smirnov tests shows excellent agreement (all p-values > 0.05), confirming identical orbital mechanics implementation.
 
-![MATLAB vs Python orbital element distribution comparison showing altitude, eccentricity, inclination, and orbital period distributions, with statistical validation confirming identical orbital mechanics implementation.](figures/matlab_python_orbital_comparison.png){width=80%}
+![MATLAB vs Python orbital element distribution comparison showing altitude, eccentricity, inclination, and orbital period distributions.](figures/matlab_python_orbital_comparison.png){width=80%}
 
 With this validated accuracy and improved performance, PyMOCAT-MC can be applied to test how different launch strategies influence orbital sustainability, evaluate debris mitigation policies, and generate scenario libraries that inform both engineering design and regulatory decision-making.
 
