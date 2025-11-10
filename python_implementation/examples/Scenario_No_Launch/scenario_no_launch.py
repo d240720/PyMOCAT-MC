@@ -9,7 +9,15 @@ and plots the evolution of decayed objects over time.
 
 import numpy as np
 import matplotlib.pyplot as plt
-from pymocat_mc import MOCATMC
+import sys
+import os
+
+# Add python_implementation directory to path for imports
+script_dir = os.path.dirname(os.path.abspath(__file__))
+python_impl_dir = os.path.dirname(os.path.dirname(script_dir))
+sys.path.insert(0, python_impl_dir)
+
+from mocat_mc import MOCATMC
 
 
 def scenario_no_launch():

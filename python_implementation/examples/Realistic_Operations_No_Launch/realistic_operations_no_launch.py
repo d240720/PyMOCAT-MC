@@ -8,7 +8,15 @@ Modern space operations parameters without future launches, high-resolution simu
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-from pymocat_mc import MOCATMC
+import sys
+import os
+
+# Add python_implementation directory to path for imports
+script_dir = os.path.dirname(os.path.abspath(__file__))
+python_impl_dir = os.path.dirname(os.path.dirname(script_dir))
+sys.path.insert(0, python_impl_dir)
+
+from mocat_mc import MOCATMC
 
 
 def realistic_operations_no_launch():
