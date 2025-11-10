@@ -1,0 +1,24 @@
+# Include all package files
+include README.md
+include LICENSE
+include requirements.txt
+include pyproject.toml
+include CITATION.cff
+include CONTRIBUTING.md
+include TESTING.md
+
+# Include all Python source files
+recursive-include pymocat_mc *.py
+
+# Include all data files in the package
+recursive-include pymocat_mc/supporting_data *.mat *.xlsx *.txt *.csv
+recursive-include pymocat_mc/examples *.py *.md *.png
+
+# Include test files for development
+recursive-include tests *.py *.sh *.md
+
+# Exclude compiled files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__
+global-exclude .DS_Store

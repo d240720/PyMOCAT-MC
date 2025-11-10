@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Kukreja"
+    given-names: "Rushil"
+    orcid: "https://orcid.org/0009-0005-5282-0013"
+    affiliation: "Thomas Jefferson High School for Science and Technology"
+  - family-names: "Oughton"
+    given-names: "Edward J."
+    orcid: "https://orcid.org/0000-0002-2766-008X"
+    affiliation: "George Mason University"
+  - family-names: "Lavezzi"
+    given-names: "Giovanni"
+    orcid: "https://orcid.org/0000-0002-1990-4574"
+    affiliation: "Massachusetts Institute of Technology"
+  - family-names: "Zucchelli"
+    given-names: "Enrico M."
+    orcid: "https://orcid.org/0000-0001-8894-2016"
+    affiliation: "Massachusetts Institute of Technology"
+  - family-names: "Jang"
+    given-names: "Daniel"
+    orcid: "https://orcid.org/0000-0001-7852-0151"
+    affiliation: "MIT Lincoln Laboratory"
+  - family-names: "Linares"
+    given-names: "Richard"
+    orcid: "https://orcid.org/0000-0001-8325-7378"
+    affiliation: "Massachusetts Institute of Technology"
+title: "PyMOCAT-MC: A Python Implementation of the MIT Orbital Capacity Assessment Toolbox Monte Carlo Module"
+version: 1.0.0
+date-released: 2025-08-13
+doi: "10.5281/zenodo.16831016"
+url: "https://github.com/rushilkukreja/PyMOCAT-MC"
+license: MIT
+keywords:
+  - Python
+  - orbital mechanics
+  - space debris
+  - Monte Carlo simulation
+  - space situational awareness
+  - satellite tracking
+  - orbital capacity
+  - space sustainability
+repository-code: "https://github.com/rushilkukreja/PyMOCAT-MC"
+type: software
+abstract: |
+  This research presents a comprehensive conversion of the MIT Orbital Capacity Assessment Toolbox - Monte Carlo (MOCAT-MC) from MATLAB to Python, maintaining full functional compatibility while leveraging modern Python scientific computing ecosystems. The conversion encompasses over 150 core algorithms and supporting functions, including orbital propagation, collision probability calculations, fragmentation modeling, and atmospheric density modeling. The Python implementation preserves the original MATLAB architecture while introducing vectorized operations, improved memory management, and enhanced modularity through object-oriented design. Key conversion challenges addressed include: (1) Indexing system transformation from MATLAB&#39;s 1-based to Python&#39;s 0-based indexing across all matrix operations, (2) Complex orbital mechanics algorithms requiring precise numerical accuracy preservation, (3) Large-scale Monte Carlo simulations with memory-efficient vectorization, and (4) Integration with Python scientific computing libraries (NumPy, SciPy, Astropy) while maintaining computational performance. The converted codebase includes complete example scenarios with output validation within 0.9% of the original MATLAB implementation. Performance benchmarks demonstrate faster execution times while providing enhanced accessibility through open-source Python dependencies. The conversion enables broader adoption in the space situational awareness community, supporting orbital capacity assessment, agent-based modeling for satellites, and megaconstellation impact analysis through a more accessible and extensible platform.

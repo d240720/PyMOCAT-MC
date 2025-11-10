@@ -12,12 +12,15 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
-# Add parent directories to path to import mocat_mc (go up to python_implementation)
-current_dir = os.path.dirname(os.path.abspath(__file__))
-python_impl_dir = os.path.dirname(os.path.dirname(current_dir))
-sys.path.append(python_impl_dir)
-
-from mocat_mc import MOCATMC
+try:
+    # Try importing from installed package
+    from pymocat_mc import MOCATMC
+except ImportError:
+    # Fall back to local import for development
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    python_impl_dir = os.path.dirname(os.path.dirname(current_dir))
+    sys.path.append(python_impl_dir)
+    from mocat_mc import MOCATMC
 
 
 def quick_start_with_plots():
