@@ -1,3 +1,0 @@
-examples
-supporting_data
-supporting_functions
