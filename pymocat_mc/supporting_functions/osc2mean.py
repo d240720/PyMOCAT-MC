@@ -39,7 +39,7 @@ import os
 # Add supporting functions to path
 sys.path.append(os.path.dirname(__file__))
 
-kepler1 import kepler1
+from .kepler1 import kepler1
 
 
 def atan3(a, b):

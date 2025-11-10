@@ -37,9 +37,9 @@ import os
 # Add supporting functions to path
 sys.path.append(os.path.dirname(__file__))
 
-func_Am import func_Am
-from func_dv import func_dv
-func_create_tlesv2_vec import func_create_tlesv2_vec
+from .func_Am import func_Am
+from .func_dv import func_dv
+from .func_create_tlesv2_vec import func_create_tlesv2_vec
 
 
 def frag_col_sbm_vec(ep, p1_in, p2_in, param):

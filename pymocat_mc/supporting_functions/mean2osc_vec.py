@@ -42,7 +42,7 @@ import os
 # Add supporting functions to path
 sys.path.append(os.path.dirname(__file__))
 
-kepler1_vec import kepler1_vec
+from .kepler1_vec import kepler1_vec
 
 
 def anomly_vec(nflg, ain, e):

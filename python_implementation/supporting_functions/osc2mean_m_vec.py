@@ -31,8 +31,8 @@ import os
 # Add supporting functions to path
 sys.path.append(os.path.dirname(__file__))
 
-osc2mean_vec import osc2mean_vec
-kepler1_vec import kepler1_vec
+from .osc2mean_vec import osc2mean_vec
+from .kepler1_vec import kepler1_vec
 
 
 def osc2mean_m_vec(x, param):

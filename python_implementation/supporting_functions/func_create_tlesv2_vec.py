@@ -29,7 +29,7 @@ import os
 # Add supporting functions to path
 sys.path.append(os.path.dirname(__file__))
 
-rv2coe_vec import rv2coe_vec
+from .rv2coe_vec import rv2coe_vec
 from filter_objclass_fragments_int import filter_objclass_fragments_int
 
 

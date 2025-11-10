@@ -31,7 +31,7 @@ import os
 # Add supporting functions to path
 sys.path.append(os.path.dirname(__file__))
 
-mean2osc import mean2osc
+from .mean2osc import mean2osc
 
 
 def mean2osc_m(x, param):

@@ -24,11 +24,11 @@ from get_idx import get_idx
 from categorize_obj import categorize_obj
 from prop_mit_vec import prop_mit_vec
 from orbcontrol_vec import orbcontrol_vec
-cube_vec_v3 import cube_vec_v3
+from .cube_vec_v3 import cube_vec_v3
 from collision_prob_vec import collision_prob_vec
 from frag_col_sbm_vec import frag_col_sbm_vec
 from frag_exp_sbm_vec import frag_exp_sbm_vec
-jd2date import jd2date
+from .jd2date import jd2date
 
 
 def main_mc(
