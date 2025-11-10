@@ -46,9 +46,9 @@ jobs:
       run: |
         pip install flake8
         # Stop build if there are Python syntax errors or undefined names
-        flake8 python_implementation --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 pymocat_mc --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats all errors as warnings
-        flake8 python_implementation --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        flake8 pymocat_mc --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     
     - name: Run tests
       run: |
@@ -87,7 +87,7 @@ jobs:
     
     - name: Run performance benchmarks
       run: |
-        cd python_implementation && python examples/Quick_Start/quick_start.py
+        python pymocat_mc/examples/Quick_Start/quick_start.py
     
     - name: Check memory usage
       run: |
@@ -113,7 +113,7 @@ jobs:
     - name: Check docstrings
       run: |
         pip install pydocstyle
-        pydocstyle python_implementation --convention=numpy || true
+        pydocstyle pymocat_mc --convention=numpy || true
     
     - name: Build documentation
       run: |
