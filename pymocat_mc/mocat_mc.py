@@ -123,7 +123,8 @@ class MOCATMC:
         fillin_atmosphere = self._get_supporting_function('fillin_atmosphere', 'fillin_atmosphere')
 
         # Prepare initial condition population
-        fillin_physical_parameters()
+        cfg_mc = fillin_physical_parameters(cfg_mc)
+        cfg_mc['physicalBstar'] = True
 
         # Initialize initial condition population and launches
         cfg_mc = init_sim(cfg_mc, simulation, launch_model, ic_file)
@@ -148,7 +149,7 @@ class MOCATMC:
         cfg_mc['collision_alt_limit'] = 45000
 
         # Atmosphere
-        fillin_atmosphere()
+        cfg_mc = fillin_atmosphere(cfg_mc)
 
         # Output settings
         cfg_mc['animation'] = 'no'

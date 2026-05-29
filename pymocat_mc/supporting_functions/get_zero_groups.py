@@ -75,8 +75,14 @@ def getZeroGroups(inmatsat):
                     mass_values = inmatsat[g1['nz'], idx_mass]
 
                     # Identify outliers using modified Z-score method
-                    radius_outliers = np.abs(stats.zscore(radius_values)) > 3
-                    mass_outliers = np.abs(stats.zscore(mass_values)) > 3
+                    # Use MAD-based outlier detection matching MATLAB's isoutlier
+                    radius_median = np.median(radius_values)
+                    radius_mad = np.median(np.abs(radius_values - radius_median))
+                    radius_outliers = np.abs(radius_values - radius_median) > 3 * 1.4826 * radius_mad
+
+                    mass_median = np.median(mass_values)
+                    mass_mad = np.median(np.abs(mass_values - mass_median))
+                    mass_outliers = np.abs(mass_values - mass_median) > 3 * 1.4826 * mass_mad
 
                     outlier_mask = radius_outliers | mass_outliers
                     g1['nzno'] = g1['nz'][~outlier_mask]
@@ -109,8 +115,14 @@ def getZeroGroups(inmatsat):
                     mass_values = inmatsat[g2['nz'], idx_mass]
 
                     # Identify outliers using modified Z-score method
-                    radius_outliers = np.abs(stats.zscore(radius_values)) > 3
-                    mass_outliers = np.abs(stats.zscore(mass_values)) > 3
+                    # Use MAD-based outlier detection matching MATLAB's isoutlier
+                    radius_median = np.median(radius_values)
+                    radius_mad = np.median(np.abs(radius_values - radius_median))
+                    radius_outliers = np.abs(radius_values - radius_median) > 3 * 1.4826 * radius_mad
+
+                    mass_median = np.median(mass_values)
+                    mass_mad = np.median(np.abs(mass_values - mass_median))
+                    mass_outliers = np.abs(mass_values - mass_median) > 3 * 1.4826 * mass_mad
 
                     outlier_mask = radius_outliers | mass_outliers
                     g2['nzno'] = g2['nz'][~outlier_mask]
@@ -144,9 +156,14 @@ def getZeroGroups(inmatsat):
             radius_values = inmatsat[g3['nz'], idx_radius]
             mass_values = inmatsat[g3['nz'], idx_mass]
 
-            # Identify outliers using modified Z-score method
-            radius_outliers = np.abs(stats.zscore(radius_values)) > 3
-            mass_outliers = np.abs(stats.zscore(mass_values)) > 3
+            # Use MAD-based outlier detection matching MATLAB's isoutlier
+            radius_median = np.median(radius_values)
+            radius_mad = np.median(np.abs(radius_values - radius_median))
+            radius_outliers = np.abs(radius_values - radius_median) > 3 * 1.4826 * radius_mad
+
+            mass_median = np.median(mass_values)
+            mass_mad = np.median(np.abs(mass_values - mass_median))
+            mass_outliers = np.abs(mass_values - mass_median) > 3 * 1.4826 * mass_mad
 
             outlier_mask = radius_outliers | mass_outliers
             g3['nzno'] = g3['nz'][~outlier_mask]

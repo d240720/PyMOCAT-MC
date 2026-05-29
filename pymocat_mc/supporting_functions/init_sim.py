@@ -98,7 +98,13 @@ def init_sim(cfg: Dict, simulation: str, launch_model: str,
     )
     mat_sats = mat_sats[altitude_mask, :]
 
-    # Fill in missing mass/radius data (simplified)
+    # Step 1: resample missing mass/radius from GMM
+    fill_method = cfg.get('fillMassRadius', 2)
+    if fill_method == 2:
+        from .fill_mass_radius_resample import fillMassRadiusResample
+        mat_sats, _, _, _ = fillMassRadiusResample(mat_sats)
+
+    # Step 2: fill any remaining zeros with simple defaults
     mat_sats = fill_missing_physical_params(mat_sats, idx)
 
     # Mark old payloads as derelict

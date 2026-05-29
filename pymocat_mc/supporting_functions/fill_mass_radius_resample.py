@@ -93,9 +93,8 @@ def fillMassRadiusResample(inmatsat, *args):
         # Fit new GM models
 
         # Group 1 (Payloads)
-        X = inmatsat[g1['nzno'], [idx_radius, idx_mass]] if len(
-            g1['nzno']) > 0 else np.empty((0,
-            2))
+        X = inmatsat[np.ix_(g1['nzno'], [idx_radius, idx_mass])] if len(
+            g1['nzno']) > 0 else np.empty((0, 2))
         if X.shape[0] > 0:
             gm1 = GaussianMixture(n_components=1, random_state=42)
             gm1.fit(X)
@@ -104,9 +103,8 @@ def fillMassRadiusResample(inmatsat, *args):
             g1['gm'] = GMDistribution()
 
         # Group 2 (Rocket Bodies)
-        X = inmatsat[g2['nzno'], [idx_radius, idx_mass]] if len(
-            g2['nzno']) > 0 else np.empty((0,
-            2))
+        X = inmatsat[np.ix_(g2['nzno'], [idx_radius, idx_mass])] if len(
+            g2['nzno']) > 0 else np.empty((0, 2))
         if X.shape[0] > 0:
             gm2 = GaussianMixture(n_components=1, random_state=42)
             gm2.fit(X)
@@ -115,9 +113,8 @@ def fillMassRadiusResample(inmatsat, *args):
             g2['gm'] = GMDistribution()
 
         # Group 3 (Debris)
-        X = inmatsat[g3['nzno'], [idx_radius, idx_mass]] if len(
-            g3['nzno']) > 0 else np.empty((0,
-            2))
+        X = inmatsat[np.ix_(g3['nzno'], [idx_radius, idx_mass])] if len(
+            g3['nzno']) > 0 else np.empty((0, 2))
         if X.shape[0] > 0:
             gm3 = GaussianMixture(n_components=1, random_state=42)
             gm3.fit(X)
@@ -142,7 +139,7 @@ def fillMassRadiusResample(inmatsat, *args):
             cursamp = cursamp[valid_mask]
 
             if len(cursamp) >= n_needed:
-                outmatsat[missing_indices, [idx_radius, idx_mass]] = cursamp[:n_needed]
+                outmatsat[np.ix_(missing_indices, [idx_radius, idx_mass])] = cursamp[:n_needed]
                 resampled_counts[0] = n_needed
             else:
                 warnings.warn(f"Not enough valid samples for group 1: \
@@ -161,7 +158,7 @@ def fillMassRadiusResample(inmatsat, *args):
             cursamp = cursamp[valid_mask]
 
             if len(cursamp) >= n_needed:
-                outmatsat[missing_indices, [idx_radius, idx_mass]] = cursamp[:n_needed]
+                outmatsat[np.ix_(missing_indices, [idx_radius, idx_mass])] = cursamp[:n_needed]
                 resampled_counts[1] = n_needed
             else:
                 warnings.warn(f"Not enough valid samples for group 2: \
@@ -180,7 +177,7 @@ def fillMassRadiusResample(inmatsat, *args):
             cursamp = cursamp[valid_mask]
 
             if len(cursamp) >= n_needed:
-                outmatsat[missing_indices, [idx_radius, idx_mass]] = cursamp[:n_needed]
+                outmatsat[np.ix_(missing_indices, [idx_radius, idx_mass])] = cursamp[:n_needed]
                 resampled_counts[2] = n_needed
             else:
                 warnings.warn(f"Not enough valid samples for group 3: \

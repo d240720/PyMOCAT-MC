@@ -110,8 +110,13 @@ def main_mc(
 
     if 'paramSSEM' in cfg:
         param['paramSSEM'] = cfg['paramSSEM']
-
     param['sample_params'] = cfg.get('sample_params', 0)
+
+    # Copy JB2008 atmosphere data if available
+    if 'param' in cfg:
+        param['dens_times'] = cfg['param'].get('dens_times', None)
+        param['alt'] = cfg['param'].get('alt', None)
+        param['dens_value'] = cfg['param'].get('dens_value', None)
 
     # SSEM species: [S,D,N,Su,B,U]
     param_ssem = {'species': np.array([1, 1, 1, 0, 0, 0])}
@@ -152,15 +157,21 @@ def main_mc(
     a_store = mat_sats[:, idx['a']]
     controlled_store = mat_sats[:, idx['controlled']].astype(int)
 
-    # Extract initial species numbers
+ # Extract initial species numbers
     nS, nD, nN, nB = categorize_obj(objclassint_store, controlled_store)
-    
-    
+
+    # Count only objects within shell range (200-2000km) for history
+    alt_init = mat_sats[:, idx['a']] * constants.radiusearthkm - constants.radiusearthkm
+    shell_mask_init = (alt_init >= 200) & (alt_init <= 2000)
+    objclass_shell_init = mat_sats[shell_mask_init, idx['objectclass']].astype(int)
+    controlled_shell_init = mat_sats[shell_mask_init, idx['controlled']].astype(int)
+    nS_s, nD_s, nN_s, nB_s = categorize_obj(objclass_shell_init, controlled_shell_init)
+
     # History tracking
-    history_S = [nS]
-    history_D = [nD]
-    history_N = [nN]
-    history_B = [nB]
+    history_S = [nS_s]
+    history_D = [nD_s]
+    history_N = [nN_s]
+    history_B = [nB_s]
     history_years = [time0.year + time0.timetuple().tm_yday / 365.25]
 
     # Test save if needed
@@ -405,11 +416,16 @@ def main_mc(
         nS, nD, nN, nB = categorize_obj(objclassint_store, controlled_store)
         
         
-        # Append to history
-        history_S.append(nS)
-        history_D.append(nD)
-        history_N.append(nN)
-        history_B.append(nB)
+        # Count only objects within shell range (200-2000km)
+        alt = mat_sats[:, idx['a']] * constants.radiusearthkm - constants.radiusearthkm
+        shell_mask = (alt >= 200) & (alt <= 2000)
+        objclass_shell = mat_sats[shell_mask, idx['objectclass']].astype(int)
+        controlled_shell = mat_sats[shell_mask, idx['controlled']].astype(int)
+        nS_shell, nD_shell, nN_shell, nB_shell = categorize_obj(objclass_shell, controlled_shell)
+        history_S.append(nS_shell)
+        history_D.append(nD_shell)
+        history_N.append(nN_shell)
+        history_B.append(nB_shell)
         history_years.append(current_time.year + current_time.timetuple().tm_yday / 365.25)
 
         # Print status
