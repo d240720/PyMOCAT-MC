@@ -26,7 +26,7 @@ import os
 # Add supporting functions to path
 sys.path.append(os.path.dirname(__file__))
 
-from get_zero_groups import getZeroGroups
+from .get_zero_groups import getZeroGroups
 
 
 class GMDistribution:

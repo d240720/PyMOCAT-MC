@@ -124,9 +124,11 @@ def main():
     print(f"{BOLD}{'='*60}{RESET}")
     
     # Get paths
-    test_dir = Path(__file__).parent  # tests/ directory 
+    test_dir = Path(__file__).parent  # tests/ directory
+    
     repo_root = test_dir.parent       # repository root
-    examples_dir = repo_root / "python_implementation" / "examples"
+    print(repo_root)
+    examples_dir = repo_root / "pymocat_mc" / "examples"
     
     # Define tests to run
     tests = [

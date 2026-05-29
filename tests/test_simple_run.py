@@ -12,7 +12,7 @@ sys.path.append(
     'python_implementation'))
 
 try:
-    from mocat_mc import MOCATMC
+    from pymocat_mc import MOCATMC
     
     print("Running simple 1-step simulation...")
     start_time = time.time()

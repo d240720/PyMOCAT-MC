@@ -19,15 +19,15 @@ import warnings
 # Add supporting functions to path
 sys.path.append(os.path.dirname(__file__))
 
-from cfg_mc_constants import CfgMCConstants
-from get_idx import get_idx
-from categorize_obj import categorize_obj
-from prop_mit_vec import prop_mit_vec
-from orbcontrol_vec import orbcontrol_vec
+from .cfg_mc_constants import CfgMCConstants
+from .get_idx import get_idx
+from .categorize_obj import categorize_obj
+from .prop_mit_vec import prop_mit_vec
+from .orbcontrol_vec import orbcontrol_vec
 from .cube_vec_v3 import cube_vec_v3
-from collision_prob_vec import collision_prob_vec
-from frag_col_sbm_vec import frag_col_sbm_vec
-from frag_exp_sbm_vec import frag_exp_sbm_vec
+from .collision_prob_vec import collision_prob_vec
+from .frag_col_sbm_vec import frag_col_sbm_vec
+from .frag_exp_sbm_vec import frag_exp_sbm_vec
 from .jd2date import jd2date
 
 
@@ -122,10 +122,10 @@ def main_mc(
     # For tracking
     num_objects = np.zeros(n_time)
     num_objects[0] = n_sats
-    count_coll = np.zeros(n_time, dtype=np.uint8)
-    count_expl = np.zeros(n_time, dtype=np.uint8)
-    count_debris_coll = np.zeros(n_time, dtype=np.uint8)
-    count_debris_expl = np.zeros(n_time, dtype=np.uint8)
+    count_coll = np.zeros(n_time, dtype=np.uint32)
+    count_expl = np.zeros(n_time, dtype=np.uint32)
+    count_debris_coll = np.zeros(n_time, dtype=np.uint32)
+    count_debris_expl = np.zeros(n_time, dtype=np.uint32)
 
     # Initialize tracking variables
     num_pmd = 0
@@ -154,6 +154,14 @@ def main_mc(
 
     # Extract initial species numbers
     nS, nD, nN, nB = categorize_obj(objclassint_store, controlled_store)
+    
+    
+    # History tracking
+    history_S = [nS]
+    history_D = [nD]
+    history_N = [nN]
+    history_B = [nB]
+    history_years = [time0.year + time0.timetuple().tm_yday / 365.25]
 
     # Test save if needed
     if save_output_file > 0:
@@ -395,6 +403,14 @@ def main_mc(
         count_debris_expl[n] = len(out_frag)
 
         nS, nD, nN, nB = categorize_obj(objclassint_store, controlled_store)
+        
+        
+        # Append to history
+        history_S.append(nS)
+        history_D.append(nD)
+        history_N.append(nN)
+        history_B.append(nB)
+        history_years.append(current_time.year + current_time.timetuple().tm_yday / 365.25)
 
         # Print status
         print(f'Year {current_time.year} - Day {current_time.timetuple().tm_yday:03d}, '
@@ -404,7 +420,21 @@ def main_mc(
 
     print(f'\n === FINISHED MC RUN (main_mc.py) WITH SEED: {rng_seed} === \n')
 
-    return nS, nD, nN, nB, mat_sats
+    history = {
+        'years': np.array(history_years),
+        'S': np.array(history_S),
+        'D': np.array(history_D),
+        'N': np.array(history_N),
+        'B': np.array(history_B),
+    }
+    return nS, nD, nN, nB, mat_sats, history
+
+
+
+
+
+
+
 
 
 def load_cfg(cfg: Dict) -> Dict:

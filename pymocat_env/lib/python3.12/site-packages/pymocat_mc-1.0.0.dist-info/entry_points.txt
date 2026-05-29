@@ -1,0 +1,2 @@
+[console_scripts]
+pymocat-mc = pymocat_mc.mocat_mc:main

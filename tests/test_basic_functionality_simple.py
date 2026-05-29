@@ -17,8 +17,8 @@ print("Running basic functionality tests...")
 
 # Test 1: Basic imports
 try:
-    from supporting_functions.get_idx import get_idx
-    from supporting_functions.categorize_obj import categorize_obj
+    from pymocat_mc.supporting_functions.get_idx import get_idx
+    from pymocat_mc.supporting_functions.categorize_obj import categorize_obj
     print("OK Basic imports successful")
 except ImportError as e:
     print(f"ERROR Import failed: {e}")
@@ -38,7 +38,7 @@ except Exception as e:
 
 # Test 3: MOCAT-MC import
 try:
-    from mocat_mc import MOCATMC
+    from pymocat_mc import MOCATMC
     mocat = MOCATMC()
     assert hasattr(mocat, 'constants')
     assert hasattr(mocat, 'idx')

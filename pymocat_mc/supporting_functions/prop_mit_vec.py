@@ -6,9 +6,9 @@ Python equivalent of prop_mit_vec.m.
 
 import numpy as np
 from typing import Tuple, Dict
-from analytic_propagation_vec import analytic_propagation_vec
-from mean2osc_m_vec import mean2osc_m_vec
-from oe2rv_vec import oe2rv_vec
+from .analytic_propagation_vec import analytic_propagation_vec
+from .mean2osc_m_vec import mean2osc_m_vec
+from .oe2rv_vec import oe2rv_vec
 
 
 def prop_mit_vec(mat_sat_in: np.ndarray, t: float, param: Dict) -> np.ndarray:

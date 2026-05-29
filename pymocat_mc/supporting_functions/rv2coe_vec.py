@@ -36,8 +36,8 @@ import os
 sys.path.append(os.path.dirname(__file__))
 
 from cross_vec import cross_vec
-from angl_vec import angl_vec
-from newtonnu_vec import newtonnu_vec
+from .angl_vec import angl_vec
+from .newtonnu_vec import newtonnu_vec
 
 
 def rv2coe_vec(r, v, mu):

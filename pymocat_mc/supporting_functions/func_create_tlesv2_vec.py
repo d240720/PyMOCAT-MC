@@ -30,7 +30,7 @@ import os
 sys.path.append(os.path.dirname(__file__))
 
 from .rv2coe_vec import rv2coe_vec
-from filter_objclass_fragments_int import filter_objclass_fragments_int
+from .filter_objclass_fragments_int import filter_objclass_fragments_int
 
 
 def func_create_tlesv2_vec(ep, r_parent, v_parent, class_parent, fragments,

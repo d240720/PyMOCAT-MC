@@ -19,7 +19,7 @@ try:
         '..',
         'python_implementation'))
     
-    from mocat_mc import MOCATMC
+    from pymocat_mc import MOCATMC
     print("OK MOCATMC imported successfully")
     
     # Try to initialize

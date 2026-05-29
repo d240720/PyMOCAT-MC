@@ -101,11 +101,11 @@ class MOCATMC:
         cfg_mc['P_frag_cutoff'] = int(100 * 0.18)
         cfg_mc['altitude_limit_low'] = 200
         cfg_mc['altitude_limit_up'] = 2000
-        cfg_mc['missionlifetime'] = int(100 * 0.08)
+        cfg_mc['missionlifetime'] = 8
 
         t0_prop = 0
         nyears = 100
-        tf_prop = cfg_mc['YEAR2MIN'] * nyears * 0.01
+        tf_prop = cfg_mc['YEAR2MIN'] * nyears 
         cfg_mc['dt_days'] = 5
         delta_t = cfg_mc['dt_days'] * cfg_mc['DAY2MIN']
         cfg_mc['tsince'] = np.arange(t0_prop, t0_prop + tf_prop + delta_t, delta_t)
@@ -163,125 +163,13 @@ class MOCATMC:
 
         return cfg_mc
 
-    def main_mc(self, mc_config: Union[Dict, str], rng_seed: Optional[int] = None) -> Tuple[int, int, int, int, np.ndarray]:
+    def main_mc(self, mc_config: Union[Dict, str], rng_seed: Optional[int] = None):
         """
         Execute main Monte Carlo simulation.
-
-        Args:
-            mc_config: Configuration dictionary or string
-            rng_seed: Random number generator seed
-
-        Returns:
-            Tuple of (nS, nD, nN, nB, mat_sats)
+        Delegates to the full implementation in supporting_functions/main_mc.py.
         """
-        # Initialize RNG seed
-        if rng_seed is not None:
-            np.random.seed(rng_seed)
-            print(f'main_mc specified with seed {rng_seed}')
-
-        # Load configuration
-        if isinstance(mc_config, str):
-            mc_config = eval(mc_config)
-
-        cfg = mc_config.copy()
-
-        # Lazy load required functions
-        categorize_obj = self._get_supporting_function('categorize_obj', 'categorize_obj')
-        prop_mit_vec = self._get_supporting_function('prop_mit_vec', 'prop_mit_vec')
-
-        # Set up parameters
-        param = {
-            'req': cfg['radiusearthkm'],
-            'mu': cfg['mu_const'],
-            'j2': cfg['j2'],
-            'max_frag': cfg['max_frag'],
-            'density_profile': cfg.get('density_profile', None)
-        }
-
-        if 'paramSSEM' in cfg:
-            param['paramSSEM'] = cfg['paramSSEM']
-
-        param['sample_params'] = cfg.get('sample_params', 0)
-
-        # Get initial satellite matrix
-        mat_sats = cfg['mat_sats'].copy()
-
-        # Preallocate
-        n_sats = mat_sats.shape[0]
-        n_time = min(cfg['n_time'], 5)  # Limit to 5 steps for demo
-        tsince = cfg['tsince']
-
-        # Get matrix indices
-        param['maxID'] = max(np.max(mat_sats[:, self.idx['ID']]), 0)
-
-        # Index definitions for operations
-        idx_prop_in = [self.idx['a'], self.idx['ecco'], self.idx['inclo'],
-                      self.idx['nodeo'], self.idx['argpo'], self.idx['mo'],
-                      self.idx['bstar'], self.idx['controlled']]
-        idx_prop_out = [self.idx['a'], self.idx['ecco'], self.idx['inclo'],
-                       self.idx['nodeo'], self.idx['argpo'], self.idx['mo'],
-                       self.idx['error']] + self.idx['r'] + self.idx['v']
-
-        # Store initial state
-        objclassint_store = mat_sats[:, self.idx['objectclass']].astype(int)
-        controlled_store = mat_sats[:, self.idx['controlled']].astype(int)
-
-        # Extract species numbers
-        nS, nD, nN, nB = categorize_obj(objclassint_store, controlled_store)
-
-        print(f'Year {cfg["time0"].year} - Initial objects: {int(n_sats)} ({nS},{nD},{nN},{nB})')
-
-        # Simplified simulation loop
-        for n in range(2, n_time + 1):
-            current_time = cfg['time0'] + timedelta(days=tsince[n-1] / cfg['DAY2MIN'])
-            jd = self._datetime_to_julian(current_time)
-
-            # Propagation
-            n_sats = mat_sats.shape[0]
-            param['jd'] = jd
-
-            dt_sec = 60 * (tsince[n-1] - tsince[n-2] if n > 2 else tsince[n-1])
-
-            # Use MIT propagator
-            try:
-                mat_sats[:, idx_prop_out] = prop_mit_vec(
-                    mat_sats[:, idx_prop_in],
-                    dt_sec,
-                    param)
-            except Exception as e:
-                print(f"Propagation warning: {e}")
-                # Continue with original orbital elements if propagation fails
-
-            # Find deorbited objects
-            r_mag = np.sqrt(np.sum(mat_sats[:, self.idx['r']]**2, axis=1))
-            perigee = mat_sats[:, self.idx['a']] * cfg['radiusearthkm'] * (1 - mat_sats[:, self.idx['ecco']])
-
-            deorbit = np.where(
-                (mat_sats[:, self.idx['r'][0]] == 0) |
-                (perigee < (150 + cfg['radiusearthkm'])) |
-                (r_mag < (cfg['radiusearthkm'] + 100)) |
-                (mat_sats[:, self.idx['error']] != 0) |
-                (mat_sats[:, self.idx['a']] < 0)
-            )[0]
-
-            # Remove deorbited objects
-            num_deorbited = len(deorbit)
-            if num_deorbited > 0:
-                mat_sats = np.delete(mat_sats, deorbit, axis=0)
-
-            # Extract final species numbers
-            if mat_sats.shape[0] > 0:
-                objclassint_store = mat_sats[:, self.idx['objectclass']].astype(int)
-                controlled_store = mat_sats[:, self.idx['controlled']].astype(int)
-                nS, nD, nN, nB = categorize_obj(objclassint_store, controlled_store)
-            else:
-                nS, nD, nN, nB = 0, 0, 0, 0
-
-            print(f'Year {current_time.year} - Step {n}: {mat_sats.shape[0]} objects ({nS},{nD},{nN},{nB}), {num_deorbited} deorbited')
-
-        print(f'\n === FINISHED MC RUN WITH SEED: {rng_seed} === \n')
-
-        return nS, nD, nN, nB, mat_sats
+        from pymocat_mc.supporting_functions.main_mc import main_mc as _main_mc
+        return _main_mc(mc_config, rng_seed)
 
     def _datetime_to_julian(self, dt: datetime) -> float:
         """Convert datetime to Julian date."""

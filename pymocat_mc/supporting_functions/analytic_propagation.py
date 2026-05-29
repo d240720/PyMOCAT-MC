@@ -35,7 +35,7 @@ sys.path.append(os.path.dirname(__file__))
 
 from .lininterp1 import lininterp1
 from .lininterp2 import lininterp2
-from densityexp import densityexp
+from .densityexp import densityexp
 
 
 def analytic_propagation(input_oe, param):

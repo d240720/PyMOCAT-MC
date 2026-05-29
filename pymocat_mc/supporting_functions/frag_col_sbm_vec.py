@@ -185,12 +185,18 @@ def frag_col_sbm_vec(ep, p1_in, p2_in, param):
         warnings.warn(f'Total sum of debris mass ({total_mass:.1f} kg) differs from '
                      f'"mass" of original objects ({M:.1f} kg)')
 
-    # Calculate delta-V vectors
+    Am_rem = np.atleast_1d(Am_rem)
+    Am = np.atleast_1d(Am)
+    d = np.atleast_1d(d)
+    d_rem = np.atleast_1d(d_rem)
+    A = np.atleast_1d(A)
+    A_rem = np.atleast_1d(A_rem)
+    m = np.atleast_1d(m)
+    m_rem = np.atleast_1d(m_rem)
     all_Am = np.concatenate([Am, Am_rem]) if len(Am_rem) > 0 else Am
     if len(all_Am) == 0:
         return np.array([]).reshape(0, 24), np.array([]).reshape(0, 24)
-
-    dv_vals = func_dv(all_Am, 'col') / 1000  # km/s
+    dv_vals = np.atleast_1d(func_dv(all_Am, 'col') / 1000)  # km/s
 
     # Generate random unit vectors
     u = np.random.rand(len(dv_vals)) * 2 - 1

@@ -15,7 +15,7 @@ sys.path.insert(
     'python_implementation'))
 
 try:
-    from mocat_mc import MOCATMC
+    from pymocat_mc import MOCATMC
     print("Successfully imported MOCATMC")
     
     # Try to initialize

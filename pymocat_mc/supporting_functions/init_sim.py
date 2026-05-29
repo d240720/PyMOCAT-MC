@@ -8,8 +8,8 @@ import numpy as np
 import scipy.io as sio
 from datetime import datetime, timedelta
 from typing import Dict, Tuple
-from jd2date import jd2date
-from get_idx import get_idx
+from .jd2date import jd2date
+from .get_idx import get_idx
 
 
 def init_sim(cfg: Dict, simulation: str, launch_model: str,

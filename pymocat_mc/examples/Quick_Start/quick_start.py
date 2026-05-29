@@ -38,7 +38,7 @@ def quick_start():
     print(f'Launches per year: {launches_per_year}')
     print('Starting main_mc...')
 
-    nS, nD, nN, nB, mat_sats = mocat.main_mc(cfg_mc, seed)
+    nS, nD, nN, nB, mat_sats, history = mocat.main_mc(cfg_mc, seed)
 
     # MOCAT MC postprocess: ratio of satellite (SR) among all space objects
     total_objects = nS + nD + nN + nB
@@ -50,7 +50,26 @@ def quick_start():
     print('Quick Start under no launch scenario done!')
     print(f'Satellite ratio in all space objects after evolution: {ratio:.6f}')
 
-    return nS, nD, nN, nB, mat_sats
+    # Plot time series
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(history['years'], history['S'], label='Active Satellites (S)')
+    ax.plot(history['years'], history['D'], label='Derelicts (D)')
+    ax.plot(history['years'], history['N'], label='Debris (N)')
+    ax.plot(history['years'], history['B'], label='Rocket Bodies (B)')
+    ax.plot(history['years'], history['S'] + history['D'] + history['N'] + history['B'],
+            label='Total', linestyle='--', color='black')
+    ax.set_xlabel('Year')
+    ax.set_ylabel('Number of Objects')
+    ax.set_title('LEO Object Population Over Time')
+    ax.legend()
+    ax.grid(True)
+    plt.tight_layout()
+    plt.savefig('timeseries.png')
+    plt.show()
+
+    return nS, nD, nN, nB, mat_sats, history
 
 
 if __name__ == "__main__":

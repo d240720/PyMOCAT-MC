@@ -28,11 +28,15 @@ def cube_vec_v3(
     """
     # Only consider RSO below collision_alt_limit for collision
     idx_invalid = np.any(np.abs(X.T) > collision_alt_limit, axis=0)
-    X = X.copy()
-    X[idx_invalid, :] = np.nan
+    valid_mask = ~idx_invalid
+    original_indices = np.where(valid_mask)[0]
+    X_valid = X[valid_mask, :3]
+
+    if len(X_valid) < 2:
+        return []
 
     # Discretize positions
-    X_dis = np.floor(X[:, :3] / cube_res)
+    X_dis = np.floor(X_valid / cube_res)
 
     # Shift origin such that X_dis is always positive
     shift_lim = int(np.nanmax(np.abs(X_dis))) + 10
@@ -60,7 +64,7 @@ def cube_vec_v3(
     res = []
     for cube_idx in duplicate_cube_indices:
         # Find all objects in this cube
-        objects_in_cube = np.where(unique_idx == cube_idx)[0]
+        objects_in_cube = original_indices[np.where(unique_idx == cube_idx)[0]]
 
         # Generate all pairs (combinations of 2)
         if len(objects_in_cube) >= 2:

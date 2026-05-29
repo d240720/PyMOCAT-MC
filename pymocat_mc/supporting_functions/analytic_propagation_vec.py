@@ -10,8 +10,8 @@ and Dynamical Astronomy 123, no. 1 (2015): 85-103.
 
 import numpy as np
 from typing import Tuple, Dict
-from densityexp_vec import densityexp_vec
-from lininterp1_vec import lininterp1_vec, lininterp2_vec_v2
+from .densityexp_vec import densityexp_vec
+from .lininterp1_vec import lininterp1_vec, lininterp2_vec_v2
 
 
 def analytic_propagation_vec(

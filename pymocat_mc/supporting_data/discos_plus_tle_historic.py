@@ -25,9 +25,9 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 try:
-    from supporting_functions.objclass2int import objclass2int
-    from supporting_functions.getidx import get_idx
-    from supporting_functions.jd2date import jd2date
+    from pymocat_mc.supporting_functions.objclass2int import objclass2int
+    from pymocat_mc.supporting_functions.getidx import get_idx
+    from pymocat_mc.supporting_functions.jd2date import jd2date
 except ImportError:
     print("Warning: Some supporting functions not available. Creating stub functions.")
     def objclass2int(obj_class, mode=1):
