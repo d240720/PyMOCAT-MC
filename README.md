@@ -1,335 +1,69 @@
-# PyMOCAT-MC
+# MOCAT-MC
+MIT Orbital Capacity Assessment Toolbox - Monte Carlo
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16831016.svg)](https://doi.org/10.5281/zenodo.16831016)
+MIT ARCLab's Monte-Carlo Tool for long-term propagation of the LEO environment
 
-**PyMOCAT-MC** is a Python implementation of the MIT Orbital Capacity Assessment Toolbox - Monte Carlo (MOCAT-MC), originally written in MATLAB. This toolbox enables Monte Carlo-based analysis of orbital capacity, debris, and satellite population evolution, supporting research and engineering in space situational awareness and orbital risk. The Python implementation maintains full compatibility with the original MATLAB version while leveraging modern Python scientific computing libraries.
+## Required modules
+MOCAT-MC is developed in MATLAB.
 
----
+## Examples
+For a _Quick_Start_, run:
 
-## Statement of Need
+`./Examples/Quick_Start/Quick_Start.m`
 
-As the orbital environment becomes increasingly congested with satellite deployments and large-scale constellations, modeling space traffic and debris risk has become crucial for space sustainability research. The original MATLAB MOCAT-MC toolbox is a leading framework for orbital capacity assessment, but it limits accessibility and hinders integration with modern Python-based data science and machine learning workflows that are central to contemporary space research.
+For a _No Future Launch_ scenario starting with the epoch of Jan 1, 2020 in a 3-seed Monte Carlo case, run:
 
-PyMOCAT-MC addresses these barriers by providing a functionally equivalent, open-source Python implementation that maintains full compatibility with the original while improving performance and accessibility. This enables broader adoption in the space research community and integration with state-of-the-art scientific computing tools.
+`./Examples/Scenario_No_Launch/Scenario_No_Launch.m`
 
-## Comparison to Similar Software
+## Acknowledgement
 
-PyMOCAT-MC fills a unique niche in the orbital mechanics software ecosystem:
+MOCAT’s initial development has been supported by the Defense Advanced Research Projects Agency (DARPA) under Grant N66001-20-1-4028, NASA’s Office of Technology and Strategy, under Grant Number NNH22ZDA001N-ESPOD.
 
-- **Original MATLAB MOCAT-MC**: Proprietary, excellent algorithms but limited accessibility due to licensing costs and integration barriers with modern Python workflows
-- **Astropy/Poliastro**: General orbital mechanics libraries, but lack specialized Monte Carlo debris evolution and collision modeling capabilities
-- **MOCAT-pySSEM**: Related source-sink environmental modeling tool, but focuses on different aspects of space environment modeling
-- **Commercial debris analysis tools**: Often proprietary and expensive, with limited customization options
+Research was sponsored by the Department of the Air Force Artificial Intelligence Accelerator and was accomplished under Cooperative Agreement Number FA8750-19-2-1000. The views and conclusions contained in this document are those of the authors and should not be interpreted as representing the official policies, either expressed or implied, of the Department of the Air Force or the U.S. Government. The U.S. Government is authorized to reproduce and distribute reprints for Government purposes notwithstanding any copyright notation herein.
 
-PyMOCAT-MC uniquely combines the proven algorithms of MATLAB MOCAT-MC with open-source accessibility, performance improvements, and seamless integration with the Python scientific computing ecosystem.
+This project utilizes code, partially or in full, from the following sources:
 
-## Software Purpose
-PyMOCAT-MC provides a flexible, extensible framework for simulating the evolution of satellite populations and debris in Earth orbit. It is designed for:
-- Assessing orbital capacity and congestion
-- Modeling satellite launches, collisions, and fragmentation
-- Evaluating the impact of megaconstellations
-- Supporting policy and engineering studies in orbital risk
-- Enabling integration with Python ML/data science ecosystems
+### Vallado's Astrodynamic Algorithms
 
----
+#### Reference:
+Vallado, D. A. (2007). Fundamentals of Astrodynamics and Applications. Microcosm Press.
 
-## Installation
+### Charles Rino's Orbit Computation Code
 
-### Install from GitHub
+#### Reference:
+Rino, C. (2010). Satellite Orbit Computation
 
-```bash
-pip install git+https://github.com/rushilkukreja/PyMOCAT-MC.git
-```
+## MIT License
 
-### Install from Source (Development)
+Copyright (c) 2023 ARCLab
 
-Clone the repository and install in development mode:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-```bash
-git clone https://github.com/rushilkukreja/PyMOCAT-MC.git
-cd PyMOCAT-MC
-pip install -e .
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-# Verify installation works
-python3 -m pymocat_mc.examples.Quick_Start.quick_start
-```
-
-### Verify Installation
-
-After installation, verify everything works:
-
-```bash
-# Quick functionality check
-python3 -c "from pymocat_mc import MOCATMC; print('+ PyMOCAT-MC installed successfully')"
-
-# Run a simple example
-python3 -m pymocat_mc.examples.Quick_Start.quick_start
-```
-
-### Install with Development Dependencies
-
-For contributors and developers:
-
-```bash
-git clone https://github.com/rushilkukreja/PyMOCAT-MC.git
-cd PyMOCAT-MC
-pip install -e ".[dev]"
-
-# Or use automated setup (creates virtual environment)
-python3 setup_environment.py
-```
-
-### Requirements
-
-- Python >= 3.8
-- numpy >= 1.21.0
-- scipy >= 1.7.0
-- pandas >= 1.3.0
-- matplotlib >= 3.5.0
-
-All dependencies will be automatically installed with pip.
-
----
-## Usage
-### Quick Start
-
-After installing the package, you can run example scripts directly:
-
-```bash
-# Basic quick start example
-python -m pymocat_mc.examples.Quick_Start.quick_start
-
-# Quick start with visualization plots
-python -m pymocat_mc.examples.Quick_Start.quick_start_with_plots
-```
-
-For a scenario without launches:
-
-```bash
-python -m pymocat_mc.examples.Scenario_No_Launch.scenario_no_launch
-```
-
-For a realistic operations scenario without future launches:
-
-```bash
-python -m pymocat_mc.examples.Realistic_Operations_No_Launch.realistic_operations_no_launch
-```
-
-### Custom Configuration
-
-```python
-from pymocat_mc import MOCATMC
-
-# Initialize MOCAT-MC
-mocat = MOCATMC()
-
-# Setup configuration
-cfg_mc = mocat.setup_mc_config(rng_seed=1, ic_file='2020.mat')
-
-# Customize simulation parameters
-cfg_mc['tspan'] = 30  # Simulation duration
-cfg_mc['N_ini_samples'] = 10  # Number of initial orbit samples
-cfg_mc['prop']['dt_TL'] = 90  # Time step in days
-
-# Run simulation
-results = mocat.run_simulation(cfg_mc)
-
-print(f"Final counts - Satellites: {results['nS']}, Derelicts: {results['nD']}, Debris: {results['nN']}, Rocket Bodies: {results['nB']}")
-```
-
----
-
-## Data
-
-Supporting data files are automatically included with the package installation and can be found in the package's `supporting_data/` directory:
-
-- **TLE Historic Data** (`TLEhistoric/`): CSV and MAT files containing Two-Line Element sets for satellites from 2000–2023. See the included `readme.txt` for details and data sources.
-- **Atmospheric Density Model**: `dens_jb2008_032020_022224.mat` - JB2008 atmospheric density data
-- **Launch Schedules**: `megaconstellationLaunches.xlsx` - Planned megaconstellation launch data
-
----
-
-## Project Structure
-
-```
-PyMOCAT-MC/
-├── python_implementation/
-│   ├── mocat_mc.py                    # Main MOCAT-MC class
-│   ├── examples/
-│   │   ├── Quick_Start/
-│   │   │   ├── quick_start.py         # Basic simulation example
-│   │   │   ├── quick_start_with_plots.py  # Example with visualizations
-│   │   │   └── README.md              # Quick start documentation
-│   │   ├── Realistic_Operations_No_Launch/
-│   │   │   ├── realistic_operations_no_launch.py  # Realistic operations without launches
-│   │   │   ├── README.md              # Realistic operations documentation
-│   │   │   └── *.png                  # Generated visualization outputs
-│   │   └── Scenario_No_Launch/
-│   │       ├── scenario_no_launch.py  # Decay-only scenario
-│   │       └── README.md              # Scenario documentation
-│   ├── supporting_functions/
-│   │   ├── cfg_mc_constants.py        # Physical constants
-│   │   ├── get_idx.py                 # Matrix index definitions
-│   │   ├── categorize_obj.py          # Object categorization
-│   │   ├── init_sim.py                # Simulation initialization
-│   │   ├── main_mc.py                 # Main Monte Carlo engine
-│   │   ├── prop_mit_vec.py            # MIT orbital propagator
-│   │   ├── analytic_propagation.py    # Analytic orbital propagator
-│   │   ├── analytic_propagation_vec.py # Vectorized analytic propagation
-│   │   ├── collision_prob_vec.py      # Collision probability
-│   │   ├── cube_vec_v3.py             # Cube method for conjunctions
-│   │   ├── frag_col_sbm_vec.py        # Collision fragmentation model
-│   │   ├── frag_exp_sbm_vec.py        # Explosion fragmentation model
-│   │   ├── orbcontrol_vec.py          # Orbit control/station-keeping
-│   │   ├── fillin_atmosphere.py       # Atmospheric model interface
-│   │   ├── fillin_physical_parameters.py  # Object physical properties
-│   │   ├── densityexp_vec.py          # Atmospheric density calculations
-│   │   ├── fill_mass_radius_resample.py # Mass/radius parameter resampling
-│   │   ├── filter_objclass_fragments_int.py # Fragment filtering
-│   │   ├── func_Am.py                 # Area-to-mass ratio calculations
-│   │   ├── func_create_tlesv2_vec.py  # TLE creation utilities
-│   │   ├── func_dv.py                 # Delta-V calculations
-│   │   ├── get_zero_groups.py         # Zero group identification
-│   │   ├── getgravc.py                # Gravitational constants
-│   │   ├── jd2date.py                 # Julian date conversions
-│   │   ├── kepler1.py                 # Kepler equation solver
-│   │   ├── kepler1_vec.py             # Vectorized Kepler solver
-│   │   ├── lininterp1.py              # 1D linear interpolation
-│   │   ├── lininterp1_vec.py          # Vectorized 1D interpolation
-│   │   ├── lininterp2.py              # 2D linear interpolation
-│   │   ├── lininterp2_vec.py          # Vectorized 2D interpolation
-│   │   ├── lininterp2_vec_v2.py       # Optimized 2D interpolation
-│   │   ├── mean2osc.py                # Mean to osculating elements
-│   │   ├── mean2osc_m.py              # Mean to osculating (modified)
-│   │   ├── mean2osc_m_vec.py          # Vectorized mean to osculating
-│   │   ├── mean2osc_vec.py            # Vectorized mean to osculating
-│   │   ├── mean_osculating_map.py     # Mean-osculating mapping
-│   │   ├── newtonnu_vec.py            # Newton-Raphson solver
-│   │   ├── oe2rv_vec.py               # Orbital elements to position/velocity
-│   │   ├── osc2mean.py                # Osculating to mean elements
-│   │   ├── osc2mean_m_vec.py          # Vectorized osculating to mean
-│   │   ├── osc2mean_vec.py            # Vectorized osculating to mean
-│   │   ├── rv2coe_vec.py              # Position/velocity to orbital elements
-│   │   ├── cross_vec.py               # Vector cross product
-│   │   ├── angl_vec.py                # Angle calculations
-│   │   └── densityexp.py              # Exponential density model
-│   ├── supporting_data/
-│   │   ├── TLEhistoric/               # Historical TLE data (2000-2023)
-│   │   ├── dens_jb2008_032020_022224.mat  # Atmospheric density data
-│   │   └── megaconstellationLaunches.xlsx  # Launch schedules
-├── paper/                             # Paper submission
-│   ├── paper.md                       # Main paper manuscript
-│   ├── paper.bib                      # Bibliography
-│   ├── paper.pdf                      # Compiled PDF version
-│   └── figures/                       # Paper figures
-│       ├── error_box_plots.png        # Error distribution analysis
-│       ├── execution_time_comparison.png # Performance benchmarks
-│       ├── matlab_python_orbital_comparison.png # Orbital element validation
-│       └── object_type_percentage_heatmap.png # Object type error analysis
-├── tests/                             # Main test suite
-│   ├── run_tests.py                   # Python test runner (cross-platform)
-│   ├── run_tests.sh                   # Bash test runner (Unix/macOS)
-│   ├── test_basic_functionality_simple.py  # Core functionality tests
-│   ├── test_import.py                 # Import and data loading tests
-│   ├── minimal_test.py                # Minimal 2-step simulation test
-│   ├── test_simple_run.py             # Single time-step test
-│   ├── README.md                      # Test suite documentation
-│   └── test_scenarios_summary.md      # Detailed test scenario documentation
-├── comparison_tests/                  # Python vs MATLAB comparison tests
-│   ├── test_all_scenarios.py          # Comprehensive comparison across all scenarios
-│   ├── test_quick_scenarios.py        # Quick validation tests for basic scenarios
-│   ├── accuracy_error_data.csv        # Accuracy error measurements data
-│   └── accuracy_error_data.json       # Accuracy error data in JSON format
-├── analysis_figures/                  # Analysis and visualization scripts
-│   ├── measure_accuracy_errors.py     # Calculate accuracy errors between implementations
-│   ├── plot_error_analysis.py         # Generate error distribution plots
-│   ├── plot_error_evolution.py        # Plot error evolution over time
-│   ├── plot_error_evolution_simple.py # Simplified error evolution visualization
-│   ├── plot_execution_time.py         # Visualize execution time performance
-│   ├── plot_object_type_heatmap.py    # Create heatmap of object type percentages
-│   ├── plot_real_matlab_vs_python_comparison.py # Real-world MATLAB vs Python comparison
-│   ├── error_evolution_full_default_data.json # Error evolution data
-│   ├── matlab_full_default_orbital_data.json # MATLAB reference data
-│   └── python_full_default_orbital_data.json # Python comparison data
-├── MATLAB_implementation/             # Original MATLAB implementation
-│   ├── main_mc.m                      # Main MATLAB MOCAT-MC engine
-│   ├── initSim.m                      # MATLAB simulation initialization
-│   ├── setup_MCconfig.m               # MATLAB configuration setup
-│   ├── realistic_operations_no_launch.m # MATLAB realistic operations example
-│   ├── Examples/                      # MATLAB example scripts
-│   ├── supporting_functions/          # MATLAB supporting functions (~120 files)
-│   ├── supporting_data/               # MATLAB data files
-│   └── tests/                         # MATLAB test suite
-├── setup_environment.py               # Automated environment setup
-├── requirements.txt                   # Python dependencies
-├── pyproject.toml                     # Modern Python packaging configuration
-├── setup.py                           # Traditional Python packaging
-├── CONTRIBUTING.md                    # Contribution guidelines
-├── TESTING.md                         # Detailed testing instructions
-├── LICENSE                            # MIT License
-├── CITATION.cff                       # Citation metadata
-└── README.md                          # This file
-```
-
----
-
-## Testing
-
-Run the test suite using our custom test runners:
-
-```bash
-# Recommended: Run all tests with Python runner
-python3 tests/run_tests.py
-
-# Alternative: Use bash runner (Unix/macOS only)
-./tests/run_tests.sh
-
-# Individual tests
-python3 tests/test_basic_functionality_simple.py
-python3 tests/test_import.py
-python3 tests/minimal_test.py
-python3 tests/test_simple_run.py
-```
-
-For detailed testing instructions and troubleshooting, see [TESTING.md](TESTING.md).
-
----
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 ## Citation
 
-If you use PyMOCAT-MC in your research, please cite:
+    @article{Jang2024Monte,
+      title={A New Monte-Carlo Model for the Space Environment}, 
+      author={Daniel Jang and Davide Gusmini and Peng Mun Siew and Andrea D'Ambrosio and Simone Servadio and Pablo Machuca and Richard Linares},
+      year={2024},
+      eprint={2405.10430},
+      archivePrefix={arXiv},
+      primaryClass={astro-ph.EP},
+      url={https://arxiv.org/abs/2405.10430}, 
+    }
 
-```bibtex
-@software{kukreja2025pymocatmc,
-  author = {Kukreja, Rushil and Oughton, Edward J. and Lavezzi, Giovanni and 
-            Zucchelli, Enrico M. and Jang, Daniel and Linares, Richard},
-  title = {PyMOCAT-MC: A Python Implementation of the MIT Orbital Capacity 
-           Assessment Toolbox Monte Carlo Module},
-  year = {2025},
-  url = {https://github.com/rushilkukreja/PyMOCAT-MC},
-  doi = {10.5281/zenodo.16831016}
-}
-```
-
----
-
-## Contributors
-
-- **Rushil Kukreja**, Student, Thomas Jefferson High School for Science and Technology
-- **Dr. Edward J. Oughton**, Assistant Professor, George Mason University
-- **Dr. Giovanni Lavezzi**, Research Scientist, Massachusetts Institute of Technology
-- **Dr. Enrico M. Zucchelli**, Postdoctoral Associate, Massachusetts Institute of Technology
-- **Dr. Daniel Jang**, Technical Staff, Lincoln Laboratory
-- **Dr. Richard Linares**, Associate Professor, Massachusetts Institute of Technology
